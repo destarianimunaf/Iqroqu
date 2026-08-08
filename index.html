@@ -131,7 +131,7 @@ a:focus-visible,
 }
 .back-btn:active { transform: translateY(3px); box-shadow: none; }
 
-/* ---------- Mascot 3D ---------- */
+/* ---------- Mascot (ilustrasi SVG bergaya, banyak pose) ---------- */
 .mascot-wrap {
   display: flex;
   align-items: flex-end;
@@ -139,118 +139,44 @@ a:focus-visible,
   margin-bottom: 20px;
 }
 
-.mascot3d {
-  width: 78px;
-  height: 100px;
+.mascot-illust {
+  width: 84px;
+  height: 104px;
   flex-shrink: 0;
-  position: relative;
-  animation: bob 2.6s ease-in-out infinite;
+  filter: drop-shadow(0 6px 4px rgba(43,33,64,0.18));
+  animation: bob 2.8s ease-in-out infinite;
 }
+.mascot-illust.big { width: 132px; height: 164px; }
+.mascot-illust svg { width: 100%; height: 100%; display: block; overflow: visible; }
 
 @keyframes bob {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50% { transform: translateY(-7px) rotate(-1.5deg); }
 }
+.mas-blink { animation: mblink 4.5s ease-in-out infinite; transform-origin: center; }
+@keyframes mblink { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.15); } }
+.mas-armwave { animation: mwave 2s ease-in-out infinite; transform-origin: top center; }
+@keyframes mwave { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-14deg); } }
+.mas-sparkle { animation: msparkle 1.8s ease-in-out infinite; transform-origin: center; }
+.mas-sparkle.s2 { animation-delay: .5s; }
+.mas-sparkle.s3 { animation-delay: 1s; }
+@keyframes msparkle { 0%,100% { opacity:.25; transform:scale(0.7); } 50% { opacity:1; transform:scale(1.15); } }
+.mas-float { animation: mfloat 3.2s ease-in-out infinite; }
+@keyframes mfloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
-.m-shadow {
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 50px;
-  height: 10px;
-  background: rgba(43,33,64,0.18);
-  border-radius: 50%;
-  filter: blur(1px);
+/* ---------- Panggung ilustrasi (hero dashboard) ---------- */
+.hero-stage {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  padding: 26px 18px 10px;
+  margin-bottom: 6px;
+  background: linear-gradient(180deg, #2b3a6b 0%, #4a4184 55%, #6b4f9e 100%);
 }
-.m-body {
-  position: absolute;
-  bottom: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 58px;
-  height: 44px;
-  background: linear-gradient(160deg, #37a99d, var(--teal) 55%, var(--teal-dark));
-  border-radius: 26px 26px 20px 20px;
-  box-shadow: inset -5px -6px 0 rgba(0,0,0,0.15), inset 5px 5px 0 rgba(255,255,255,0.18), var(--card-shadow);
-}
-.m-collar {
-  position: absolute;
-  top: -3px; left: 50%; transform: translateX(-50%);
-  width: 26px; height: 10px;
-  background: var(--yellow);
-  border-radius: 0 0 10px 10px;
-}
-.m-book {
-  position: absolute;
-  bottom: 12px; left: 50%; transform: translateX(-50%);
-  width: 24px; height: 17px;
-  background: #FFF8EA;
-  border: 2px solid var(--ink);
-  border-radius: 3px;
-  box-shadow: 0 2px 0 rgba(43,33,64,0.2);
-}
-.m-book::before {
-  content: "";
-  position: absolute; left: 50%; top: 1px; bottom: 1px; width: 1.5px;
-  background: var(--ink);
-}
-.m-armL, .m-armR {
-  position: absolute;
-  bottom: 16px;
-  width: 11px; height: 20px;
-  background: var(--teal-dark);
-  border-radius: 8px;
-}
-.m-armL { left: -3px; transform-origin: top center; animation: wave 2s ease-in-out infinite; }
-.m-armR { right: -3px; transform: rotate(-22deg); }
-@keyframes wave { 0%,100% { transform: rotate(8deg); } 50% { transform: rotate(32deg); } }
-
-.m-head {
-  position: absolute;
-  top: 2px; left: 50%; transform: translateX(-50%);
-  width: 54px; height: 50px;
-  background: radial-gradient(circle at 35% 30%, #FFE3BE, #F3C185 78%);
-  border-radius: 50% 50% 46% 46%;
-  box-shadow: inset -6px -6px 0 rgba(0,0,0,0.07);
-}
-.m-peci {
-  position: absolute;
-  top: -10px; left: 50%; transform: translateX(-50%);
-  width: 38px; height: 20px;
-  background: linear-gradient(160deg, #34294d, #2b2140);
-  border-radius: 50% 50% 6px 6px / 65% 65% 6px 6px;
-  box-shadow: inset -3px -3px 0 rgba(255,255,255,0.08);
-}
-.m-peci::after {
-  content: "";
-  position: absolute; left: 1px; right: 1px; bottom: -3px; height: 6px;
-  background: var(--yellow);
-  border-radius: 0 0 4px 4px;
-}
-.m-cheekL, .m-cheekR {
-  position: absolute; top: 27px;
-  width: 10px; height: 6px;
-  background: var(--coral);
-  opacity: 0.45;
-  border-radius: 50%;
-}
-.m-cheekL { left: 1px; } .m-cheekR { right: 1px; }
-.m-eyeL, .m-eyeR {
-  position: absolute; top: 21px;
-  width: 6px; height: 7px;
-  background: var(--ink);
-  border-radius: 50%;
-  animation: blink 4.5s ease-in-out infinite;
-}
-.m-eyeL { left: 15px; } .m-eyeR { right: 15px; }
-@keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.15); } }
-.m-mouth {
-  position: absolute; top: 33px; left: 50%; transform: translateX(-50%);
-  width: 16px; height: 9px;
-  border-bottom: 3px solid var(--ink);
-  border-radius: 0 0 14px 14px;
-}
+.hero-stage svg.hero-scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-stage .mascot-illust { position: relative; z-index: 2; margin: 0 auto; }
+.hero-star { animation: msparkle 2.4s ease-in-out infinite; }
+.hero-star.d1 { animation-delay: .3s; } .hero-star.d2 { animation-delay: .9s; } .hero-star.d3 { animation-delay: 1.5s; }
 
 .speech-bubble {
   background: #fff;
@@ -542,27 +468,95 @@ a:focus-visible,
 /* ---------- Game hub ---------- */
 .game-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
   margin-top: 16px;
-}
-@media (min-width: 480px) {
-  .game-grid { grid-template-columns: 1fr 1fr; }
 }
 .game-tile {
   border-radius: var(--radius-lg);
-  padding: 22px 18px;
+  padding: 18px 14px;
   color: #fff;
   text-align: left;
   box-shadow: var(--card-shadow);
   transition: transform 0.12s ease;
 }
 .game-tile:active { transform: translateY(4px); }
-.game-tile .icon { font-size: 34px; }
-.game-tile h3 { font-size: 19px; margin: 8px 0 4px; }
-.game-tile p { margin: 0; font-size: 13px; font-weight: 700; opacity: 0.95; }
+.game-tile .icon { font-size: 30px; }
+.game-tile h3 { font-size: 15.5px; margin: 6px 0 3px; line-height: 1.15; }
+.game-tile p { margin: 0; font-size: 11.5px; font-weight: 700; opacity: 0.95; }
 .game-tile.quiz { background: linear-gradient(135deg, var(--coral), var(--pink)); }
 .game-tile.match { background: linear-gradient(135deg, var(--violet), var(--teal)); }
+.game-tile.order { background: linear-gradient(135deg, var(--yellow), var(--coral)); }
+.game-tile.tf { background: linear-gradient(135deg, var(--green), #57c2a8); }
+
+/* ---------- Susun Urutan ---------- */
+.order-tip {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #8A7F9C;
+  margin: 4px 0 12px;
+}
+.order-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+.order-chip {
+  position: relative;
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  padding: 14px 44px 14px 16px;
+  text-align: left;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.12s ease;
+}
+.order-chip:active { transform: translateY(3px); }
+.order-chip .oc-arab { font-family: 'Amiri', serif; direction: rtl; font-size: 22px; }
+.order-chip .oc-latin { font-family: 'Baloo 2', sans-serif; font-size: 12.5px; color: var(--teal-dark); margin-top: 2px; }
+.order-chip .oc-badge {
+  position: absolute; top: 50%; right: 10px; transform: translateY(-50%);
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--paper-line);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 13px; color: var(--ink);
+}
+.order-chip.placed { background: var(--paper); }
+.order-chip.placed .oc-badge { background: var(--yellow); }
+.order-chip.right .oc-badge { background: var(--green); color: #fff; }
+.order-chip.wrong .oc-badge { background: var(--coral); color: #fff; }
+.order-chip:disabled { cursor: default; }
+.order-actions { text-align: center; margin-top: 16px; }
+
+/* ---------- Benar / Salah ---------- */
+.tf-card {
+  background: #fff;
+  border: 3px dashed var(--ink);
+  border-radius: var(--radius-lg);
+  padding: 26px 18px;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  margin: 14px 0 8px;
+}
+.tf-card .tf-arab { font-family: 'Amiri', serif; direction: rtl; font-size: 46px; color: var(--ink); }
+.tf-card .tf-latin { font-family: 'Baloo 2', sans-serif; font-size: 18px; color: var(--teal-dark); margin-top: 8px; }
+.tf-card .tf-hint { font-size: 12.5px; font-weight: 700; color: #8A7F9C; margin-top: 6px; }
+.tf-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
+.tf-btn {
+  border-radius: var(--radius-md);
+  padding: 18px 10px;
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.12s ease;
+  color: #fff;
+}
+.tf-btn:active { transform: translateY(4px); }
+.tf-btn.tf-yes { background: var(--green); }
+.tf-btn.tf-no { background: var(--coral); }
+.tf-btn:disabled { opacity: 0.5; }
 
 /* ---------- Quiz ---------- */
 .quiz-card {
@@ -812,7 +806,14 @@ const IQRO_MODULES = [
       { arab: "نَ", latin: "NA", ket: "Nun fathah" },
       { arab: "وَ", latin: "WA", ket: "Wau fathah" },
       { arab: "هَ", latin: "HA", ket: "Ha (lembut) fathah" },
-      { arab: "يَ", latin: "YA", ket: "Ya fathah" }
+      { arab: "يَ", latin: "YA", ket: "Ya fathah" },
+      { arab: "بَ تَ ثَ جَ", latin: "BA - TA - TSA - JA", ket: "Latihan cepat: baca satu-satu, huruf belum disambung" },
+      { arab: "حَ خَ دَ ذَ", latin: "HA - KHA - DA - DZA", ket: "Latihan cepat membaca huruf terpisah" },
+      { arab: "رَ زَ سَ شَ", latin: "RA - ZA - SA - SYA", ket: "Latihan cepat membaca huruf terpisah" },
+      { arab: "صَ ضَ طَ ظَ", latin: "SHA - DHA - THA - ZHA", ket: "Latihan cepat membaca huruf terpisah" },
+      { arab: "عَ غَ فَ قَ", latin: "'A - GHA - FA - QA", ket: "Latihan cepat membaca huruf terpisah" },
+      { arab: "كَ لَ مَ نَ", latin: "KA - LA - MA - NA", ket: "Latihan cepat membaca huruf terpisah" },
+      { arab: "وَ هَ يَ أَ", latin: "WA - HA - YA - A", ket: "Latihan cepat membaca huruf terpisah, mengulang dari awal" }
     ]
   },
   {
@@ -833,7 +834,16 @@ const IQRO_MODULES = [
       { arab: "نَا", latin: "NAA", ket: "Nun panjang" },
       { arab: "بَابَا", latin: "BAABAA", ket: "Kata: dua huruf disambung" },
       { arab: "كَتَبَ", latin: "KATABA", ket: "Kata: ia telah menulis" },
-      { arab: "ذَهَبَ", latin: "DZAHABA", ket: "Kata: ia telah pergi" }
+      { arab: "ذَهَبَ", latin: "DZAHABA", ket: "Kata: ia telah pergi" },
+      { arab: "جَلَسَ", latin: "JALASA", ket: "Kata: ia telah duduk" },
+      { arab: "سَارَ", latin: "SAARA", ket: "Kata: ia telah berjalan (mad alif)" },
+      { arab: "طَارَ", latin: "THAARA", ket: "Kata: ia telah terbang (mad alif)" },
+      { arab: "رَاحَ", latin: "RAAHA", ket: "Kata: ia telah pergi (mad alif)" },
+      { arab: "زَارَ", latin: "ZAARA", ket: "Kata: ia telah berkunjung (mad alif)" },
+      { arab: "غَسَلَ", latin: "GHASALA", ket: "Kata: ia telah mencuci" },
+      { arab: "خَرَجَ", latin: "KHARAJA", ket: "Kata: ia telah keluar" },
+      { arab: "دَخَلَ", latin: "DAKHALA", ket: "Kata: ia telah masuk" },
+      { arab: "نَظَرَ", latin: "NAZHARA", ket: "Kata: ia telah melihat" }
     ]
   },
   {
@@ -851,7 +861,17 @@ const IQRO_MODULES = [
       { arab: "دِي", latin: "DII", ket: "Dal panjang (mad ya)" },
       { arab: "مُو", latin: "MUU", ket: "Mim panjang (mad wau)" },
       { arab: "بِسْمِ", latin: "BISMI", ket: "Kata: dengan nama" },
-      { arab: "فِيهِ", latin: "FIIHI", ket: "Kata: di dalamnya" }
+      { arab: "فِيهِ", latin: "FIIHI", ket: "Kata: di dalamnya" },
+      { arab: "دِ", latin: "DI", ket: "Dal kasrah" },
+      { arab: "دُ", latin: "DU", ket: "Dal dhommah" },
+      { arab: "رِ", latin: "RI", ket: "Ra kasrah" },
+      { arab: "رُ", latin: "RU", ket: "Ra dhommah" },
+      { arab: "سِ", latin: "SI", ket: "Sin kasrah" },
+      { arab: "سُ", latin: "SU", ket: "Sin dhommah" },
+      { arab: "مِ", latin: "MI", ket: "Mim kasrah" },
+      { arab: "مُ", latin: "MU", ket: "Mim dhommah" },
+      { arab: "نِ", latin: "NI", ket: "Nun kasrah" },
+      { arab: "نُ", latin: "NU", ket: "Nun dhommah" }
     ]
   },
   {
@@ -867,7 +887,17 @@ const IQRO_MODULES = [
       { arab: "مِنْ", latin: "MIN", ket: "Kata: dari" },
       { arab: "قَدْ", latin: "QAD", ket: "Kata: sungguh" },
       { arab: "شَمْسٌ", latin: "SYAMSUN", ket: "Kata: matahari" },
-      { arab: "قَلَمٌ", latin: "QALAMUN", ket: "Kata: pena" }
+      { arab: "قَلَمٌ", latin: "QALAMUN", ket: "Kata: pena" },
+      { arab: "كِتَابٌ", latin: "KITAABUN", ket: "Kata: buku (dhommatain di akhir)" },
+      { arab: "بَيْتٌ", latin: "BAITUN", ket: "Kata: rumah (mad layin, ya sukun)" },
+      { arab: "عَيْنٌ", latin: "'AINUN", ket: "Kata: mata (mad layin, ya sukun)" },
+      { arab: "يَوْمٌ", latin: "YAUMUN", ket: "Kata: hari (mad layin, wau sukun)" },
+      { arab: "بَابٌ", latin: "BAABUN", ket: "Kata: pintu (dhommatain)" },
+      { arab: "كَلْبٌ", latin: "KALBUN", ket: "Kata: anjing (lam sukun)" },
+      { arab: "نَجْمٌ", latin: "NAJMUN", ket: "Kata: bintang (jim sukun)" },
+      { arab: "وَجْهٌ", latin: "WAJHUN", ket: "Kata: wajah (jim sukun)" },
+      { arab: "أَرْضٌ", latin: "ARDHUN", ket: "Kata: bumi (ra sukun)" },
+      { arab: "عِلْمٌ", latin: "'ILMUN", ket: "Kata: ilmu (lam sukun)" }
     ]
   },
   {
@@ -882,7 +912,15 @@ const IQRO_MODULES = [
       { arab: "الشَّمْسُ كَبِيرَةٌ", latin: "ASY-SYAMSU KABIIRATUN", ket: "Kalimat: matahari itu besar" },
       { arab: "مـ", latin: "(waqaf lazim)", ket: "Tanda: wajib berhenti" },
       { arab: "لا", latin: "(laa waqaf)", ket: "Tanda: dilarang berhenti" },
-      { arab: "ج", latin: "(waqaf jaiz)", ket: "Tanda: boleh berhenti / boleh lanjut" }
+      { arab: "ج", latin: "(waqaf jaiz)", ket: "Tanda: boleh berhenti / boleh lanjut" },
+      { arab: "الْبَيْتُ كَبِيرٌ", latin: "AL-BAITU KABIIRUN", ket: "Kalimat: rumah itu besar (Al Qomariyah, lam dibaca jelas)" },
+      { arab: "الشَّمْسُ سَاطِعَةٌ", latin: "ASY-SYAMSU SAATHI'AH", ket: "Kalimat: matahari itu bersinar (Al Syamsiyah, lam melebur)" },
+      { arab: "الْقَمَرُ جَمِيلٌ", latin: "AL-QAMARU JAMIILUN", ket: "Kalimat: bulan itu indah (Al Qomariyah)" },
+      { arab: "الرَّجُلُ صَالِحٌ", latin: "AR-RAJULU SHAALIHUN", ket: "Kalimat: laki-laki itu saleh (Al Syamsiyah)" },
+      { arab: "الْمَاءُ صَافٍ", latin: "AL-MAAU SHAAFIN", ket: "Kalimat: air itu jernih (Al Qomariyah)" },
+      { arab: "النَّجْمُ يَلْمَعُ", latin: "AN-NAJMU YALMA'U", ket: "Kalimat: bintang itu berkilau (Al Syamsiyah)" },
+      { arab: "هَذَا كِتَابٌ", latin: "HAADZAA KITAABUN", ket: "Kalimat: ini adalah buku" },
+      { arab: "مِنْ أَيْنَ هَذَا", latin: "MIN AINA HAADZAA", ket: "Kalimat tanya: dari mana ini?" }
     ]
   },
   {
@@ -897,7 +935,14 @@ const IQRO_MODULES = [
       { arab: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", latin: "ALHAMDU LILLAAHI RABBIL 'AALAMIIN", ket: "Segala puji bagi Allah, Tuhan semesta alam" },
       { arab: "الرَّحْمَٰنِ الرَّحِيمِ", latin: "ARRAHMAANIRRAHIIM", ket: "Yang Maha Pengasih, Maha Penyayang" },
       { arab: "مَالِكِ يَوْمِ الدِّينِ", latin: "MAALIKI YAUMIDDIIN", ket: "Yang menguasai hari pembalasan" },
-      { arab: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", latin: "IYYAAKA NA'BUDU WA IYYAAKA NASTA'IIN", ket: "Hanya kepada-Mu kami menyembah dan memohon pertolongan" }
+      { arab: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", latin: "IYYAAKA NA'BUDU WA IYYAAKA NASTA'IIN", ket: "Hanya kepada-Mu kami menyembah dan memohon pertolongan" },
+      { arab: "جَاءَ", latin: "JAA-A", ket: "Mad Wajib Muttashil: mad bertemu hamzah dalam satu kata, dibaca 4-5 harakat" },
+      { arab: "سُوءٌ", latin: "SUU-UN", ket: "Contoh lain Mad Wajib Muttashil, pada huruf wau" },
+      { arab: "فِي أَنفُسِكُمْ", latin: "FII ANFUSIKUM", ket: "Mad Jaiz Munfashil: mad bertemu hamzah di kata berikutnya" },
+      { arab: "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ", latin: "IHDINASH SHIRAATHAL MUSTAQIIM", ket: "Lanjutan Al-Fatihah: tunjukilah kami jalan yang lurus" },
+      { arab: "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ", latin: "SHIRAATHAL LADZIINA AN'AMTA 'ALAIHIM", ket: "Lanjutan Al-Fatihah: jalan mereka yang telah Engkau beri nikmat" },
+      { arab: "غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ", latin: "GHAIRIL MAGHDHUUBI 'ALAIHIM", ket: "Lanjutan Al-Fatihah: bukan jalan mereka yang dimurkai" },
+      { arab: "وَلَا الضَّالِّينَ", latin: "WALADH DHAALLIIN", ket: "Penutup Al-Fatihah: dan bukan pula jalan mereka yang sesat" }
     ]
   },
   {
@@ -916,7 +961,15 @@ const IQRO_MODULES = [
       { arab: "وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ", latin: "WA LAM YAKUL LAHUU KUFUWAN AHAD", ket: "Al-Ikhlas ayat 4: Tidak ada satu pun yang setara dengan-Nya" },
       { arab: "وَالْعَصْرِ", latin: "WAL 'ASHR", ket: "Al-'Ashr ayat 1: Demi masa" },
       { arab: "إِنَّ الْإِنسَانَ لَفِي خُسْرٍ", latin: "INNAL INSAANA LAFII KHUSR", ket: "Al-'Ashr ayat 2: Sesungguhnya manusia benar-benar dalam kerugian" },
-      { arab: "إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ", latin: "ILLAL LADZIINA AAMANUU WA 'AMILUSH SHAALIHAATI WA TAWAASHAU BIL HAQQI WA TAWAASHAU BISH SHABR", ket: "Al-'Ashr ayat 3: Kecuali orang beriman, beramal saleh, saling menasihati dalam kebenaran dan kesabaran" }
+      { arab: "إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ", latin: "ILLAL LADZIINA AAMANUU WA 'AMILUSH SHAALIHAATI WA TAWAASHAU BIL HAQQI WA TAWAASHAU BISH SHABR", ket: "Al-'Ashr ayat 3: Kecuali orang beriman, beramal saleh, saling menasihati dalam kebenaran dan kesabaran" },
+      { arab: "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ", latin: "QUL A'UUDZU BIRABBIL FALAQ", ket: "Al-Falaq ayat 1: Katakanlah, aku berlindung kepada Tuhan yang menguasai subuh" },
+      { arab: "مِنْ شَرِّ مَا خَلَقَ", latin: "MIN SYARRI MAA KHALAQ", ket: "Al-Falaq ayat 2: Dari kejahatan makhluk-Nya" },
+      { arab: "وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ", latin: "WA MIN SYARRI GHAASIQIN IDZAA WAQAB", ket: "Al-Falaq ayat 3: Dari kejahatan malam apabila gelap gulita" },
+      { arab: "وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ", latin: "WA MIN SYARRIN NAFFAATSAATI FIL 'UQAD", ket: "Al-Falaq ayat 4: Dari kejahatan tukang sihir yang meniup pada buhul-buhul" },
+      { arab: "وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ", latin: "WA MIN SYARRI HAASIDIN IDZAA HASAD", ket: "Al-Falaq ayat 5: Dari kejahatan orang yang dengki apabila ia dengki" },
+      { arab: "إِنَّا أَعْطَيْنَاكَ الْكَوْثَرَ", latin: "INNAA A'THAINAAKAL KAUTSAR", ket: "Al-Kautsar ayat 1: Sungguh, Kami telah memberimu nikmat yang banyak" },
+      { arab: "فَصَلِّ لِرَبِّكَ وَانْحَرْ", latin: "FASHALLI LIRABBIKA WANHAR", ket: "Al-Kautsar ayat 2: Maka laksanakanlah salat karena Tuhanmu, dan berkurbanlah" },
+      { arab: "إِنَّ شَانِئَكَ هُوَ الْأَبْتَرُ", latin: "INNA SYAANI-AKA HUWAL ABTAR", ket: "Al-Kautsar ayat 3: Sungguh, orang yang membencimu dialah yang terputus" }
     ]
   }
 ];
@@ -1073,7 +1126,7 @@ const root = document.getElementById("app");
 const PROGRESS_KEY = "iqro-ceria-progress-v2";
 const MUSIC_KEY = "iqro-ceria-music";
 
-let state = { view: "dashboard", category: null, jilidId: null, cardIndex: 0, quiz: null, match: null };
+let state = { view: "dashboard", category: null, jilidId: null, cardIndex: 0, quiz: null, match: null, order: null, tf: null };
 
 // ---------------- Progress (localStorage, tanpa akun) ----------------
 function loadProgress() {
@@ -1212,24 +1265,79 @@ document.addEventListener("pointerdown", function resumeOnce() {
 }, { once: true });
 
 // ---------------- Render helpers ----------------
-function mascot(msg) {
+// Ilustrasi maskot "Kak Iqro" — SVG vektor bergaya, dengan beberapa pose
+// supaya terasa hidup & bergambar penuh di tiap layar (bukan cuma kotak CSS).
+let mascotSvgCounter = 0;
+function mascotSVG(pose, big) {
+  // Pose menentukan posisi lengan, mata, mulut, dan aksesoris kecil di sekitarnya.
+  const P = pose || "wave";
+  const uid = "m" + (mascotSvgCounter++);
+  const armLeft = P === "wave"
+    ? `<g class="mas-armwave" transform="translate(20,64)"><rect x="-6" y="0" width="12" height="24" rx="6" fill="#145b55"/></g>`
+    : P === "read"
+    ? `<rect x="16" y="70" width="12" height="20" rx="6" fill="#145b55" transform="rotate(-18 22 80)"/>`
+    : P === "point"
+    ? `<rect x="10" y="62" width="12" height="26" rx="6" fill="#145b55" transform="rotate(-38 16 75)"/>`
+    : `<rect x="16" y="70" width="12" height="20" rx="6" fill="#145b55" transform="rotate(-10 22 80)"/>`;
+  const armRight = P === "trophy"
+    ? `<rect x="72" y="56" width="12" height="26" rx="6" fill="#145b55" transform="rotate(28 78 69)"/>`
+    : P === "search"
+    ? `<rect x="72" y="60" width="12" height="24" rx="6" fill="#145b55" transform="rotate(18 78 72)"/>`
+    : `<rect x="74" y="70" width="12" height="20" rx="6" fill="#145b55" transform="rotate(14 80 80)"/>`;
+  const eyes = P === "puzzle"
+    ? `<rect x="35" y="46" width="8" height="4" rx="2" fill="#2B2140" class="mas-blink"/><rect x="57" y="46" width="8" height="4" rx="2" fill="#2B2140" class="mas-blink"/>`
+    : `<circle cx="39" cy="47" r="4.2" fill="#2B2140" class="mas-blink"/><circle cx="61" cy="47" r="4.2" fill="#2B2140" class="mas-blink"/>`;
+  const mouth = P === "trophy" || P === "wave"
+    ? `<path d="M42 58 Q50 66 58 58" stroke="#2B2140" stroke-width="3" fill="none" stroke-linecap="round"/>`
+    : `<path d="M43 59 Q50 63 57 59" stroke="#2B2140" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+  const accessory = P === "read"
+    ? `<g transform="translate(33,86)"><rect x="0" y="0" width="34" height="22" rx="3" fill="#FFF8EA" stroke="#2B2140" stroke-width="2"/><line x1="17" y1="2" x2="17" y2="20" stroke="#2B2140" stroke-width="1.5"/></g>`
+    : P === "search"
+    ? `<g class="mas-sparkle" transform="translate(76,30)"><circle r="14" fill="none" stroke="#2B2140" stroke-width="3"/><line x1="10" y1="10" x2="20" y2="20" stroke="#2B2140" stroke-width="4" stroke-linecap="round"/></g>`
+    : P === "puzzle"
+    ? `<g transform="translate(6,86)"><rect width="16" height="16" rx="3" fill="var(--violet)" class="mas-float"/></g><g transform="translate(78,90)"><rect width="14" height="14" rx="3" fill="var(--coral)" class="mas-float" style="animation-delay:.4s"/></g>`
+    : P === "trophy"
+    ? `<g transform="translate(38,2)"><path d="M0 4 h24 v6 a12 12 0 0 1-24 0 z" fill="#FFC93C" stroke="#2B2140" stroke-width="2"/><rect x="8" y="16" width="8" height="6" fill="#FFC93C" stroke="#2B2140" stroke-width="2"/></g>`
+    : P === "point"
+    ? `<g class="mas-sparkle s2" transform="translate(4,40)"><path d="M6 0 L8 5 L13 6 L8 8 L6 13 L4 8 L0 6 L4 5 Z" fill="#FFC93C"/></g>`
+    : "";
+  const sparkles = `
+    <g class="mas-sparkle s1"><path d="M78 12 L80 17 L85 18 L80 20 L78 25 L76 20 L71 18 L76 17 Z" fill="#FFC93C"/></g>
+    <g class="mas-sparkle s3"><path d="M6 58 L7.5 61 L11 62 L7.5 63 L6 66 L4.5 63 L1 62 L4.5 61 Z" fill="#FF6F59"/></g>`;
+  return `
+    <div class="mascot-illust${big ? " big" : ""}">
+      <svg viewBox="0 0 100 124" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Maskot Kak Iqro">
+        <ellipse cx="50" cy="118" rx="24" ry="5" fill="rgba(43,33,64,0.18)"/>
+        ${armLeft}${armRight}
+        <rect x="24" y="58" width="52" height="42" rx="22" fill="#1B7A72"/>
+        <rect x="24" y="58" width="52" height="42" rx="22" fill="url(#${uid}bodyGrad)"/>
+        <rect x="37" y="55" width="26" height="10" rx="5" fill="#FFC93C"/>
+        <rect x="30" y="80" width="40" height="26" rx="4" fill="#FFF8EA" stroke="#2B2140" stroke-width="2.5"/>
+        <line x1="50" y1="82" x2="50" y2="104" stroke="#2B2140" stroke-width="1.5"/>
+        <circle cx="50" cy="38" r="30" fill="url(#${uid}headGrad)"/>
+        <path d="M22 30 a28 22 0 0 1 56 0 q0 -14 -28 -14 t-28 14 z" fill="#2b2140"/>
+        <rect x="20" y="26" width="60" height="7" rx="3.5" fill="#FFC93C"/>
+        <ellipse cx="30" cy="52" rx="5" ry="3.4" fill="#FF6F59" opacity="0.45"/>
+        <ellipse cx="70" cy="52" rx="5" ry="3.4" fill="#FF6F59" opacity="0.45"/>
+        ${eyes}
+        ${mouth}
+        ${accessory}
+        ${sparkles}
+        <defs>
+          <linearGradient id="${uid}bodyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#37a99d"/><stop offset="1" stop-color="#145b55"/>
+          </linearGradient>
+          <radialGradient id="${uid}headGrad" cx="0.35" cy="0.32" r="0.75">
+            <stop offset="0" stop-color="#FFE3BE"/><stop offset="1" stop-color="#F3C185"/>
+          </radialGradient>
+        </defs>
+      </svg>
+    </div>`;
+}
+function mascot(msg, pose) {
   return `
     <div class="mascot-wrap">
-      <div class="mascot3d">
-        <div class="m-shadow"></div>
-        <div class="m-body">
-          <div class="m-collar"></div>
-          <div class="m-armL"></div>
-          <div class="m-armR"></div>
-          <div class="m-book"></div>
-        </div>
-        <div class="m-head">
-          <div class="m-peci"></div>
-          <div class="m-cheekL"></div><div class="m-cheekR"></div>
-          <div class="m-eyeL"></div><div class="m-eyeR"></div>
-          <div class="m-mouth"></div>
-        </div>
-      </div>
+      ${mascotSVG(pose)}
       <div class="speech-bubble">${msg}</div>
     </div>`;
 }
@@ -1265,6 +1373,8 @@ function render() {
   else if (state.view === "gamehub") renderGameHub();
   else if (state.view === "quiz") renderQuiz();
   else if (state.view === "match") renderMatch();
+  else if (state.view === "order") renderOrder();
+  else if (state.view === "tf") renderTF();
   attachGlobalHandlers();
   updateMusicPlayback();
 }
@@ -1290,7 +1400,24 @@ function renderDashboard() {
     <div class="topbar">
       <div class="brand"><div class="brand-title">Iqro <span>Ceria</span></div></div>
     </div>
-    ${mascot("Assalamu'alaikum, Sahabat! Yuk pilih mau belajar apa hari ini? 😊")}
+    <div class="hero-stage">
+      <svg class="hero-scene" viewBox="0 0 300 140" preserveAspectRatio="xMidYMid slice">
+        <circle class="hero-star d1" cx="30" cy="24" r="2" fill="#fff"/>
+        <circle class="hero-star d2" cx="70" cy="14" r="1.6" fill="#fff"/>
+        <circle class="hero-star d3" cx="250" cy="20" r="2" fill="#fff"/>
+        <circle class="hero-star d1" cx="270" cy="46" r="1.4" fill="#fff"/>
+        <circle class="hero-star d2" cx="20" cy="60" r="1.4" fill="#fff"/>
+        <path d="M255 20 a14 14 0 1 0 10 24 a18 18 0 1 1 -10 -24 z" fill="#FFF3D6"/>
+        <path d="M0 130 q30 -22 60 -4 q30 -20 60 4 v14 h-120 z" fill="#3a2f66" opacity="0.9"/>
+        <path d="M150 132 q30 -26 60 -4 q30 -22 60 2 v10 h-120 z" fill="#4a4184" opacity="0.9"/>
+        <rect x="128" y="96" width="10" height="36" fill="#584a94"/>
+        <rect x="162" y="96" width="10" height="36" fill="#584a94"/>
+        <path d="M120 96 q25 -30 50 0 z" fill="#6b5aac"/>
+        <circle cx="145" cy="72" r="9" fill="#6b5aac"/>
+      </svg>
+      ${mascotSVG("wave", true)}
+    </div>
+    ${mascot("Assalamu'alaikum, Sahabat! Yuk pilih mau belajar apa hari ini? 😊", "wave")}
     <div class="dash-hero">
       <h2>Ayo Belajar Islam Bareng!</h2>
       <p>Iqro sampai Al-Qur'an, tajwid, sholat, sampai kisah para nabi — semua ada di sini, seru dan mudah dipahami!</p>
@@ -1331,7 +1458,7 @@ function renderCategoryHome() {
 
   root.innerHTML = `
     ${topbar(cat.label, true)}
-    ${mascot(cat.intro)}
+    ${mascot(cat.intro, "point")}
     <div class="intro-card" style="background:${cat.heroGradient}">
       <h2>${cat.heroTitle}</h2>
       <p>${cat.heroDesc} Progres kamu: ${seenTotal}/${totalKartu} ✨</p>
@@ -1375,7 +1502,7 @@ function renderLesson() {
 
   root.innerHTML = `
     ${topbar(mod.judul, true)}
-    ${mascot(`${mod.tujuan}`)}
+    ${mascot(`${mod.tujuan}`, "read")}
     <div class="progress-dots">${dots}</div>
     <div class="flashcard">
       <div class="arabic ${arabClass}">${kartu.arab}</div>
@@ -1414,9 +1541,10 @@ function renderLesson() {
 function renderGameHub() {
   const cat = APP_DATA[state.category];
   const mod = cat.modules.find((j) => j.id === state.jilidId);
+  const canOrder = mod.kartu.length >= 3;
   root.innerHTML = `
     ${topbar(mod.judul + " · Main", true)}
-    ${mascot("Pilih mau main game yang mana? 🎮")}
+    ${mascot("Sekarang ada 4 game seru buat dicoba! Pilih salah satu yuk 🎮", "point")}
     <div class="game-grid">
       <button class="game-tile quiz" id="tileQuiz">
         <div class="icon">${cat.quizIcon}</div>
@@ -1428,10 +1556,145 @@ function renderGameHub() {
         <h3>Cocok Kartu</h3>
         <p>${cat.matchDesc}</p>
       </button>
+      <button class="game-tile tf" id="tileTF">
+        <div class="icon">✅</div>
+        <h3>Benar / Salah</h3>
+        <p>Tebak cepat, pasangannya benar atau salah?</p>
+      </button>
+      <button class="game-tile order" id="tileOrder" ${canOrder ? "" : "disabled style=\"opacity:.5\""}>
+        <div class="icon">🔢</div>
+        <h3>Urutkan Yuk!</h3>
+        <p>Susun kartu sesuai urutan yang benar</p>
+      </button>
     </div>
   `;
   document.getElementById("tileQuiz").addEventListener("click", () => startQuiz(state.jilidId));
   document.getElementById("tileMatch").addEventListener("click", () => startMatch(state.jilidId));
+  document.getElementById("tileTF").addEventListener("click", () => startTF(state.jilidId));
+  const tileOrder = document.getElementById("tileOrder");
+  if (canOrder) tileOrder.addEventListener("click", () => startOrder(state.jilidId));
+}
+
+// ---------------- GAME: Susun Urutan (tap sesuai urutan asli) ----------------
+function startOrder(jilidId) {
+  const cat = APP_DATA[state.category];
+  const mod = cat.modules.find((j) => j.id === jilidId);
+  const n = Math.min(5, mod.kartu.length);
+  const startAt = mod.kartu.length > n ? Math.floor(Math.random() * (mod.kartu.length - n + 1)) : 0;
+  const correctOrder = Array.from({ length: n }, (_, i) => startAt + i);
+  state.view = "order";
+  state.jilidId = jilidId;
+  state.order = { correctOrder, display: shuffle(correctOrder), picks: [], total: n, done: false, reveal: false };
+  render();
+}
+function renderOrder() {
+  const cat = APP_DATA[state.category];
+  const mod = cat.modules.find((j) => j.id === state.jilidId);
+  const o = state.order;
+
+  if (o.done) {
+    const right = o.picks.every((idx, i) => idx === o.correctOrder[i]);
+    let stars = right ? 3 : (o.picks.filter((idx, i) => idx === o.correctOrder[i]).length >= Math.ceil(o.total / 2) ? 2 : 1);
+    renderCelebration(mod, { stars, right, total: o.total }, "order");
+    return;
+  }
+
+  root.innerHTML = `
+    ${topbar(mod.judul + " · Urutkan", true)}
+    ${mascot("Ketuk kartu sesuai urutan yang benar, dari pertama sampai terakhir ya! 🔢", "point")}
+    <div class="order-tip">${o.reveal ? "Ini urutan pilihanmu:" : `Langkah ke-${o.picks.length + 1} dari ${o.total}`}</div>
+    <div class="order-grid" id="orderGrid">
+      ${o.display.map((idx) => {
+        const placedAt = o.picks.indexOf(idx);
+        const placed = placedAt !== -1;
+        let cls = placed ? "placed" : "";
+        if (o.reveal && placed) cls += placedAt === o.correctOrder.indexOf(idx) ? " right" : " wrong";
+        return `<button class="order-chip ${cls}" data-idx="${idx}" disabled>
+          <div class="oc-arab">${mod.kartu[idx].arab}</div>
+          <div class="oc-latin">${mod.kartu[idx].latin}</div>
+          ${placed ? `<span class="oc-badge">${placedAt + 1}</span>` : `<span class="oc-badge">?</span>`}
+        </button>`;
+      }).join("")}
+    </div>
+  `;
+
+  if (!o.reveal) {
+    document.querySelectorAll(".order-chip").forEach((btn) => {
+      btn.disabled = false;
+      btn.addEventListener("click", () => {
+        const idx = Number(btn.dataset.idx);
+        o.picks.push(idx);
+        speak(mod.kartu[idx].arab);
+        if (o.picks.length >= o.total) { o.reveal = true; render(); setTimeout(() => { o.done = true; render(); }, 1400); }
+        else render();
+      });
+    });
+  }
+}
+
+// ---------------- GAME: Benar atau Salah (tebak cepat) ----------------
+function startTF(jilidId) {
+  const cat = APP_DATA[state.category];
+  const mod = cat.modules.find((j) => j.id === jilidId);
+  const total = Math.min(6, mod.kartu.length);
+  const pool = shuffle(mod.kartu.map((k, i) => i)).slice(0, total);
+  const rounds = pool.map((idx) => {
+    const isTrue = Math.random() < 0.5 || mod.kartu.length < 2;
+    let shownLatin = mod.kartu[idx].latin;
+    if (!isTrue) {
+      const others = mod.kartu.map((k, i) => i).filter((i) => i !== idx);
+      const swapIdx = pick(others);
+      shownLatin = mod.kartu[swapIdx].latin;
+    }
+    return { idx, shownLatin, isTrue };
+  });
+  state.view = "tf";
+  state.jilidId = jilidId;
+  state.tf = { rounds, index: 0, score: 0, total, answered: false };
+  render();
+}
+function renderTF() {
+  const cat = APP_DATA[state.category];
+  const mod = cat.modules.find((j) => j.id === state.jilidId);
+  const t = state.tf;
+  if (t.index >= t.total) { renderCelebration(mod, { score: t.score, total: t.total }, "tf"); return; }
+
+  const r = t.rounds[t.index];
+  const kartu = mod.kartu[r.idx];
+
+  root.innerHTML = `
+    ${topbar(mod.judul + " · Benar/Salah", true)}
+    ${mascot("Perhatikan baik-baik, lalu tebak: benar atau salah? ⚡", "search")}
+    <div class="quiz-question" style="text-align:center;margin-bottom:6px">Soal ${t.index + 1} dari ${t.total}</div>
+    <div class="tf-card">
+      <div class="tf-arab">${kartu.arab}</div>
+      <div class="tf-latin">${r.shownLatin}</div>
+      <div class="tf-hint">Apakah tulisan latin di atas cocok dengan bacaan Arabnya?</div>
+    </div>
+    <div class="tf-buttons">
+      <button class="tf-btn tf-yes" data-ans="true">Benar ✅</button>
+      <button class="tf-btn tf-no" data-ans="false">Salah ❌</button>
+    </div>
+    <div class="quiz-feedback" id="quizFeedback" style="text-align:center"></div>
+    <div style="text-align:center;margin-top:10px"><span class="quiz-score">⭐ ${t.score}/${t.total}</span></div>
+  `;
+
+  document.querySelectorAll(".tf-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (t.answered) return;
+      t.answered = true;
+      document.querySelectorAll(".tf-btn").forEach((b) => (b.disabled = true));
+      const chosen = btn.dataset.ans === "true";
+      const feedback = document.getElementById("quizFeedback");
+      if (chosen === r.isTrue) {
+        t.score += 1;
+        feedback.textContent = pick(MASKOT_KATA.benar);
+      } else {
+        feedback.textContent = pick(MASKOT_KATA.salah);
+      }
+      setTimeout(() => { t.index += 1; t.answered = false; renderTF(); }, 1300);
+    });
+  });
 }
 
 // ---------------- QUIZ: dengar/baca & pilih ----------------
@@ -1460,7 +1723,7 @@ function renderQuiz() {
 
   root.innerHTML = `
     ${topbar(mod.judul + " · Kuis", true)}
-    ${mascot(isAudio ? "Dengarkan suaranya, lalu pilih tulisan yang cocok ya! 🎧" : "Baca petunjuknya, lalu tebak jawabannya ya! 🕵️")}
+    ${mascot(isAudio ? "Dengarkan suaranya, lalu pilih tulisan yang cocok ya! 🎧" : "Baca petunjuknya, lalu tebak jawabannya ya! 🕵️", "search")}
     <div class="quiz-card">
       <div class="quiz-question">Soal ${q.index + 1} dari ${q.total}</div>
       ${isAudio ? `<button class="speaker-btn" id="btnSpeakQuiz" aria-label="Dengarkan pelafalan">🔊</button>` : `<div class="clue-box">${kartu.ket}</div>`}
@@ -1533,7 +1796,7 @@ function renderMatch() {
 
   root.innerHTML = `
     ${topbar(mod.judul + " · Cocok Kartu", true)}
-    ${mascot("Buka dua kartu, cari pasangannya! 🧩")}
+    ${mascot("Buka dua kartu, cari pasangannya! 🧩", "puzzle")}
     <div class="match-stats">
       <span class="pill">🔁 Langkah: ${m.moves}</span>
       <span class="pill">✅ ${m.matched.length / 2}/${m.total} pasang</span>
@@ -1594,16 +1857,24 @@ function onMatchCardClick(pos) {
 }
 
 // ---------------- Celebration ----------------
+const CELEB_TITLE = { quiz: "Kuis Selesai!", match: "Semua Kartu Cocok!", order: "Urutan Selesai!", tf: "Tebakan Selesai!" };
+const CELEB_START = { quiz: startQuiz, match: startMatch, order: startOrder, tf: startTF };
 function renderCelebration(mod, result, kind) {
-  const isQuiz = kind === "quiz";
-  const title = isQuiz ? "Kuis Selesai!" : "Semua Kartu Cocok!";
-  const desc = isQuiz
-    ? `Skor kamu: ${result.score} dari ${result.total} (${Math.round((result.score / result.total) * 100)}%)`
-    : `Selesai dalam ${result.moves} langkah — ${"⭐".repeat(result.stars)}`;
+  const title = CELEB_TITLE[kind] || "Selesai!";
+  let desc = "";
+  if (kind === "quiz" || kind === "tf") {
+    desc = `Skor kamu: ${result.score} dari ${result.total} (${Math.round((result.score / result.total) * 100)}%)`;
+  } else if (kind === "match") {
+    desc = `Selesai dalam ${result.moves} langkah — ${"⭐".repeat(result.stars)}`;
+  } else if (kind === "order") {
+    desc = result.right
+      ? `Semua urutan kamu benar! ${"⭐".repeat(result.stars)}`
+      : `Belum semua urutannya pas, yuk coba lagi! ${"⭐".repeat(result.stars)}`;
+  }
 
   root.innerHTML = `
     ${topbar(mod.judul, true)}
-    ${mascot(pick(MASKOT_KATA.selesaiJilid))}
+    ${mascot(pick(MASKOT_KATA.selesaiJilid), "trophy")}
     <div class="celebrate">
       <div class="celebrate-card">
         <div class="big-star">🏆</div>
@@ -1616,7 +1887,7 @@ function renderCelebration(mod, result, kind) {
     </div>
   `;
   document.getElementById("btnUlangi").addEventListener("click", () => {
-    if (isQuiz) startQuiz(mod.id); else startMatch(mod.id);
+    (CELEB_START[kind] || startQuiz)(mod.id);
   });
   document.getElementById("btnGameLain").addEventListener("click", () => { state.view = "gamehub"; render(); });
   document.getElementById("btnKeRak").addEventListener("click", () => { state.view = "category-home"; render(); });
@@ -1627,7 +1898,7 @@ function attachGlobalHandlers() {
   const back = document.getElementById("btnBack");
   if (back) {
     back.addEventListener("click", () => {
-      if (state.view === "quiz" || state.view === "match") state.view = "gamehub";
+      if (state.view === "quiz" || state.view === "match" || state.view === "order" || state.view === "tf") state.view = "gamehub";
       else if (state.view === "gamehub" || state.view === "lesson") state.view = "category-home";
       else state.view = "dashboard";
       render();
