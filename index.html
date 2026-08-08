@@ -99,9 +99,31 @@ a:focus-visible,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 18px;
+  padding-right: 52px; /* ruang supaya tidak ketutup tombol musik mengambang */
 }
+.topbar .brand-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+  text-align: right;
+}
+.topbar .brand { flex-shrink: 0; }
+.stat-pills { display: flex; gap: 6px; flex-shrink: 0; }
+.stat-pill {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  border-radius: 999px;
+  padding: 5px 10px;
+  box-shadow: var(--card-shadow);
+  white-space: nowrap;
+}
+.stat-pill.streak { background: #fff; color: var(--coral); border: 2px solid var(--coral); }
+.stat-pill.xp { background: #fff; color: var(--teal-dark); border: 2px solid var(--teal-dark); }
 
 .brand {
   display: flex;
@@ -128,6 +150,8 @@ a:focus-visible,
   font-family: 'Baloo 2', sans-serif;
   box-shadow: var(--card-shadow);
   transition: transform 0.15s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .back-btn:active { transform: translateY(3px); box-shadow: none; }
 
@@ -232,53 +256,123 @@ a:focus-visible,
 /* ---------- Dashboard ---------- */
 .dash-hero {
   background: linear-gradient(135deg, var(--violet), var(--pink));
-  border-radius: var(--radius-lg);
-  padding: 22px;
+  border-radius: 38px 38px 60px 60px / 38px 38px 46px 46px;
+  padding: 26px 22px;
   color: #fff;
-  margin-bottom: 22px;
-  box-shadow: var(--card-shadow);
+  margin-bottom: 26px;
+  box-shadow: 0 9px 0 rgba(43,33,64,0.22);
+  position: relative;
+  overflow: hidden;
 }
-.dash-hero h2 { font-size: 22px; margin-bottom: 6px; }
-.dash-hero p { margin: 0; font-weight: 600; opacity: 0.95; }
+.dash-hero h2 { font-size: 23px; margin-bottom: 6px; }
+.dash-hero p { margin: 0; font-weight: 600; opacity: 0.95; position: relative; z-index: 1; }
+
+.menu-section-title {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+  color: var(--teal-dark);
+  margin: 4px 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  margin-bottom: 10px;
+  gap: 16px;
+  margin-bottom: 14px;
+  position: relative;
 }
 @media (min-width: 480px) {
   .menu-grid { grid-template-columns: repeat(4, 1fr); }
 }
 .menu-tile {
-  border-radius: var(--radius-lg);
-  padding: 18px 14px;
+  border-radius: 40% 60% 58% 42% / 48% 42% 58% 52%;
+  padding: 22px 16px 18px;
   color: #fff;
   text-align: left;
-  box-shadow: var(--card-shadow);
+  box-shadow: 0 9px 0 rgba(43,33,64,0.26);
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-height: 152px;
-  transition: transform 0.12s ease;
+  min-height: 172px;
+  transition: transform 0.15s cubic-bezier(.34,1.6,.64,1), box-shadow 0.15s ease, border-radius 0.3s ease;
+  position: relative;
 }
-.menu-tile:active { transform: translateY(4px); }
-.menu-tile .m-icon { font-size: 34px; }
-.menu-tile h3 { font-size: 16.5px; margin: 2px 0 0; line-height: 1.15; }
+.menu-tile:nth-child(odd) { transform: rotate(-1.6deg); }
+.menu-tile:nth-child(even) { transform: rotate(1.8deg); }
+.menu-tile:active {
+  transform: translateY(7px) scale(0.96) rotate(0deg) !important;
+  box-shadow: 0 2px 0 rgba(43,33,64,0.26);
+  border-radius: var(--radius-lg);
+}
+.menu-tile .m-icon {
+  font-size: 40px;
+  display: inline-block;
+  animation: iconBounce 2.6s ease-in-out infinite;
+  filter: drop-shadow(0 3px 2px rgba(0,0,0,0.15));
+}
+.menu-tile:nth-child(2) .m-icon { animation-delay: .3s; }
+.menu-tile:nth-child(3) .m-icon { animation-delay: .6s; }
+.menu-tile:nth-child(4) .m-icon { animation-delay: .9s; }
+.menu-tile:nth-child(5) .m-icon { animation-delay: 1.2s; }
+@keyframes iconBounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(-6deg); }
+}
+.menu-tile h3 { font-size: 17px; margin: 2px 0 0; line-height: 1.15; }
 .menu-tile p { font-size: 11.5px; font-weight: 700; margin: 0; opacity: 0.95; }
 .menu-tile .m-progress {
   margin-top: auto;
   font-size: 11px;
   font-weight: 800;
-  background: rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.28);
   border-radius: 999px;
-  padding: 3px 10px;
+  padding: 4px 11px;
   width: fit-content;
 }
-.tile-iqro { background: linear-gradient(135deg, var(--teal), var(--violet)); }
-.tile-sholat { background: linear-gradient(135deg, var(--coral), #ffb14c); }
-.tile-tajwid { background: linear-gradient(135deg, var(--violet), var(--pink)); }
-.tile-nabi { background: linear-gradient(135deg, var(--green), var(--teal)); }
+.tile-badge {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: 20px;
+  animation: iconBounce 2s ease-in-out infinite;
+}
+.tile-iqro { background: linear-gradient(150deg, #26a89a, var(--violet)); }
+.tile-sholat { background: linear-gradient(150deg, var(--coral), #ffb14c); }
+.tile-tajwid { background: linear-gradient(150deg, var(--violet), var(--pink)); }
+.tile-nabi { background: linear-gradient(150deg, var(--green), #2fc9a8); }
+.tile-arab { background: linear-gradient(150deg, #FF9F43, var(--coral)); }
+.menu-grid .menu-tile:nth-child(5):last-child {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  min-height: 108px;
+  border-radius: 34px 60px 60px 34px / 50% 50% 50% 50%;
+}
+.menu-grid .menu-tile:nth-child(5):last-child .m-icon { font-size: 46px; }
+.menu-grid .menu-tile:nth-child(5):last-child .m-text { flex: 1; }
+.menu-grid .menu-tile:nth-child(5):last-child .m-progress { margin-top: 0; flex-shrink: 0; }
+
+/* ---------- Dekorasi mengambang (nuansa playful gaya app anak) ---------- */
+.floaty-layer {
+  position: relative;
+  height: 0;
+}
+.floaty {
+  position: absolute;
+  opacity: 0.55;
+  animation: floatY 5s ease-in-out infinite;
+  pointer-events: none;
+  user-select: none;
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(8deg); }
+}
 
 /* ---------- Home: bookshelf ---------- */
 .intro-card {
@@ -291,6 +385,20 @@ a:focus-visible,
 .intro-card h2 { font-size: 22px; margin-bottom: 6px; }
 .intro-card p { margin: 0; font-weight: 600; opacity: 0.95; }
 
+.intro-progress-bar {
+  margin-top: 14px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.35);
+  overflow: hidden;
+}
+.intro-progress-fill {
+  height: 100%;
+  background: #fff;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
 .shelf-label {
   font-family: 'Baloo 2', sans-serif;
   font-weight: 700;
@@ -298,6 +406,95 @@ a:focus-visible,
   color: var(--teal-dark);
   margin: 8px 0 12px;
 }
+
+/* ---------- Jalur belajar (path ala Duolingo) ---------- */
+.duo-path {
+  position: relative;
+  padding: 12px 0 24px;
+}
+.duo-path::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  bottom: 10px;
+  border-left: 4px dashed var(--paper-line);
+  transform: translateX(-50%);
+  z-index: 0;
+}
+.duo-node-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+.duo-node-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.duo-node {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: var(--node-color, var(--teal));
+  box-shadow: 0 7px 0 rgba(43,33,64,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  position: relative;
+}
+.duo-node:active { transform: translateY(6px); box-shadow: 0 1px 0 rgba(43,33,64,0.25); }
+.duo-node-icon { font-size: 28px; color: #fff; }
+.duo-node.done { background: var(--green); }
+.duo-node.done .duo-node-icon { font-size: 30px; }
+.duo-node.locked {
+  background: #D8CFB8;
+  box-shadow: 0 7px 0 rgba(43,33,64,0.12);
+  cursor: not-allowed;
+}
+.duo-node.locked .duo-node-icon { font-size: 24px; opacity: 0.8; }
+.duo-node-ring {
+  position: absolute;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  border: 3px dashed var(--coral);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ringspin 6s linear infinite;
+}
+@keyframes ringspin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+.duo-node-label {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ink);
+  text-align: center;
+  max-width: 96px;
+}
+.duo-node-progress {
+  font-size: 10.5px;
+  font-weight: 800;
+  color: #8A7F9C;
+}
+.duo-node-game {
+  margin-top: 2px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--ink);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 0 rgba(43,33,64,0.15);
+}
+.duo-node-game:active { transform: translateY(2px); box-shadow: none; }
 
 .bookshelf {
   display: grid;
@@ -568,6 +765,7 @@ a:focus-visible,
   margin-top: 14px;
 }
 .quiz-question { font-size: 15px; font-weight: 800; color: var(--teal-dark); margin-bottom: 4px; }
+.hearts-row { font-size: 20px; letter-spacing: 3px; margin-bottom: 10px; }
 .quiz-options {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -687,7 +885,18 @@ a:focus-visible,
 }
 .celebrate-card .big-star { font-size: 56px; }
 .celebrate-card h3 { font-size: 22px; color: var(--teal-dark); margin: 8px 0; }
-.celebrate-card p { font-weight: 700; color: #6b6280; margin-bottom: 18px; }
+.celebrate-card p { font-weight: 700; color: #6b6280; margin-bottom: 6px; }
+.xp-earned {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--teal-dark);
+  background: var(--paper);
+  border-radius: 999px;
+  padding: 6px 12px;
+  display: inline-block;
+  margin-bottom: 16px;
+}
 .celebrate-card .btn { width: 100%; margin-bottom: 10px; }
 
 /* ---------- Footer note ---------- */
@@ -767,6 +976,17 @@ const CATEGORY_META = {
     quizMode: "text", quizIcon: "🕵️", quizLabel: "Tebak Nabi",
     quizDesc: "Baca petunjuknya, lalu tebak siapa nabinya!",
     matchDesc: "Cocokkan nama Arab dengan nama Indonesianya!"
+  },
+  arab: {
+    label: "Bahasa Arab", icon: "🗣️", desc: "Kosakata & percakapan sehari-hari",
+    heroTitle: "Yuk pintar Bahasa Arab!",
+    heroDesc: "Belajar kata dan kalimat Arab sehari-hari, dari angka sampai percakapan sederhana.",
+    heroGradient: "linear-gradient(135deg, #FF9F43, var(--coral))",
+    shelfLabel: "🗣️ Unit Bahasa Arab",
+    intro: "Marhaban! Yuk mulai belajar kosakata Bahasa Arab bareng-bareng! 🗣️",
+    quizMode: "text", quizIcon: "🧠", quizLabel: "Tebak Arti",
+    quizDesc: "Baca artinya, lalu tebak kata Bahasa Arabnya!",
+    matchDesc: "Cocokkan kata Arab dengan artinya dalam Bahasa Indonesia!"
   }
 };
 
@@ -1106,11 +1326,95 @@ const NABI_MODULES = [
   }
 ];
 
+// ============================================================
+// DATA KONTEN — BELAJAR BAHASA ARAB (kosakata & percakapan dasar)
+// ============================================================
+const ARAB_MODULES = [
+  {
+    id: "a1", warna: "#FF9F43", judul: "Salam & Sapaan", deskripsi: "Ucapan sehari-hari",
+    tujuan: "Belajar kata sapaan dan ucapan dasar yang sering dipakai sehari-hari.",
+    kartu: [
+      { arab: "السَّلَامُ عَلَيْكُمْ", latin: "Assalaamu'alaikum", ket: "Artinya: semoga keselamatan untukmu (salam pembuka)" },
+      { arab: "وَعَلَيْكُمُ السَّلَامُ", latin: "Wa'alaikumussalaam", ket: "Artinya: dan untukmu juga keselamatan (jawaban salam)" },
+      { arab: "صَبَاحُ الْخَيْرِ", latin: "Shobaahul khoir", ket: "Artinya: selamat pagi" },
+      { arab: "مَسَاءُ الْخَيْرِ", latin: "Masaa-ul khoir", ket: "Artinya: selamat sore/malam" },
+      { arab: "شُكْرًا", latin: "Syukron", ket: "Artinya: terima kasih" },
+      { arab: "عَفْوًا", latin: "'Afwan", ket: "Artinya: sama-sama / maaf" },
+      { arab: "مِنْ فَضْلِكَ", latin: "Min fadhlik", ket: "Artinya: tolong / silakan" },
+      { arab: "مَعَ السَّلَامَةِ", latin: "Ma'assalaamah", ket: "Artinya: sampai jumpa" },
+      { arab: "نَعَمْ", latin: "Na'am", ket: "Artinya: ya" },
+      { arab: "لَا", latin: "Laa", ket: "Artinya: tidak" }
+    ]
+  },
+  {
+    id: "a2", warna: "#FFC93C", judul: "Angka 1-10", deskripsi: "Berhitung dalam Bahasa Arab",
+    tujuan: "Menghafal angka 1 sampai 10 dalam Bahasa Arab.",
+    kartu: [
+      { arab: "وَاحِد", latin: "Waahid", ket: "Artinya: satu (1)" },
+      { arab: "اِثْنَانِ", latin: "Itsnaan", ket: "Artinya: dua (2)" },
+      { arab: "ثَلَاثَة", latin: "Tsalaatsah", ket: "Artinya: tiga (3)" },
+      { arab: "أَرْبَعَة", latin: "Arba'ah", ket: "Artinya: empat (4)" },
+      { arab: "خَمْسَة", latin: "Khamsah", ket: "Artinya: lima (5)" },
+      { arab: "سِتَّة", latin: "Sittah", ket: "Artinya: enam (6)" },
+      { arab: "سَبْعَة", latin: "Sab'ah", ket: "Artinya: tujuh (7)" },
+      { arab: "ثَمَانِيَة", latin: "Tsamaaniyah", ket: "Artinya: delapan (8)" },
+      { arab: "تِسْعَة", latin: "Tis'ah", ket: "Artinya: sembilan (9)" },
+      { arab: "عَشَرَة", latin: "'Asyarah", ket: "Artinya: sepuluh (10)" }
+    ]
+  },
+  {
+    id: "a3", warna: "#7C83FD", judul: "Keluarga", deskripsi: "Anggota keluarga",
+    tujuan: "Mengenal kata-kata anggota keluarga dalam Bahasa Arab.",
+    kartu: [
+      { arab: "أَب", latin: "Ab", ket: "Artinya: ayah" },
+      { arab: "أُمّ", latin: "Umm", ket: "Artinya: ibu" },
+      { arab: "أَخ", latin: "Akh", ket: "Artinya: saudara laki-laki" },
+      { arab: "أُخْت", latin: "Ukht", ket: "Artinya: saudara perempuan" },
+      { arab: "جَدّ", latin: "Jadd", ket: "Artinya: kakek" },
+      { arab: "جَدَّة", latin: "Jaddah", ket: "Artinya: nenek" },
+      { arab: "اِبْن", latin: "Ibn", ket: "Artinya: anak laki-laki" },
+      { arab: "بِنْت", latin: "Bint", ket: "Artinya: anak perempuan" },
+      { arab: "بَيْت", latin: "Bait", ket: "Artinya: rumah" }
+    ]
+  },
+  {
+    id: "a4", warna: "#2FA84F", judul: "Warna & Benda", deskripsi: "Warna dan benda sekitar",
+    tujuan: "Mengenal nama-nama warna dan benda yang sering ditemui sehari-hari.",
+    kartu: [
+      { arab: "أَحْمَر", latin: "Ahmar", ket: "Artinya: warna merah" },
+      { arab: "أَصْفَر", latin: "Ashfar", ket: "Artinya: warna kuning" },
+      { arab: "أَخْضَر", latin: "Akhdhar", ket: "Artinya: warna hijau" },
+      { arab: "أَزْرَق", latin: "Azraq", ket: "Artinya: warna biru" },
+      { arab: "أَبْيَض", latin: "Abyadh", ket: "Artinya: warna putih" },
+      { arab: "أَسْوَد", latin: "Aswad", ket: "Artinya: warna hitam" },
+      { arab: "كِتَاب", latin: "Kitaab", ket: "Artinya: buku" },
+      { arab: "قَلَم", latin: "Qalam", ket: "Artinya: pena/pensil" },
+      { arab: "مَدْرَسَة", latin: "Madrasah", ket: "Artinya: sekolah" },
+      { arab: "مَاء", latin: "Maa'", ket: "Artinya: air" }
+    ]
+  },
+  {
+    id: "a5", warna: "#E85D9C", judul: "Percakapan Dasar", deskripsi: "Kalimat sehari-hari",
+    tujuan: "Menyusun kata-kata dasar menjadi kalimat percakapan sederhana.",
+    kartu: [
+      { arab: "مَا اسْمُكَ؟", latin: "Maa ismuka?", ket: "Artinya: siapa namamu? (untuk laki-laki)" },
+      { arab: "اسْمِي أَحْمَد", latin: "Ismii Ahmad", ket: "Artinya: namaku Ahmad" },
+      { arab: "كَيْفَ حَالُكَ؟", latin: "Kaifa haaluka?", ket: "Artinya: apa kabar? (untuk laki-laki)" },
+      { arab: "أَنَا بِخَيْرٍ", latin: "Anaa bikhoir", ket: "Artinya: aku baik-baik saja" },
+      { arab: "مِنْ أَيْنَ أَنْتَ؟", latin: "Min aina anta?", ket: "Artinya: dari mana kamu?" },
+      { arab: "أَنَا مِنْ إِنْدُونِيسِيَا", latin: "Anaa min Indoniisiyaa", ket: "Artinya: aku dari Indonesia" },
+      { arab: "هَذَا كِتَابِي", latin: "Haadzaa kitaabii", ket: "Artinya: ini bukuku" },
+      { arab: "أُحِبُّ الْقِرَاءَةَ", latin: "Uhibbul qiroo-ah", ket: "Artinya: aku suka membaca" }
+    ]
+  }
+];
+
 const APP_DATA = {
   iqro: Object.assign({}, CATEGORY_META.iqro, { modules: IQRO_MODULES }),
   sholat: Object.assign({}, CATEGORY_META.sholat, { modules: SHOLAT_MODULES }),
   tajwid: Object.assign({}, CATEGORY_META.tajwid, { modules: TAJWID_MODULES }),
-  nabi: Object.assign({}, CATEGORY_META.nabi, { modules: NABI_MODULES })
+  nabi: Object.assign({}, CATEGORY_META.nabi, { modules: NABI_MODULES }),
+  arab: Object.assign({}, CATEGORY_META.arab, { modules: ARAB_MODULES })
 };
 
 const MASKOT_KATA = {
@@ -1146,10 +1450,60 @@ function markCardSeen(cat, modId, cardIdx) {
   const p = loadProgress();
   const key = progKey(cat, modId);
   if (!p[key]) p[key] = { seen: [], selesai: false };
-  if (!p[key].seen.includes(cardIdx)) p[key].seen.push(cardIdx);
+  const isNew = !p[key].seen.includes(cardIdx);
+  if (isNew) p[key].seen.push(cardIdx);
   const mod = APP_DATA[cat].modules.find((m) => m.id === modId);
+  const wasSelesai = p[key].selesai;
   if (mod && p[key].seen.length >= mod.kartu.length) p[key].selesai = true;
   saveProgress(p);
+  if (isNew) addXP(2);
+  if (mod && p[key].selesai && !wasSelesai) addXP(15);
+}
+// Cek apakah sebuah modul terkunci (belum boleh diakses) — modul pertama
+// dalam kategori selalu terbuka, modul berikutnya terbuka setelah modul
+// sebelumnya "selesai" (semua kartunya sudah dipelajari).
+function isModuleLocked(cat, modules, index) {
+  if (index === 0) return false;
+  const prevMod = modules[index - 1];
+  return !getProgress(cat, prevMod.id).selesai;
+}
+
+// ---------------- XP & Streak (gaya Duolingo, tanpa akun) ----------------
+const XP_KEY = "iqro-ceria-xp";
+const STREAK_KEY = "iqro-ceria-streak";
+function getXP() {
+  const v = parseInt(localStorage.getItem(XP_KEY) || "0", 10);
+  return isNaN(v) ? 0 : v;
+}
+function addXP(amount) {
+  try {
+    const total = getXP() + amount;
+    localStorage.setItem(XP_KEY, String(total));
+    bumpStreak();
+  } catch (e) {}
+}
+function todayStr() {
+  const d = new Date();
+  return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+}
+function bumpStreak() {
+  try {
+    const data = JSON.parse(localStorage.getItem(STREAK_KEY) || "null") || { count: 0, last: null };
+    const today = todayStr();
+    if (data.last === today) return; // sudah dihitung hari ini
+    const yest = new Date();
+    yest.setDate(yest.getDate() - 1);
+    const yestStr = yest.getFullYear() + "-" + (yest.getMonth() + 1) + "-" + yest.getDate();
+    data.count = data.last === yestStr ? data.count + 1 : 1;
+    data.last = today;
+    localStorage.setItem(STREAK_KEY, JSON.stringify(data));
+  } catch (e) {}
+}
+function getStreak() {
+  try {
+    const data = JSON.parse(localStorage.getItem(STREAK_KEY) || "null") || { count: 0, last: null };
+    return data.count;
+  } catch (e) { return 0; }
 }
 
 // ---------------- Audio suara huruf: Web Speech API ----------------
@@ -1381,24 +1735,34 @@ function render() {
 
 // ---------------- DASHBOARD ----------------
 function renderDashboard() {
-  const cats = ["iqro", "sholat", "tajwid", "nabi"];
+  const cats = ["iqro", "sholat", "tajwid", "nabi", "arab"];
   const tileHtml = cats.map((key) => {
     const cat = APP_DATA[key];
     const total = cat.modules.reduce((a, m) => a + m.kartu.length, 0);
     let seen = 0;
     cat.modules.forEach((m) => (seen += getProgress(key, m.id).seen.length));
+    const tuntas = total > 0 && seen >= total;
     return `
       <button class="menu-tile tile-${key}" data-cat="${key}">
+        ${tuntas ? `<span class="tile-badge">🏆</span>` : ""}
         <div class="m-icon">${cat.icon}</div>
-        <h3>${cat.label}</h3>
-        <p>${cat.desc}</p>
+        <div class="m-text">
+          <h3>${cat.label}</h3>
+          <p>${cat.desc}</p>
+        </div>
         <span class="m-progress">⭐ ${seen}/${total}</span>
       </button>`;
   }).join("");
 
+  const streak = getStreak();
+  const xp = getXP();
   root.innerHTML = `
     <div class="topbar">
       <div class="brand"><div class="brand-title">Iqro <span>Ceria</span></div></div>
+      <div class="stat-pills">
+        <span class="stat-pill streak">🔥 ${streak}</span>
+        <span class="stat-pill xp">✨ ${xp} XP</span>
+      </div>
     </div>
     <div class="hero-stage">
       <svg class="hero-scene" viewBox="0 0 300 140" preserveAspectRatio="xMidYMid slice">
@@ -1419,11 +1783,15 @@ function renderDashboard() {
     </div>
     ${mascot("Assalamu'alaikum, Sahabat! Yuk pilih mau belajar apa hari ini? 😊", "wave")}
     <div class="dash-hero">
+      <span class="floaty" style="top:-6px; left:12px; font-size:22px; animation-delay:.2s">✨</span>
+      <span class="floaty" style="top:8px; right:18px; font-size:26px; animation-delay:.8s">🌟</span>
+      <span class="floaty" style="bottom:-4px; right:60px; font-size:18px; animation-delay:1.4s">☁️</span>
       <h2>Ayo Belajar Islam Bareng!</h2>
-      <p>Iqro sampai Al-Qur'an, tajwid, sholat, sampai kisah para nabi — semua ada di sini, seru dan mudah dipahami!</p>
+      <p>Iqro sampai Al-Qur'an, tajwid, sholat, bahasa Arab, sampai kisah para nabi — semua ada di sini, seru dan mudah dipahami!</p>
     </div>
+    <div class="menu-section-title">🎯 Pilih Menu Belajar</div>
     <div class="menu-grid">${tileHtml}</div>
-    <div class="footer-note">Dibuat dengan ❤️ untuk adik-adik belajar mengaji</div>
+    <div class="footer-note">Dibuat oleh Desta · All Rights Reserved © 2026</div>
   `;
 
   root.querySelectorAll("[data-cat]").forEach((btn) => {
@@ -1435,23 +1803,30 @@ function renderDashboard() {
   });
 }
 
-// ---------------- CATEGORY HOME (rak modul) ----------------
+// ---------------- CATEGORY HOME (jalur belajar ala Duolingo) ----------------
 function renderCategoryHome() {
   const cat = APP_DATA[state.category];
   const totalKartu = cat.modules.reduce((a, m) => a + m.kartu.length, 0);
   let seenTotal = 0;
   cat.modules.forEach((m) => (seenTotal += getProgress(state.category, m.id).seen.length));
+  const persen = totalKartu ? Math.round((seenTotal / totalKartu) * 100) : 0;
 
-  const books = cat.modules.map((m) => {
+  const nodes = cat.modules.map((m, i) => {
     const prog = getProgress(state.category, m.id);
+    const locked = isModuleLocked(state.category, cat.modules, i);
+    const status = locked ? "locked" : prog.selesai ? "done" : "current";
+    const icon = locked ? "🔒" : prog.selesai ? "✓" : "▶";
+    const offset = Math.round(Math.sin(i * 1.15) * 78);
     return `
-      <div class="book ${prog.selesai ? "book-selesai" : ""}" style="background:${m.warna}">
-        <div class="book-jilid">${m.judul}</div>
-        <div class="book-deskripsi">${m.deskripsi}</div>
-        <div class="book-progress">⭐ ${prog.seen.length}/${m.kartu.length}</div>
-        <div class="book-actions">
-          <button class="btn-belajar" data-belajar="${m.id}">📖 Belajar</button>
-          <button class="btn-main" data-main="${m.id}">🎮 Main</button>
+      <div class="duo-node-row" style="transform:translateX(${offset}px)">
+        <div class="duo-node-col">
+          ${status === "current" ? `<div class="duo-node-ring"></div>` : ""}
+          <button class="duo-node ${status}" style="--node-color:${m.warna}" data-node="${m.id}" ${locked ? "disabled" : ""} aria-label="${m.judul}">
+            <span class="duo-node-icon">${icon}</span>
+          </button>
+          <div class="duo-node-label">${m.judul}</div>
+          <div class="duo-node-progress">⭐ ${prog.seen.length}/${m.kartu.length}</div>
+          ${!locked ? `<button class="duo-node-game" data-main="${m.id}" title="Main game modul ini">🎮</button>` : ""}
         </div>
       </div>`;
   }).join("");
@@ -1461,23 +1836,26 @@ function renderCategoryHome() {
     ${mascot(cat.intro, "point")}
     <div class="intro-card" style="background:${cat.heroGradient}">
       <h2>${cat.heroTitle}</h2>
-      <p>${cat.heroDesc} Progres kamu: ${seenTotal}/${totalKartu} ✨</p>
+      <p>${cat.heroDesc}</p>
+      <div class="intro-progress-bar"><div class="intro-progress-fill" style="width:${persen}%"></div></div>
+      <p style="margin-top:6px;font-size:12.5px">Progres kamu: ${seenTotal}/${totalKartu} kartu (${persen}%) ✨</p>
     </div>
     <div class="shelf-label">${cat.shelfLabel}</div>
-    <div class="bookshelf">${books}</div>
-    <div class="footer-note">Dibuat dengan ❤️ untuk adik-adik belajar mengaji</div>
+    <div class="duo-path">${nodes}</div>
+    <div class="footer-note">Dibuat oleh Desta · All Rights Reserved © 2026</div>
   `;
 
-  root.querySelectorAll("[data-belajar]").forEach((btn) => {
+  root.querySelectorAll("[data-node]:not([disabled])").forEach((btn) => {
     btn.addEventListener("click", () => {
       state.view = "lesson";
-      state.jilidId = btn.dataset.belajar;
+      state.jilidId = btn.dataset.node;
       state.cardIndex = 0;
       render();
     });
   });
   root.querySelectorAll("[data-main]").forEach((btn) => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
       state.jilidId = btn.dataset.main;
       state.view = "gamehub";
       render();
@@ -1584,7 +1962,7 @@ function startOrder(jilidId) {
   const correctOrder = Array.from({ length: n }, (_, i) => startAt + i);
   state.view = "order";
   state.jilidId = jilidId;
-  state.order = { correctOrder, display: shuffle(correctOrder), picks: [], total: n, done: false, reveal: false };
+  state.order = { correctOrder, display: shuffle(correctOrder), picks: [], total: n, done: false, reveal: false, xpGiven: false };
   render();
 }
 function renderOrder() {
@@ -1595,6 +1973,7 @@ function renderOrder() {
   if (o.done) {
     const right = o.picks.every((idx, i) => idx === o.correctOrder[i]);
     let stars = right ? 3 : (o.picks.filter((idx, i) => idx === o.correctOrder[i]).length >= Math.ceil(o.total / 2) ? 2 : 1);
+    if (!o.xpGiven) { addXP(o.total * 3 + stars * 2); o.xpGiven = true; }
     renderCelebration(mod, { stars, right, total: o.total }, "order");
     return;
   }
@@ -1650,14 +2029,19 @@ function startTF(jilidId) {
   });
   state.view = "tf";
   state.jilidId = jilidId;
-  state.tf = { rounds, index: 0, score: 0, total, answered: false };
+  state.tf = { rounds, index: 0, score: 0, total, answered: false, hearts: 3, xpGiven: false };
   render();
 }
 function renderTF() {
   const cat = APP_DATA[state.category];
   const mod = cat.modules.find((j) => j.id === state.jilidId);
   const t = state.tf;
-  if (t.index >= t.total) { renderCelebration(mod, { score: t.score, total: t.total }, "tf"); return; }
+  const kehabisanNyawa = t.hearts <= 0;
+  if (t.index >= t.total || kehabisanNyawa) {
+    if (!t.xpGiven) { addXP(t.score * 4 + (kehabisanNyawa ? 0 : 5)); t.xpGiven = true; }
+    renderCelebration(mod, { score: t.score, total: t.total, kehabisan: kehabisanNyawa }, "tf");
+    return;
+  }
 
   const r = t.rounds[t.index];
   const kartu = mod.kartu[r.idx];
@@ -1665,6 +2049,7 @@ function renderTF() {
   root.innerHTML = `
     ${topbar(mod.judul + " · Benar/Salah", true)}
     ${mascot("Perhatikan baik-baik, lalu tebak: benar atau salah? ⚡", "search")}
+    <div class="hearts-row" style="text-align:center">${"❤️".repeat(t.hearts)}${"🤍".repeat(3 - t.hearts)}</div>
     <div class="quiz-question" style="text-align:center;margin-bottom:6px">Soal ${t.index + 1} dari ${t.total}</div>
     <div class="tf-card">
       <div class="tf-arab">${kartu.arab}</div>
@@ -1691,6 +2076,7 @@ function renderTF() {
         feedback.textContent = pick(MASKOT_KATA.benar);
       } else {
         feedback.textContent = pick(MASKOT_KATA.salah);
+        t.hearts -= 1;
       }
       setTimeout(() => { t.index += 1; t.answered = false; renderTF(); }, 1300);
     });
@@ -1705,14 +2091,19 @@ function startQuiz(jilidId) {
   const pool = shuffle(mod.kartu.map((k, i) => i)).slice(0, totalSoal);
   state.view = "quiz";
   state.jilidId = jilidId;
-  state.quiz = { pool, index: 0, score: 0, total: totalSoal, answered: false };
+  state.quiz = { pool, index: 0, score: 0, total: totalSoal, answered: false, hearts: 3, xpGiven: false };
   render();
 }
 function renderQuiz() {
   const cat = APP_DATA[state.category];
   const mod = cat.modules.find((j) => j.id === state.jilidId);
   const q = state.quiz;
-  if (q.index >= q.total) { renderCelebration(mod, { score: q.score, total: q.total }, "quiz"); return; }
+  const kehabisanNyawa = q.hearts <= 0;
+  if (q.index >= q.total || kehabisanNyawa) {
+    if (!q.xpGiven) { addXP(q.score * 4 + (kehabisanNyawa ? 0 : 5)); q.xpGiven = true; }
+    renderCelebration(mod, { score: q.score, total: q.total, kehabisan: kehabisanNyawa }, "quiz");
+    return;
+  }
 
   const cardIdx = q.pool[q.index];
   const kartu = mod.kartu[cardIdx];
@@ -1725,6 +2116,7 @@ function renderQuiz() {
     ${topbar(mod.judul + " · Kuis", true)}
     ${mascot(isAudio ? "Dengarkan suaranya, lalu pilih tulisan yang cocok ya! 🎧" : "Baca petunjuknya, lalu tebak jawabannya ya! 🕵️", "search")}
     <div class="quiz-card">
+      <div class="hearts-row">${"❤️".repeat(q.hearts)}${"🤍".repeat(3 - q.hearts)}</div>
       <div class="quiz-question">Soal ${q.index + 1} dari ${q.total}</div>
       ${isAudio ? `<button class="speaker-btn" id="btnSpeakQuiz" aria-label="Dengarkan pelafalan">🔊</button>` : `<div class="clue-box">${kartu.ket}</div>`}
       <div class="quiz-options" id="quizOptions">
@@ -1757,6 +2149,7 @@ function renderQuiz() {
         btn.classList.add("wrong");
         document.querySelector(`.quiz-opt[data-idx="${cardIdx}"]`).classList.add("correct");
         feedback.textContent = pick(MASKOT_KATA.salah);
+        q.hearts -= 1;
       }
       setTimeout(() => { q.index += 1; q.answered = false; renderQuiz(); }, 1400);
     });
@@ -1777,7 +2170,7 @@ function startMatch(jilidId) {
   cards = shuffle(cards);
   state.view = "match";
   state.jilidId = jilidId;
-  state.match = { cards, flipped: [], matched: [], moves: 0, busy: false, total: n };
+  state.match = { cards, flipped: [], matched: [], moves: 0, busy: false, total: n, xpGiven: false };
   render();
 }
 function renderMatch() {
@@ -1790,6 +2183,7 @@ function renderMatch() {
     let stars = 1;
     if (m.moves <= maxMoves) stars = 3;
     else if (m.moves <= maxMoves + 3) stars = 2;
+    if (!m.xpGiven) { addXP(m.total * 3 + stars * 2); m.xpGiven = true; }
     renderCelebration(mod, { moves: m.moves, stars }, "match");
     return;
   }
@@ -1860,10 +2254,13 @@ function onMatchCardClick(pos) {
 const CELEB_TITLE = { quiz: "Kuis Selesai!", match: "Semua Kartu Cocok!", order: "Urutan Selesai!", tf: "Tebakan Selesai!" };
 const CELEB_START = { quiz: startQuiz, match: startMatch, order: startOrder, tf: startTF };
 function renderCelebration(mod, result, kind) {
-  const title = CELEB_TITLE[kind] || "Selesai!";
+  const gagalNyawa = (kind === "quiz" || kind === "tf") && result.kehabisan;
+  const title = gagalNyawa ? "Nyawa Habis!" : (CELEB_TITLE[kind] || "Selesai!");
   let desc = "";
   if (kind === "quiz" || kind === "tf") {
-    desc = `Skor kamu: ${result.score} dari ${result.total} (${Math.round((result.score / result.total) * 100)}%)`;
+    desc = gagalNyawa
+      ? `Jangan sedih, kamu tetap dapat skor ${result.score} dari ${result.total}. Yuk coba lagi! 💪`
+      : `Skor kamu: ${result.score} dari ${result.total} (${Math.round((result.score / result.total) * 100)}%)`;
   } else if (kind === "match") {
     desc = `Selesai dalam ${result.moves} langkah — ${"⭐".repeat(result.stars)}`;
   } else if (kind === "order") {
@@ -1874,12 +2271,13 @@ function renderCelebration(mod, result, kind) {
 
   root.innerHTML = `
     ${topbar(mod.judul, true)}
-    ${mascot(pick(MASKOT_KATA.selesaiJilid), "trophy")}
+    ${mascot(gagalNyawa ? "Tidak apa-apa, semua orang pasti pernah salah. Ayo coba lagi! 🤗" : pick(MASKOT_KATA.selesaiJilid), gagalNyawa ? "point" : "trophy")}
     <div class="celebrate">
       <div class="celebrate-card">
-        <div class="big-star">🏆</div>
+        <div class="big-star">${gagalNyawa ? "💛" : "🏆"}</div>
         <h3>${title}</h3>
         <p>${desc}</p>
+        <div class="xp-earned">✨ Total XP kamu sekarang: ${getXP()}</div>
         <button class="btn btn-primary" id="btnUlangi">Main Lagi 🔁</button>
         <button class="btn btn-secondary" id="btnGameLain">Main Game Lain 🎮</button>
         <button class="btn btn-secondary" id="btnKeRak">Kembali ke Rak 📚</button>
