@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+<title>Iqro Ceria — Belajar Membaca Al-Qur'an</title>
+<meta name="description" content="Aplikasi belajar Iqro interaktif untuk anak-anak: kenali huruf hijaiyah, dengar pelafalan, main kuis dan cocok kartu." />
+<style>
+/* ==========================================================
+   IQRO CERIA — stylesheet
+   Palet:  krem kertas #FFF8EA | tinta ungu #2B2140
+           teal utama #1B7A72 | kuning ceria #FFC93C
+           koral #FF6F59 | ungu lembut #7C83FD
+   Font:   Baloo 2 (judul), Nunito (isi), Amiri (huruf Arab)
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&family=Amiri:wght@400;700&display=swap');
+
+:root {
+  --paper: #FFF8EA;
+  --paper-line: #F0E4C8;
+  --ink: #2B2140;
+  --teal: #1B7A72;
+  --teal-dark: #145b55;
+  --yellow: #FFC93C;
+  --coral: #FF6F59;
+  --violet: #7C83FD;
+  --pink: #E85D9C;
+  --green: #2FA84F;
+  --card-shadow: 0 6px 0 rgba(43, 33, 64, 0.15);
+  --radius-lg: 26px;
+  --radius-md: 18px;
+}
+
+* { box-sizing: border-box; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Nunito', sans-serif;
+  min-height: 100vh;
+}
+
+body {
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 38px,
+      var(--paper-line) 39px
+    );
+  background-attachment: local;
+}
+
+h1, h2, h3, .display {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  margin: 0;
+}
+
+.arabic {
+  font-family: 'Amiri', serif;
+  direction: rtl;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--violet);
+  outline-offset: 3px;
+}
+
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 18px 18px 60px;
+  min-height: 100vh;
+}
+
+/* ---------- Header ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-title {
+  font-size: 26px;
+  color: var(--teal-dark);
+  letter-spacing: 0.5px;
+}
+
+.brand-title span {
+  color: var(--coral);
+}
+
+.back-btn {
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-weight: 700;
+  font-family: 'Baloo 2', sans-serif;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.15s ease;
+}
+.back-btn:active { transform: translateY(3px); box-shadow: none; }
+
+/* ---------- Mascot ---------- */
+.mascot-wrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.mascot {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  position: relative;
+  animation: bob 2.6s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.mascot-body {
+  width: 64px;
+  height: 52px;
+  background: var(--teal);
+  border-radius: 14px 14px 20px 20px;
+  position: relative;
+  box-shadow: var(--card-shadow);
+}
+.mascot-body::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 10px;
+  bottom: 8px;
+  background: var(--paper);
+  border-radius: 4px;
+}
+.mascot-body::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--teal);
+}
+.mascot-eyes {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+.mascot-eyes span {
+  width: 10px;
+  height: 10px;
+  background: var(--ink);
+  border-radius: 50%;
+  display: block;
+}
+.mascot-cap {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 26px;
+  height: 14px;
+  background: var(--coral);
+  border-radius: 50% 50% 0 0;
+}
+
+.speech-bubble {
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  flex: 1;
+}
+.speech-bubble::before {
+  content: "";
+  position: absolute;
+  left: -9px;
+  bottom: 14px;
+  border-width: 8px 10px 8px 0;
+  border-style: solid;
+  border-color: transparent var(--ink) transparent transparent;
+}
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  left: -6px;
+  bottom: 15px;
+  border-width: 7px 8px 7px 0;
+  border-style: solid;
+  border-color: transparent #fff transparent transparent;
+}
+
+/* ---------- Home: bookshelf ---------- */
+.intro-card {
+  background: linear-gradient(135deg, var(--violet), var(--teal));
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  color: #fff;
+  margin-bottom: 24px;
+  box-shadow: var(--card-shadow);
+}
+.intro-card h2 { font-size: 22px; margin-bottom: 6px; }
+.intro-card p { margin: 0; font-weight: 600; opacity: 0.95; }
+
+.shelf-label {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--teal-dark);
+  margin: 8px 0 12px;
+}
+
+.bookshelf {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (min-width: 520px) {
+  .bookshelf { grid-template-columns: repeat(3, 1fr); }
+}
+
+.book {
+  border-radius: var(--radius-md);
+  padding: 16px 14px;
+  color: #fff;
+  text-align: left;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 140px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.book-jilid { font-family: 'Baloo 2'; font-size: 20px; }
+.book-deskripsi { font-size: 13px; font-weight: 700; opacity: 0.95; }
+.book-progress {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  background: rgba(255,255,255,0.25);
+  border-radius: 999px;
+  padding: 4px 10px;
+  width: fit-content;
+}
+.book-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 6px;
+}
+.book-actions button {
+  flex: 1;
+  border-radius: 999px;
+  padding: 7px 6px;
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 12.5px;
+  background: rgba(255,255,255,0.9);
+  color: var(--ink);
+  transition: transform 0.12s ease;
+}
+.book-actions button:active { transform: translateY(2px); }
+.book-actions .btn-belajar { background: #fff; }
+.book-actions .btn-main { background: rgba(255,255,255,0.55); }
+.book-selesai::after {
+  content: "✓ Selesai";
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 11px;
+  font-weight: 800;
+  background: #fff;
+  color: var(--green);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+/* ---------- Lesson view ---------- */
+.progress-dots {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 14px 0 6px;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #E6DCC0;
+}
+.dot.active { background: var(--coral); transform: scale(1.3); }
+.dot.done { background: var(--green); }
+
+.flashcard {
+  background: #fff;
+  border: 3px dashed var(--ink);
+  border-radius: var(--radius-lg);
+  padding: 34px 20px 26px;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  margin: 14px 0;
+}
+
+.flashcard .arabic {
+  font-size: 74px;
+  line-height: 1.3;
+  color: var(--ink);
+  word-break: break-word;
+}
+
+.flashcard .latin {
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 22px;
+  color: var(--teal-dark);
+  margin-top: 10px;
+  letter-spacing: 1px;
+}
+
+.flashcard .ket {
+  font-size: 14px;
+  font-weight: 700;
+  color: #8A7F9C;
+  margin-top: 4px;
+}
+
+.speaker-btn {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: var(--coral);
+  color: #fff;
+  font-size: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 18px auto 0;
+  box-shadow: 0 6px 0 #C94A3B;
+  transition: transform 0.12s ease;
+}
+.speaker-btn:active { transform: translateY(6px); box-shadow: none; }
+.speaker-btn.speaking { animation: pulse 0.6s ease infinite; }
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.nav-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.btn {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 999px;
+  padding: 14px 18px;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  flex: 1;
+}
+.btn:active { transform: translateY(4px); box-shadow: none; }
+.btn-primary { background: var(--teal); color: #fff; }
+.btn-secondary { background: #fff; color: var(--ink); border: 2px solid var(--ink); }
+.btn-ok { background: var(--yellow); color: var(--ink); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.aku-bisa-row { text-align: center; margin-top: 12px; }
+.aku-bisa-row .btn { flex: none; padding: 12px 28px; }
+
+/* ---------- Game hub ---------- */
+.game-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-top: 16px;
+}
+@media (min-width: 480px) {
+  .game-grid { grid-template-columns: 1fr 1fr; }
+}
+.game-tile {
+  border-radius: var(--radius-lg);
+  padding: 22px 18px;
+  color: #fff;
+  text-align: left;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.12s ease;
+}
+.game-tile:active { transform: translateY(4px); }
+.game-tile .icon { font-size: 34px; }
+.game-tile h3 { font-size: 19px; margin: 8px 0 4px; }
+.game-tile p { margin: 0; font-size: 13px; font-weight: 700; opacity: 0.95; }
+.game-tile.quiz { background: linear-gradient(135deg, var(--coral), var(--pink)); }
+.game-tile.match { background: linear-gradient(135deg, var(--violet), var(--teal)); }
+
+/* ---------- Quiz ---------- */
+.quiz-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  box-shadow: var(--card-shadow);
+  text-align: center;
+  margin-top: 14px;
+}
+.quiz-question { font-size: 15px; font-weight: 800; color: var(--teal-dark); margin-bottom: 4px; }
+.quiz-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 18px;
+}
+.quiz-opt {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  padding: 16px 8px;
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  transition: transform 0.12s ease;
+}
+.quiz-opt:active { transform: translateY(3px); }
+.quiz-opt.correct { background: var(--green); color: #fff; border-color: var(--green); }
+.quiz-opt.wrong { background: var(--coral); color: #fff; border-color: var(--coral); }
+
+.quiz-feedback {
+  min-height: 26px;
+  font-weight: 800;
+  font-family: 'Baloo 2', sans-serif;
+  margin-top: 14px;
+  color: var(--teal-dark);
+}
+
+.quiz-score {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--yellow);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-weight: 800;
+  font-family: 'Baloo 2', sans-serif;
+}
+
+/* ---------- Memory match game ---------- */
+.match-stats {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 14px 0;
+  flex-wrap: wrap;
+}
+.match-stats .pill {
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+}
+.match-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (min-width: 420px) {
+  .match-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.match-card {
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  background: var(--teal);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 4px 0 rgba(43,33,64,0.2);
+  transition: transform 0.15s ease, background 0.15s ease;
+  padding: 4px;
+  text-align: center;
+  word-break: break-word;
+}
+.match-card.face-latin { font-family: 'Baloo 2', sans-serif; font-size: 15px; }
+.match-card.face-arab { font-family: 'Amiri', serif; font-size: 30px; }
+.match-card.flipped { background: #fff; color: var(--ink); border: 2px solid var(--violet); }
+.match-card.matched { background: var(--green); color: #fff; opacity: 0.85; cursor: default; }
+.match-card:active { transform: scale(0.95); }
+
+/* ---------- Celebration overlay ---------- */
+.celebrate {
+  position: fixed;
+  inset: 0;
+  background: rgba(43,33,64,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 20px;
+}
+.celebrate-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 32px 26px;
+  text-align: center;
+  max-width: 320px;
+  width: 100%;
+  box-shadow: 0 10px 0 rgba(0,0,0,0.15);
+}
+.celebrate-card .big-star { font-size: 56px; }
+.celebrate-card h3 { font-size: 22px; color: var(--teal-dark); margin: 8px 0; }
+.celebrate-card p { font-weight: 700; color: #6b6280; margin-bottom: 18px; }
+.celebrate-card .btn { width: 100%; margin-bottom: 10px; }
+
+/* ---------- Footer note ---------- */
+.audio-note {
+  font-size: 12px;
+  text-align: center;
+  color: #8A7F9C;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.footer-note {
+  text-align: center;
+  font-size: 12px;
+  color: #ab9fc4;
+  margin-top: 40px;
+  font-weight: 700;
+}
+
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+  <div class="app" id="app"></div>
+
+<script>
+// ============================================================
+// DATA KONTEN IQRO JILID 1-6
+// ============================================================
+const IQRO_DATA = {
+  meta: { title: "Iqro Ceria", subtitle: "Belajar Membaca Al-Qur'an dengan Gembira" },
+  jilid: [
+    {
+      id: 1, warna: "#FF6F59", judul: "Jilid 1", deskripsi: "Kenalan sama huruf hijaiyah",
+      tujuan: "Mengenal 28 huruf hijaiyah tunggal berharakat fathah (bunyi 'a').",
+      kartu: [
+        { arab: "أَ", latin: "A", ket: "Alif fathah" },
+        { arab: "بَ", latin: "BA", ket: "Ba fathah" },
+        { arab: "تَ", latin: "TA", ket: "Ta fathah" },
+        { arab: "ثَ", latin: "TSA", ket: "Tsa fathah" },
+        { arab: "جَ", latin: "JA", ket: "Jim fathah" },
+        { arab: "حَ", latin: "HA", ket: "Ha (tebal) fathah" },
+        { arab: "خَ", latin: "KHA", ket: "Kha fathah" },
+        { arab: "دَ", latin: "DA", ket: "Dal fathah" },
+        { arab: "ذَ", latin: "DZA", ket: "Dzal fathah" },
+        { arab: "رَ", latin: "RA", ket: "Ra fathah" },
+        { arab: "زَ", latin: "ZA", ket: "Zai fathah" },
+        { arab: "سَ", latin: "SA", ket: "Sin fathah" },
+        { arab: "شَ", latin: "SYA", ket: "Syin fathah" },
+        { arab: "صَ", latin: "SHA", ket: "Shad fathah" },
+        { arab: "ضَ", latin: "DHA", ket: "Dhad fathah" },
+        { arab: "طَ", latin: "THA", ket: "Tha fathah" },
+        { arab: "ظَ", latin: "ZHA", ket: "Zha fathah" },
+        { arab: "عَ", latin: "'A", ket: "Ain fathah" },
+        { arab: "غَ", latin: "GHA", ket: "Ghain fathah" },
+        { arab: "فَ", latin: "FA", ket: "Fa fathah" },
+        { arab: "قَ", latin: "QA", ket: "Qaf fathah" },
+        { arab: "كَ", latin: "KA", ket: "Kaf fathah" },
+        { arab: "لَ", latin: "LA", ket: "Lam fathah" },
+        { arab: "مَ", latin: "MA", ket: "Mim fathah" },
+        { arab: "نَ", latin: "NA", ket: "Nun fathah" },
+        { arab: "وَ", latin: "WA", ket: "Wau fathah" },
+        { arab: "هَ", latin: "HA", ket: "Ha (lembut) fathah" },
+        { arab: "يَ", latin: "YA", ket: "Ya fathah" },
+      ],
+    },
+    {
+      id: 2, warna: "#FFC93C", judul: "Jilid 2", deskripsi: "Huruf gandeng & bacaan panjang",
+      tujuan: "Membaca huruf yang disambung dan mengenal bacaan panjang (mad) dengan alif.",
+      kartu: [
+        { arab: "بَا", latin: "BAA", ket: "Ba panjang (mad alif)" },
+        { arab: "تَا", latin: "TAA", ket: "Ta panjang" },
+        { arab: "ثَا", latin: "TSAA", ket: "Tsa panjang" },
+        { arab: "جَا", latin: "JAA", ket: "Jim panjang" },
+        { arab: "حَا", latin: "HAA", ket: "Ha panjang" },
+        { arab: "دَا", latin: "DAA", ket: "Dal panjang" },
+        { arab: "رَا", latin: "RAA", ket: "Ra panjang" },
+        { arab: "سَا", latin: "SAA", ket: "Sin panjang" },
+        { arab: "فَا", latin: "FAA", ket: "Fa panjang" },
+        { arab: "كَا", latin: "KAA", ket: "Kaf panjang" },
+        { arab: "مَا", latin: "MAA", ket: "Mim panjang" },
+        { arab: "نَا", latin: "NAA", ket: "Nun panjang" },
+        { arab: "بَابَا", latin: "BAABAA", ket: "Kata: dua huruf disambung" },
+        { arab: "كَتَبَ", latin: "KATABA", ket: "Kata: ia telah menulis" },
+        { arab: "ذَهَبَ", latin: "DZAHABA", ket: "Kata: ia telah pergi" },
+      ],
+    },
+    {
+      id: 3, warna: "#4FB0A5", judul: "Jilid 3", deskripsi: "Kasrah, dhommah, dan bacaan panjang",
+      tujuan: "Mengenal harakat kasrah (i), dhommah (u), serta mad dengan ya dan wau.",
+      kartu: [
+        { arab: "بِ", latin: "BI", ket: "Ba kasrah" },
+        { arab: "بُ", latin: "BU", ket: "Ba dhommah" },
+        { arab: "تِ", latin: "TI", ket: "Ta kasrah" },
+        { arab: "تُ", latin: "TU", ket: "Ta dhommah" },
+        { arab: "جِ", latin: "JI", ket: "Jim kasrah" },
+        { arab: "جُ", latin: "JU", ket: "Jim dhommah" },
+        { arab: "سِي", latin: "SII", ket: "Sin panjang (mad ya)" },
+        { arab: "نُو", latin: "NUU", ket: "Nun panjang (mad wau)" },
+        { arab: "دِي", latin: "DII", ket: "Dal panjang (mad ya)" },
+        { arab: "مُو", latin: "MUU", ket: "Mim panjang (mad wau)" },
+        { arab: "بِسْمِ", latin: "BISMI", ket: "Kata: dengan nama" },
+        { arab: "فِيهِ", latin: "FIIHI", ket: "Kata: di dalamnya" },
+      ],
+    },
+    {
+      id: 4, warna: "#7C83FD", judul: "Jilid 4", deskripsi: "Tanwin & huruf mati",
+      tujuan: "Mengenal bunyi tanwin (an, in, un) dan huruf sukun (mati).",
+      kartu: [
+        { arab: "بً", latin: "BAN", ket: "Ba fathatain (tanwin)" },
+        { arab: "بٍ", latin: "BIN", ket: "Ba kasratain (tanwin)" },
+        { arab: "بٌ", latin: "BUN", ket: "Ba dhommatain (tanwin)" },
+        { arab: "أَبْ", latin: "AB", ket: "Alif - ba sukun" },
+        { arab: "مَنْ", latin: "MAN", ket: "Kata: siapa" },
+        { arab: "عَنْ", latin: "'AN", ket: "Kata: dari/tentang" },
+        { arab: "مِنْ", latin: "MIN", ket: "Kata: dari" },
+        { arab: "قَدْ", latin: "QAD", ket: "Kata: sungguh" },
+        { arab: "شَمْسٌ", latin: "SYAMSUN", ket: "Kata: matahari" },
+        { arab: "قَلَمٌ", latin: "QALAMUN", ket: "Kata: pena" },
+      ],
+    },
+    {
+      id: 5, warna: "#E85D9C", judul: "Jilid 5", deskripsi: "Kalimat pendek & tanda berhenti",
+      tujuan: "Membaca rangkaian kata menjadi kalimat pendek dan mengenal tanda waqaf (berhenti).",
+      kartu: [
+        { arab: "قَالَ", latin: "QAALA", ket: "Kata: ia berkata" },
+        { arab: "كَانَ", latin: "KAANA", ket: "Kata: adalah" },
+        { arab: "خَلَقَ", latin: "KHALAQA", ket: "Kata: menciptakan" },
+        { arab: "رَحِمَ", latin: "RAHIMA", ket: "Kata: menyayangi" },
+        { arab: "الْقَلَمُ جَمِيلٌ", latin: "AL-QALAMU JAMIILUN", ket: "Kalimat: pena itu indah" },
+        { arab: "الشَّمْسُ كَبِيرَةٌ", latin: "ASY-SYAMSU KABIIRATUN", ket: "Kalimat: matahari itu besar" },
+        { arab: "مـ", latin: "(waqaf lazim)", ket: "Tanda: wajib berhenti" },
+        { arab: "لا", latin: "(laa waqaf)", ket: "Tanda: dilarang berhenti" },
+        { arab: "ج", latin: "(waqaf jaiz)", ket: "Tanda: boleh berhenti / boleh lanjut" },
+      ],
+    },
+    {
+      id: 6, warna: "#2FA84F", judul: "Jilid 6", deskripsi: "Tajwid dasar & Surat Al-Fatihah",
+      tujuan: "Mengenal qalqalah, ghunnah, mad panjang lanjutan, dan membaca Surat Al-Fatihah.",
+      kartu: [
+        { arab: "قَبْ", latin: "QAB", ket: "Qalqalah pada huruf qaf sukun" },
+        { arab: "أَدْ", latin: "AD", ket: "Qalqalah pada huruf dal sukun" },
+        { arab: "إِنَّ", latin: "INNA", ket: "Ghunnah, dengung pada nun bertasydid" },
+        { arab: "ثُمَّ", latin: "TSUMMA", ket: "Ghunnah pada mim bertasydid" },
+        { arab: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", latin: "BISMILLAAHIRRAHMAANIRRAHIIM", ket: "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang" },
+        { arab: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", latin: "ALHAMDU LILLAAHI RABBIL 'AALAMIIN", ket: "Segala puji bagi Allah, Tuhan semesta alam" },
+        { arab: "الرَّحْمَٰنِ الرَّحِيمِ", latin: "ARRAHMAANIRRAHIIM", ket: "Yang Maha Pengasih, Maha Penyayang" },
+        { arab: "مَالِكِ يَوْمِ الدِّينِ", latin: "MAALIKI YAUMIDDIIN", ket: "Yang menguasai hari pembalasan" },
+        { arab: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", latin: "IYYAAKA NA'BUDU WA IYYAAKA NASTA'IIN", ket: "Hanya kepada-Mu kami menyembah dan memohon pertolongan" },
+      ],
+    },
+  ],
+};
+
+const MASKOT_KATA = {
+  sapaan: ["Halo, Sahabat! Yuk belajar mengaji bareng Kak Iqro! 👋"],
+  benar: ["Betul sekali! Kamu hebat! 🌟", "Mantap! Lanjut yuk! 🎉", "Iya, tepat sekali! 👍"],
+  salah: ["Belum tepat, coba dengarkan lagi ya! 🔁", "Ayo dicoba sekali lagi, pasti bisa! 💪"],
+  selesaiJilid: ["Horeee! Kamu keren! 🏆"],
+};
+
+// ============================================================
+// APP LOGIC
+// ============================================================
+const root = document.getElementById("app");
+const PROGRESS_KEY = "iqro-ceria-progress-v1";
+
+let state = { view: "home", jilidId: null, cardIndex: 0, quiz: null, match: null };
+
+// ---------------- Progress (localStorage, tanpa akun) ----------------
+function loadProgress() {
+  try { return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || {}; }
+  catch (e) { return {}; }
+}
+function saveProgress(p) {
+  try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(p)); }
+  catch (e) { /* localStorage tidak tersedia */ }
+}
+function getJilidProgress(jilidId) {
+  const p = loadProgress();
+  return p[jilidId] || { seen: [], selesai: false };
+}
+function markCardSeen(jilidId, cardIdx) {
+  const p = loadProgress();
+  if (!p[jilidId]) p[jilidId] = { seen: [], selesai: false };
+  if (!p[jilidId].seen.includes(cardIdx)) p[jilidId].seen.push(cardIdx);
+  const jilid = IQRO_DATA.jilid.find((j) => j.id === jilidId);
+  if (jilid && p[jilidId].seen.length >= jilid.kartu.length) p[jilidId].selesai = true;
+  saveProgress(p);
+}
+
+// ---------------- Audio: Web Speech API (suara bawaan browser) ----------------
+let arabicVoice = null;
+function pickArabicVoice() {
+  const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  arabicVoice =
+    voices.find((v) => v.lang && v.lang.toLowerCase() === "ar-sa") ||
+    voices.find((v) => v.lang && v.lang.toLowerCase().startsWith("ar")) ||
+    null;
+}
+if (window.speechSynthesis) {
+  pickArabicVoice();
+  window.speechSynthesis.onvoiceschanged = pickArabicVoice;
+}
+function speak(text, onEnd) {
+  if (!window.speechSynthesis) {
+    showAudioNote("Maaf, perangkat ini tidak mendukung suara. Coba pakai Chrome ya!");
+    if (onEnd) onEnd();
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "ar-SA";
+  if (arabicVoice) utter.voice = arabicVoice;
+  utter.rate = 0.75;
+  utter.pitch = 1.05;
+  utter.onend = () => onEnd && onEnd();
+  utter.onerror = () => {
+    showAudioNote("Suara Arab belum tersedia di perangkat ini. Coba di Chrome versi terbaru (desktop/Android).");
+    onEnd && onEnd();
+  };
+  window.speechSynthesis.speak(utter);
+}
+let audioNoteTimer = null;
+function showAudioNote(msg) {
+  const el = document.getElementById("audioNote");
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.remove("hidden");
+  clearTimeout(audioNoteTimer);
+  audioNoteTimer = setTimeout(() => el.classList.add("hidden"), 4500);
+}
+
+// ---------------- Render helpers ----------------
+function mascot(msg) {
+  return `
+    <div class="mascot-wrap">
+      <div class="mascot">
+        <div class="mascot-cap"></div>
+        <div class="mascot-body"><div class="mascot-eyes"><span></span><span></span></div></div>
+      </div>
+      <div class="speech-bubble">${msg}</div>
+    </div>`;
+}
+function topbar(title, showBack) {
+  return `
+    <div class="topbar">
+      <div class="brand">
+        ${showBack ? `<button class="back-btn" id="btnBack">← Kembali</button>` : `<div class="brand-title">Iqro <span>Ceria</span></div>`}
+      </div>
+      ${showBack ? `<div class="brand-title" style="font-size:18px">${title}</div>` : ""}
+    </div>`;
+}
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function render() {
+  if (state.view === "home") renderHome();
+  else if (state.view === "lesson") renderLesson();
+  else if (state.view === "gamehub") renderGameHub();
+  else if (state.view === "quiz") renderQuiz();
+  else if (state.view === "match") renderMatch();
+  attachGlobalHandlers();
+}
+
+// ---------------- HOME ----------------
+function renderHome() {
+  const totalKartu = IQRO_DATA.jilid.reduce((a, j) => a + j.kartu.length, 0);
+  let seenTotal = 0;
+  IQRO_DATA.jilid.forEach((j) => (seenTotal += getJilidProgress(j.id).seen.length));
+
+  const books = IQRO_DATA.jilid.map((j) => {
+    const prog = getJilidProgress(j.id);
+    return `
+      <div class="book ${prog.selesai ? "book-selesai" : ""}" style="background:${j.warna}">
+        <div class="book-jilid">${j.judul}</div>
+        <div class="book-deskripsi">${j.deskripsi}</div>
+        <div class="book-progress">⭐ ${prog.seen.length}/${j.kartu.length}</div>
+        <div class="book-actions">
+          <button class="btn-belajar" data-belajar="${j.id}">📖 Belajar</button>
+          <button class="btn-main" data-main="${j.id}">🎮 Main</button>
+        </div>
+      </div>`;
+  }).join("");
+
+  root.innerHTML = `
+    ${topbar("", false)}
+    ${mascot("Halo, Sahabat! Pilih jilid buat mulai belajar ya! 👋")}
+    <div class="intro-card">
+      <h2>Belajar Iqro jadi seru!</h2>
+      <p>Dengar contoh pelafalan, lihat tulisan Arabnya, lalu main game serunya. Progres kamu: ${seenTotal}/${totalKartu} kartu ✨</p>
+    </div>
+    <div class="shelf-label">📚 Rak Buku Iqro</div>
+    <div class="bookshelf">${books}</div>
+    <div class="footer-note">Dibuat dengan ❤️ untuk adik-adik belajar mengaji</div>
+  `;
+
+  root.querySelectorAll("[data-belajar]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      state.view = "lesson";
+      state.jilidId = Number(btn.dataset.belajar);
+      state.cardIndex = 0;
+      render();
+    });
+  });
+  root.querySelectorAll("[data-main]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      state.jilidId = Number(btn.dataset.main);
+      state.view = "gamehub";
+      render();
+    });
+  });
+}
+
+// ---------------- LESSON ----------------
+function renderLesson() {
+  const jilid = IQRO_DATA.jilid.find((j) => j.id === state.jilidId);
+  const kartu = jilid.kartu[state.cardIndex];
+  const prog = getJilidProgress(jilid.id);
+  const isLast = state.cardIndex === jilid.kartu.length - 1;
+  const sudahDilihat = prog.seen.includes(state.cardIndex);
+
+  const dots = jilid.kartu.map((_, i) => {
+    const cls = i === state.cardIndex ? "active" : prog.seen.includes(i) ? "done" : "";
+    return `<span class="dot ${cls}"></span>`;
+  }).join("");
+
+  root.innerHTML = `
+    ${topbar(jilid.judul, true)}
+    ${mascot(`${jilid.tujuan}`)}
+    <div class="progress-dots">${dots}</div>
+    <div class="flashcard">
+      <div class="arabic">${kartu.arab}</div>
+      <div class="latin">${kartu.latin}</div>
+      <div class="ket">${kartu.ket}</div>
+      <button class="speaker-btn" id="btnSpeak" aria-label="Dengarkan pelafalan">🔊</button>
+    </div>
+    <div class="audio-note hidden" id="audioNote"></div>
+    <div class="aku-bisa-row">
+      <button class="btn btn-ok" id="btnBisa">${sudahDilihat ? "✓ Sudah aku pelajari" : "Aku bisa! ✔️"}</button>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-secondary" id="btnPrev" ${state.cardIndex === 0 ? "disabled" : ""}>⬅ Sebelumnya</button>
+      ${isLast ? `<button class="btn btn-primary" id="btnGame">Main Yuk! 🎮</button>` : `<button class="btn btn-primary" id="btnNext">Selanjutnya ➡</button>`}
+    </div>
+  `;
+
+  document.getElementById("btnSpeak").addEventListener("click", (e) => {
+    e.currentTarget.classList.add("speaking");
+    speak(kartu.arab, () => e.currentTarget.classList.remove("speaking"));
+  });
+  document.getElementById("btnBisa").addEventListener("click", () => {
+    markCardSeen(jilid.id, state.cardIndex);
+    render();
+  });
+  document.getElementById("btnPrev").addEventListener("click", () => {
+    if (state.cardIndex > 0) { state.cardIndex -= 1; render(); }
+  });
+  const btnNext = document.getElementById("btnNext");
+  if (btnNext) btnNext.addEventListener("click", () => { state.cardIndex += 1; render(); });
+  const btnGame = document.getElementById("btnGame");
+  if (btnGame) btnGame.addEventListener("click", () => { state.view = "gamehub"; render(); });
+}
+
+// ---------------- GAME HUB ----------------
+function renderGameHub() {
+  const jilid = IQRO_DATA.jilid.find((j) => j.id === state.jilidId);
+  root.innerHTML = `
+    ${topbar(jilid.judul + " · Main", true)}
+    ${mascot("Pilih mau main game yang mana? 🎮")}
+    <div class="game-grid">
+      <button class="game-tile quiz" id="tileQuiz">
+        <div class="icon">🎧</div>
+        <h3>Kuis Suara</h3>
+        <p>Dengar suaranya, tebak tulisannya yang benar!</p>
+      </button>
+      <button class="game-tile match" id="tileMatch">
+        <div class="icon">🧩</div>
+        <h3>Cocok Kartu</h3>
+        <p>Buka dua kartu, cocokkan huruf Arab dengan bacaannya!</p>
+      </button>
+    </div>
+  `;
+  document.getElementById("tileQuiz").addEventListener("click", () => startQuiz(jilid.id));
+  document.getElementById("tileMatch").addEventListener("click", () => startMatch(jilid.id));
+}
+
+// ---------------- QUIZ: dengar & pilih ----------------
+function startQuiz(jilidId) {
+  const jilid = IQRO_DATA.jilid.find((j) => j.id === jilidId);
+  const totalSoal = Math.min(5, jilid.kartu.length);
+  const pool = shuffle(jilid.kartu.map((k, i) => i)).slice(0, totalSoal);
+  state.view = "quiz";
+  state.jilidId = jilidId;
+  state.quiz = { pool, index: 0, score: 0, total: totalSoal, answered: false };
+  render();
+}
+function renderQuiz() {
+  const jilid = IQRO_DATA.jilid.find((j) => j.id === state.jilidId);
+  const q = state.quiz;
+  if (q.index >= q.total) { renderCelebration(jilid, { score: q.score, total: q.total }, "quiz"); return; }
+
+  const cardIdx = q.pool[q.index];
+  const kartu = jilid.kartu[cardIdx];
+  const distractorPool = jilid.kartu.map((k, i) => i).filter((i) => i !== cardIdx);
+  const distractors = shuffle(distractorPool).slice(0, Math.min(3, distractorPool.length));
+  const options = shuffle([cardIdx, ...distractors]);
+
+  root.innerHTML = `
+    ${topbar(jilid.judul + " · Kuis", true)}
+    ${mascot("Dengarkan suaranya, lalu pilih tulisan yang cocok ya! 🎧")}
+    <div class="quiz-card">
+      <div class="quiz-question">Soal ${q.index + 1} dari ${q.total}</div>
+      <button class="speaker-btn" id="btnSpeakQuiz" aria-label="Dengarkan pelafalan">🔊</button>
+      <div class="quiz-options" id="quizOptions">
+        ${options.map((i) => `<button class="quiz-opt" data-idx="${i}">${jilid.kartu[i].latin}</button>`).join("")}
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <div style="margin-top:10px"><span class="quiz-score">⭐ ${q.score}/${q.total}</span></div>
+    </div>
+    <div class="audio-note hidden" id="audioNote"></div>
+  `;
+
+  const speakBtn = document.getElementById("btnSpeakQuiz");
+  const doSpeak = () => { speakBtn.classList.add("speaking"); speak(kartu.arab, () => speakBtn.classList.remove("speaking")); };
+  speakBtn.addEventListener("click", doSpeak);
+  setTimeout(doSpeak, 300);
+
+  document.querySelectorAll(".quiz-opt").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (q.answered) return;
+      q.answered = true;
+      const chosen = Number(btn.dataset.idx);
+      const feedback = document.getElementById("quizFeedback");
+      if (chosen === cardIdx) {
+        btn.classList.add("correct");
+        q.score += 1;
+        feedback.textContent = pick(MASKOT_KATA.benar);
+      } else {
+        btn.classList.add("wrong");
+        document.querySelector(`.quiz-opt[data-idx="${cardIdx}"]`).classList.add("correct");
+        feedback.textContent = pick(MASKOT_KATA.salah);
+      }
+      setTimeout(() => { q.index += 1; q.answered = false; renderQuiz(); }, 1400);
+    });
+  });
+}
+
+// ---------------- GAME: Cocok Kartu (memory match) ----------------
+function startMatch(jilidId) {
+  const jilid = IQRO_DATA.jilid.find((j) => j.id === jilidId);
+  const n = Math.min(6, jilid.kartu.length);
+  const chosen = shuffle(jilid.kartu.map((k, i) => i)).slice(0, n);
+  let cards = [];
+  chosen.forEach((idx) => {
+    cards.push({ uid: idx + "-a", idx, type: "arab" });
+    cards.push({ uid: idx + "-l", idx, type: "latin" });
+  });
+  cards = shuffle(cards);
+  state.view = "match";
+  state.jilidId = jilidId;
+  state.match = { cards, flipped: [], matched: [], moves: 0, busy: false, total: n };
+  render();
+}
+function renderMatch() {
+  const jilid = IQRO_DATA.jilid.find((j) => j.id === state.jilidId);
+  const m = state.match;
+
+  if (m.matched.length === m.cards.length) {
+    const maxMoves = m.total + 2;
+    let stars = 1;
+    if (m.moves <= maxMoves) stars = 3;
+    else if (m.moves <= maxMoves + 3) stars = 2;
+    renderCelebration(jilid, { moves: m.moves, stars }, "match");
+    return;
+  }
+
+  root.innerHTML = `
+    ${topbar(jilid.judul + " · Cocok Kartu", true)}
+    ${mascot("Buka dua kartu, cari pasangannya! 🧩")}
+    <div class="match-stats">
+      <span class="pill">🔁 Langkah: ${m.moves}</span>
+      <span class="pill">✅ ${m.matched.length / 2}/${m.total} pasang</span>
+    </div>
+    <div class="match-grid" id="matchGrid">
+      ${m.cards.map((c, pos) => {
+        const isMatched = m.matched.includes(c.uid);
+        const isFlipped = m.flipped.some((f) => f.uid === c.uid) || isMatched;
+        const label = isFlipped
+          ? (c.type === "arab" ? jilid.kartu[c.idx].arab : jilid.kartu[c.idx].latin)
+          : "❓";
+        const faceClass = isFlipped ? (c.type === "arab" ? "face-arab" : "face-latin") : "";
+        return `<button class="match-card ${isFlipped ? "flipped" : ""} ${isMatched ? "matched" : ""} ${faceClass}"
+                  data-pos="${pos}" ${isMatched ? "disabled" : ""}>${label}</button>`;
+      }).join("")}
+    </div>
+    <div class="audio-note hidden" id="audioNote"></div>
+  `;
+
+  document.querySelectorAll(".match-card").forEach((btn) => {
+    btn.addEventListener("click", () => onMatchCardClick(Number(btn.dataset.pos)));
+  });
+}
+function onMatchCardClick(pos) {
+  const m = state.match;
+  const jilid = IQRO_DATA.jilid.find((j) => j.id === state.jilidId);
+  if (m.busy) return;
+  const card = m.cards[pos];
+  if (m.matched.includes(card.uid)) return;
+  if (m.flipped.some((f) => f.uid === card.uid)) return;
+  if (m.flipped.length >= 2) return;
+
+  m.flipped.push(card);
+  render();
+
+  if (m.flipped.length === 2) {
+    m.busy = true;
+    m.moves += 1;
+    const [a, b] = m.flipped;
+    const isMatch = a.idx === b.idx && a.type !== b.type;
+    if (isMatch) {
+      setTimeout(() => {
+        m.matched.push(a.uid, b.uid);
+        m.flipped = [];
+        m.busy = false;
+        speak(jilid.kartu[a.idx].arab);
+        render();
+      }, 500);
+    } else {
+      setTimeout(() => {
+        m.flipped = [];
+        m.busy = false;
+        render();
+      }, 900);
+    }
+  }
+}
+
+// ---------------- Celebration ----------------
+function renderCelebration(jilid, result, kind) {
+  const isQuiz = kind === "quiz";
+  const title = isQuiz ? "Kuis Selesai!" : "Semua Kartu Cocok!";
+  const desc = isQuiz
+    ? `Skor kamu: ${result.score} dari ${result.total} (${Math.round((result.score / result.total) * 100)}%)`
+    : `Selesai dalam ${result.moves} langkah — ${"⭐".repeat(result.stars)}`;
+
+  root.innerHTML = `
+    ${topbar(jilid.judul, true)}
+    ${mascot(pick(MASKOT_KATA.selesaiJilid))}
+    <div class="celebrate">
+      <div class="celebrate-card">
+        <div class="big-star">🏆</div>
+        <h3>${title}</h3>
+        <p>${desc}</p>
+        <button class="btn btn-primary" id="btnUlangi">Main Lagi 🔁</button>
+        <button class="btn btn-secondary" id="btnGameLain">Main Game Lain 🎮</button>
+        <button class="btn btn-secondary" id="btnKeHome">Kembali ke Rak Buku 📚</button>
+      </div>
+    </div>
+  `;
+  document.getElementById("btnUlangi").addEventListener("click", () => {
+    if (isQuiz) startQuiz(jilid.id); else startMatch(jilid.id);
+  });
+  document.getElementById("btnGameLain").addEventListener("click", () => { state.view = "gamehub"; render(); });
+  document.getElementById("btnKeHome").addEventListener("click", () => { state.view = "home"; render(); });
+}
+
+// ---------------- Global handlers ----------------
+function attachGlobalHandlers() {
+  const back = document.getElementById("btnBack");
+  if (back) {
+    back.addEventListener("click", () => {
+      if (state.view === "quiz" || state.view === "match") state.view = "gamehub";
+      else state.view = "home";
+      render();
+    });
+  }
+}
+
+render();
+</script>
+</body>
+</html>
