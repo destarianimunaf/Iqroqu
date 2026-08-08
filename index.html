@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-<title>Iqro Ceria — Belajar Membaca Al-Qur'an</title>
-<meta name="description" content="Aplikasi belajar Iqro interaktif untuk anak-anak: kenali huruf hijaiyah, dengar pelafalan, main kuis dan cocok kartu." />
+<title>Iqro Ceria — Belajar Mengaji, Sholat & Kisah Nabi</title>
+<meta name="description" content="Aplikasi belajar Islam interaktif untuk anak-anak: Iqro jilid 1-6 sampai Al-Qur'an, belajar sholat, tajwid, dan kisah 25 nabi. Ringan, lucu, dan bisa dipakai di HP manapun." />
 <style>
 /* ==========================================================
    IQRO CERIA — stylesheet
@@ -77,6 +77,7 @@ button {
   font-family: inherit;
   cursor: pointer;
   border: none;
+  background: none;
 }
 
 button:focus-visible,
@@ -130,78 +131,125 @@ a:focus-visible,
 }
 .back-btn:active { transform: translateY(3px); box-shadow: none; }
 
-/* ---------- Mascot ---------- */
+/* ---------- Mascot 3D ---------- */
 .mascot-wrap {
   display: flex;
   align-items: flex-end;
-  gap: 10px;
+  gap: 12px;
   margin-bottom: 20px;
 }
 
-.mascot {
-  width: 64px;
-  height: 64px;
+.mascot3d {
+  width: 78px;
+  height: 100px;
   flex-shrink: 0;
   position: relative;
   animation: bob 2.6s ease-in-out infinite;
 }
 
 @keyframes bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(-1.5deg); }
 }
 
-.mascot-body {
-  width: 64px;
-  height: 52px;
-  background: var(--teal);
-  border-radius: 14px 14px 20px 20px;
-  position: relative;
-  box-shadow: var(--card-shadow);
-}
-.mascot-body::before {
-  content: "";
+.m-shadow {
   position: absolute;
-  left: 8px;
-  right: 8px;
-  top: 10px;
-  bottom: 8px;
-  background: var(--paper);
-  border-radius: 4px;
-}
-.mascot-body::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 10px;
-  bottom: 8px;
-  width: 2px;
-  background: var(--teal);
-}
-.mascot-eyes {
-  position: absolute;
-  top: -10px;
+  bottom: -4px;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
-  gap: 10px;
-}
-.mascot-eyes span {
-  width: 10px;
+  width: 50px;
   height: 10px;
+  background: rgba(43,33,64,0.18);
+  border-radius: 50%;
+  filter: blur(1px);
+}
+.m-body {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 58px;
+  height: 44px;
+  background: linear-gradient(160deg, #37a99d, var(--teal) 55%, var(--teal-dark));
+  border-radius: 26px 26px 20px 20px;
+  box-shadow: inset -5px -6px 0 rgba(0,0,0,0.15), inset 5px 5px 0 rgba(255,255,255,0.18), var(--card-shadow);
+}
+.m-collar {
+  position: absolute;
+  top: -3px; left: 50%; transform: translateX(-50%);
+  width: 26px; height: 10px;
+  background: var(--yellow);
+  border-radius: 0 0 10px 10px;
+}
+.m-book {
+  position: absolute;
+  bottom: 12px; left: 50%; transform: translateX(-50%);
+  width: 24px; height: 17px;
+  background: #FFF8EA;
+  border: 2px solid var(--ink);
+  border-radius: 3px;
+  box-shadow: 0 2px 0 rgba(43,33,64,0.2);
+}
+.m-book::before {
+  content: "";
+  position: absolute; left: 50%; top: 1px; bottom: 1px; width: 1.5px;
+  background: var(--ink);
+}
+.m-armL, .m-armR {
+  position: absolute;
+  bottom: 16px;
+  width: 11px; height: 20px;
+  background: var(--teal-dark);
+  border-radius: 8px;
+}
+.m-armL { left: -3px; transform-origin: top center; animation: wave 2s ease-in-out infinite; }
+.m-armR { right: -3px; transform: rotate(-22deg); }
+@keyframes wave { 0%,100% { transform: rotate(8deg); } 50% { transform: rotate(32deg); } }
+
+.m-head {
+  position: absolute;
+  top: 2px; left: 50%; transform: translateX(-50%);
+  width: 54px; height: 50px;
+  background: radial-gradient(circle at 35% 30%, #FFE3BE, #F3C185 78%);
+  border-radius: 50% 50% 46% 46%;
+  box-shadow: inset -6px -6px 0 rgba(0,0,0,0.07);
+}
+.m-peci {
+  position: absolute;
+  top: -10px; left: 50%; transform: translateX(-50%);
+  width: 38px; height: 20px;
+  background: linear-gradient(160deg, #34294d, #2b2140);
+  border-radius: 50% 50% 6px 6px / 65% 65% 6px 6px;
+  box-shadow: inset -3px -3px 0 rgba(255,255,255,0.08);
+}
+.m-peci::after {
+  content: "";
+  position: absolute; left: 1px; right: 1px; bottom: -3px; height: 6px;
+  background: var(--yellow);
+  border-radius: 0 0 4px 4px;
+}
+.m-cheekL, .m-cheekR {
+  position: absolute; top: 27px;
+  width: 10px; height: 6px;
+  background: var(--coral);
+  opacity: 0.45;
+  border-radius: 50%;
+}
+.m-cheekL { left: 1px; } .m-cheekR { right: 1px; }
+.m-eyeL, .m-eyeR {
+  position: absolute; top: 21px;
+  width: 6px; height: 7px;
   background: var(--ink);
   border-radius: 50%;
-  display: block;
+  animation: blink 4.5s ease-in-out infinite;
 }
-.mascot-cap {
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 26px;
-  height: 14px;
-  background: var(--coral);
-  border-radius: 50% 50% 0 0;
+.m-eyeL { left: 15px; } .m-eyeR { right: 15px; }
+@keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.15); } }
+.m-mouth {
+  position: absolute; top: 33px; left: 50%; transform: translateX(-50%);
+  width: 16px; height: 9px;
+  border-bottom: 3px solid var(--ink);
+  border-radius: 0 0 14px 14px;
 }
 
 .speech-bubble {
@@ -234,9 +282,80 @@ a:focus-visible,
   border-color: transparent #fff transparent transparent;
 }
 
+/* ---------- Floating music button ---------- */
+.music-btn {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 60;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--ink);
+  box-shadow: var(--card-shadow);
+  font-size: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.12s ease;
+}
+.music-btn:active { transform: translateY(3px); box-shadow: none; }
+.music-btn.muted { opacity: 0.5; }
+
+/* ---------- Dashboard ---------- */
+.dash-hero {
+  background: linear-gradient(135deg, var(--violet), var(--pink));
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  color: #fff;
+  margin-bottom: 22px;
+  box-shadow: var(--card-shadow);
+}
+.dash-hero h2 { font-size: 22px; margin-bottom: 6px; }
+.dash-hero p { margin: 0; font-weight: 600; opacity: 0.95; }
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 10px;
+}
+@media (min-width: 480px) {
+  .menu-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.menu-tile {
+  border-radius: var(--radius-lg);
+  padding: 18px 14px;
+  color: #fff;
+  text-align: left;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 152px;
+  transition: transform 0.12s ease;
+}
+.menu-tile:active { transform: translateY(4px); }
+.menu-tile .m-icon { font-size: 34px; }
+.menu-tile h3 { font-size: 16.5px; margin: 2px 0 0; line-height: 1.15; }
+.menu-tile p { font-size: 11.5px; font-weight: 700; margin: 0; opacity: 0.95; }
+.menu-tile .m-progress {
+  margin-top: auto;
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(255,255,255,0.25);
+  border-radius: 999px;
+  padding: 3px 10px;
+  width: fit-content;
+}
+.tile-iqro { background: linear-gradient(135deg, var(--teal), var(--violet)); }
+.tile-sholat { background: linear-gradient(135deg, var(--coral), #ffb14c); }
+.tile-tajwid { background: linear-gradient(135deg, var(--violet), var(--pink)); }
+.tile-nabi { background: linear-gradient(135deg, var(--green), var(--teal)); }
+
 /* ---------- Home: bookshelf ---------- */
 .intro-card {
-  background: linear-gradient(135deg, var(--violet), var(--teal));
   border-radius: var(--radius-lg);
   padding: 22px;
   color: #fff;
@@ -343,32 +462,34 @@ a:focus-visible,
   background: #fff;
   border: 3px dashed var(--ink);
   border-radius: var(--radius-lg);
-  padding: 34px 20px 26px;
+  padding: 30px 18px 26px;
   text-align: center;
   box-shadow: var(--card-shadow);
   margin: 14px 0;
 }
 
 .flashcard .arabic {
-  font-size: 74px;
-  line-height: 1.3;
+  font-size: 68px;
+  line-height: 1.4;
   color: var(--ink);
   word-break: break-word;
 }
+.flashcard .arabic.medium { font-size: 40px; }
+.flashcard .arabic.small { font-size: 27px; line-height: 1.7; }
 
 .flashcard .latin {
   font-family: 'Baloo 2', sans-serif;
-  font-size: 22px;
+  font-size: 20px;
   color: var(--teal-dark);
   margin-top: 10px;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 .flashcard .ket {
   font-size: 14px;
   font-weight: 700;
   color: #8A7F9C;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .speaker-btn {
@@ -465,7 +586,7 @@ a:focus-visible,
   border-radius: var(--radius-md);
   padding: 16px 8px;
   font-family: 'Baloo 2', sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   transition: transform 0.12s ease;
 }
@@ -490,6 +611,18 @@ a:focus-visible,
   padding: 6px 14px;
   font-weight: 800;
   font-family: 'Baloo 2', sans-serif;
+}
+
+.clue-box {
+  background: var(--paper);
+  border: 2px dashed var(--ink);
+  border-radius: var(--radius-md);
+  padding: 16px 14px;
+  font-weight: 700;
+  font-size: 14.5px;
+  text-align: center;
+  margin-top: 6px;
+  color: var(--ink);
 }
 
 /* ---------- Memory match game ---------- */
@@ -525,15 +658,15 @@ a:focus-visible,
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 26px;
+  font-size: 24px;
   box-shadow: 0 4px 0 rgba(43,33,64,0.2);
   transition: transform 0.15s ease, background 0.15s ease;
   padding: 4px;
   text-align: center;
   word-break: break-word;
 }
-.match-card.face-latin { font-family: 'Baloo 2', sans-serif; font-size: 15px; }
-.match-card.face-arab { font-family: 'Amiri', serif; font-size: 30px; }
+.match-card.face-latin { font-family: 'Baloo 2', sans-serif; font-size: 13px; }
+.match-card.face-arab { font-family: 'Amiri', serif; font-size: 26px; }
 .match-card.flipped { background: #fff; color: var(--ink); border: 2px solid var(--violet); }
 .match-card.matched { background: var(--green); color: #fff; opacity: 0.85; cursor: default; }
 .match-card:active { transform: scale(0.95); }
@@ -581,154 +714,366 @@ a:focus-visible,
 }
 
 .hidden { display: none !important; }
+
+@media (max-width: 360px) {
+  .flashcard .arabic { font-size: 54px; }
+  .menu-tile h3 { font-size: 15px; }
+}
 </style>
 </head>
 <body>
+  <button class="music-btn" id="musicBtn" aria-label="Nyalakan/matikan musik">🎵</button>
   <div class="app" id="app"></div>
 
 <script>
 // ============================================================
-// DATA KONTEN IQRO JILID 1-6
+// META KATEGORI
 // ============================================================
-const IQRO_DATA = {
-  meta: { title: "Iqro Ceria", subtitle: "Belajar Membaca Al-Qur'an dengan Gembira" },
-  jilid: [
-    {
-      id: 1, warna: "#FF6F59", judul: "Jilid 1", deskripsi: "Kenalan sama huruf hijaiyah",
-      tujuan: "Mengenal 28 huruf hijaiyah tunggal berharakat fathah (bunyi 'a').",
-      kartu: [
-        { arab: "أَ", latin: "A", ket: "Alif fathah" },
-        { arab: "بَ", latin: "BA", ket: "Ba fathah" },
-        { arab: "تَ", latin: "TA", ket: "Ta fathah" },
-        { arab: "ثَ", latin: "TSA", ket: "Tsa fathah" },
-        { arab: "جَ", latin: "JA", ket: "Jim fathah" },
-        { arab: "حَ", latin: "HA", ket: "Ha (tebal) fathah" },
-        { arab: "خَ", latin: "KHA", ket: "Kha fathah" },
-        { arab: "دَ", latin: "DA", ket: "Dal fathah" },
-        { arab: "ذَ", latin: "DZA", ket: "Dzal fathah" },
-        { arab: "رَ", latin: "RA", ket: "Ra fathah" },
-        { arab: "زَ", latin: "ZA", ket: "Zai fathah" },
-        { arab: "سَ", latin: "SA", ket: "Sin fathah" },
-        { arab: "شَ", latin: "SYA", ket: "Syin fathah" },
-        { arab: "صَ", latin: "SHA", ket: "Shad fathah" },
-        { arab: "ضَ", latin: "DHA", ket: "Dhad fathah" },
-        { arab: "طَ", latin: "THA", ket: "Tha fathah" },
-        { arab: "ظَ", latin: "ZHA", ket: "Zha fathah" },
-        { arab: "عَ", latin: "'A", ket: "Ain fathah" },
-        { arab: "غَ", latin: "GHA", ket: "Ghain fathah" },
-        { arab: "فَ", latin: "FA", ket: "Fa fathah" },
-        { arab: "قَ", latin: "QA", ket: "Qaf fathah" },
-        { arab: "كَ", latin: "KA", ket: "Kaf fathah" },
-        { arab: "لَ", latin: "LA", ket: "Lam fathah" },
-        { arab: "مَ", latin: "MA", ket: "Mim fathah" },
-        { arab: "نَ", latin: "NA", ket: "Nun fathah" },
-        { arab: "وَ", latin: "WA", ket: "Wau fathah" },
-        { arab: "هَ", latin: "HA", ket: "Ha (lembut) fathah" },
-        { arab: "يَ", latin: "YA", ket: "Ya fathah" },
-      ],
-    },
-    {
-      id: 2, warna: "#FFC93C", judul: "Jilid 2", deskripsi: "Huruf gandeng & bacaan panjang",
-      tujuan: "Membaca huruf yang disambung dan mengenal bacaan panjang (mad) dengan alif.",
-      kartu: [
-        { arab: "بَا", latin: "BAA", ket: "Ba panjang (mad alif)" },
-        { arab: "تَا", latin: "TAA", ket: "Ta panjang" },
-        { arab: "ثَا", latin: "TSAA", ket: "Tsa panjang" },
-        { arab: "جَا", latin: "JAA", ket: "Jim panjang" },
-        { arab: "حَا", latin: "HAA", ket: "Ha panjang" },
-        { arab: "دَا", latin: "DAA", ket: "Dal panjang" },
-        { arab: "رَا", latin: "RAA", ket: "Ra panjang" },
-        { arab: "سَا", latin: "SAA", ket: "Sin panjang" },
-        { arab: "فَا", latin: "FAA", ket: "Fa panjang" },
-        { arab: "كَا", latin: "KAA", ket: "Kaf panjang" },
-        { arab: "مَا", latin: "MAA", ket: "Mim panjang" },
-        { arab: "نَا", latin: "NAA", ket: "Nun panjang" },
-        { arab: "بَابَا", latin: "BAABAA", ket: "Kata: dua huruf disambung" },
-        { arab: "كَتَبَ", latin: "KATABA", ket: "Kata: ia telah menulis" },
-        { arab: "ذَهَبَ", latin: "DZAHABA", ket: "Kata: ia telah pergi" },
-      ],
-    },
-    {
-      id: 3, warna: "#4FB0A5", judul: "Jilid 3", deskripsi: "Kasrah, dhommah, dan bacaan panjang",
-      tujuan: "Mengenal harakat kasrah (i), dhommah (u), serta mad dengan ya dan wau.",
-      kartu: [
-        { arab: "بِ", latin: "BI", ket: "Ba kasrah" },
-        { arab: "بُ", latin: "BU", ket: "Ba dhommah" },
-        { arab: "تِ", latin: "TI", ket: "Ta kasrah" },
-        { arab: "تُ", latin: "TU", ket: "Ta dhommah" },
-        { arab: "جِ", latin: "JI", ket: "Jim kasrah" },
-        { arab: "جُ", latin: "JU", ket: "Jim dhommah" },
-        { arab: "سِي", latin: "SII", ket: "Sin panjang (mad ya)" },
-        { arab: "نُو", latin: "NUU", ket: "Nun panjang (mad wau)" },
-        { arab: "دِي", latin: "DII", ket: "Dal panjang (mad ya)" },
-        { arab: "مُو", latin: "MUU", ket: "Mim panjang (mad wau)" },
-        { arab: "بِسْمِ", latin: "BISMI", ket: "Kata: dengan nama" },
-        { arab: "فِيهِ", latin: "FIIHI", ket: "Kata: di dalamnya" },
-      ],
-    },
-    {
-      id: 4, warna: "#7C83FD", judul: "Jilid 4", deskripsi: "Tanwin & huruf mati",
-      tujuan: "Mengenal bunyi tanwin (an, in, un) dan huruf sukun (mati).",
-      kartu: [
-        { arab: "بً", latin: "BAN", ket: "Ba fathatain (tanwin)" },
-        { arab: "بٍ", latin: "BIN", ket: "Ba kasratain (tanwin)" },
-        { arab: "بٌ", latin: "BUN", ket: "Ba dhommatain (tanwin)" },
-        { arab: "أَبْ", latin: "AB", ket: "Alif - ba sukun" },
-        { arab: "مَنْ", latin: "MAN", ket: "Kata: siapa" },
-        { arab: "عَنْ", latin: "'AN", ket: "Kata: dari/tentang" },
-        { arab: "مِنْ", latin: "MIN", ket: "Kata: dari" },
-        { arab: "قَدْ", latin: "QAD", ket: "Kata: sungguh" },
-        { arab: "شَمْسٌ", latin: "SYAMSUN", ket: "Kata: matahari" },
-        { arab: "قَلَمٌ", latin: "QALAMUN", ket: "Kata: pena" },
-      ],
-    },
-    {
-      id: 5, warna: "#E85D9C", judul: "Jilid 5", deskripsi: "Kalimat pendek & tanda berhenti",
-      tujuan: "Membaca rangkaian kata menjadi kalimat pendek dan mengenal tanda waqaf (berhenti).",
-      kartu: [
-        { arab: "قَالَ", latin: "QAALA", ket: "Kata: ia berkata" },
-        { arab: "كَانَ", latin: "KAANA", ket: "Kata: adalah" },
-        { arab: "خَلَقَ", latin: "KHALAQA", ket: "Kata: menciptakan" },
-        { arab: "رَحِمَ", latin: "RAHIMA", ket: "Kata: menyayangi" },
-        { arab: "الْقَلَمُ جَمِيلٌ", latin: "AL-QALAMU JAMIILUN", ket: "Kalimat: pena itu indah" },
-        { arab: "الشَّمْسُ كَبِيرَةٌ", latin: "ASY-SYAMSU KABIIRATUN", ket: "Kalimat: matahari itu besar" },
-        { arab: "مـ", latin: "(waqaf lazim)", ket: "Tanda: wajib berhenti" },
-        { arab: "لا", latin: "(laa waqaf)", ket: "Tanda: dilarang berhenti" },
-        { arab: "ج", latin: "(waqaf jaiz)", ket: "Tanda: boleh berhenti / boleh lanjut" },
-      ],
-    },
-    {
-      id: 6, warna: "#2FA84F", judul: "Jilid 6", deskripsi: "Tajwid dasar & Surat Al-Fatihah",
-      tujuan: "Mengenal qalqalah, ghunnah, mad panjang lanjutan, dan membaca Surat Al-Fatihah.",
-      kartu: [
-        { arab: "قَبْ", latin: "QAB", ket: "Qalqalah pada huruf qaf sukun" },
-        { arab: "أَدْ", latin: "AD", ket: "Qalqalah pada huruf dal sukun" },
-        { arab: "إِنَّ", latin: "INNA", ket: "Ghunnah, dengung pada nun bertasydid" },
-        { arab: "ثُمَّ", latin: "TSUMMA", ket: "Ghunnah pada mim bertasydid" },
-        { arab: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", latin: "BISMILLAAHIRRAHMAANIRRAHIIM", ket: "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang" },
-        { arab: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", latin: "ALHAMDU LILLAAHI RABBIL 'AALAMIIN", ket: "Segala puji bagi Allah, Tuhan semesta alam" },
-        { arab: "الرَّحْمَٰنِ الرَّحِيمِ", latin: "ARRAHMAANIRRAHIIM", ket: "Yang Maha Pengasih, Maha Penyayang" },
-        { arab: "مَالِكِ يَوْمِ الدِّينِ", latin: "MAALIKI YAUMIDDIIN", ket: "Yang menguasai hari pembalasan" },
-        { arab: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", latin: "IYYAAKA NA'BUDU WA IYYAAKA NASTA'IIN", ket: "Hanya kepada-Mu kami menyembah dan memohon pertolongan" },
-      ],
-    },
-  ],
+const CATEGORY_META = {
+  iqro: {
+    label: "Iqro &amp; Qur'an", icon: "📖", desc: "Baca huruf hijaiyah sampai Al-Qur'an",
+    heroTitle: "Belajar Iqro jadi seru!",
+    heroDesc: "Dengar contoh pelafalan, lihat tulisan Arabnya, lalu main game serunya.",
+    heroGradient: "linear-gradient(135deg, var(--violet), var(--teal))",
+    shelfLabel: "📚 Rak Buku Iqro",
+    intro: "Halo, Sahabat! Pilih jilid buat mulai belajar ya! 👋",
+    quizMode: "audio", quizIcon: "🎧", quizLabel: "Kuis Suara",
+    quizDesc: "Dengar suaranya, tebak tulisannya yang benar!",
+    matchDesc: "Buka dua kartu, cocokkan huruf Arab dengan bacaannya!"
+  },
+  sholat: {
+    label: "Belajar Sholat", icon: "🕌", desc: "Wudhu, gerakan & bacaan sholat",
+    heroTitle: "Yuk rajin sholat!",
+    heroDesc: "Belajar niat wudhu sampai bacaan sholat lengkap, urut dan mudah diingat.",
+    heroGradient: "linear-gradient(135deg, var(--coral), #ffb14c)",
+    shelfLabel: "🕌 Modul Wudhu & Sholat",
+    intro: "Assalamu'alaikum! Yuk belajar wudhu dan gerakan sholat bareng Kak Iqro 🤲",
+    quizMode: "audio", quizIcon: "🎧", quizLabel: "Kuis Suara",
+    quizDesc: "Dengar bacaannya, tebak nama gerakannya!",
+    matchDesc: "Cocokkan bacaan Arab dengan artinya!"
+  },
+  tajwid: {
+    label: "Belajar Tajwid", icon: "📜", desc: "Hukum bacaan Al-Qur'an",
+    heroTitle: "Yuk mahir tajwid!",
+    heroDesc: "Kenali hukum-hukum bacaan supaya mengajinya makin fasih dan benar.",
+    heroGradient: "linear-gradient(135deg, var(--violet), var(--pink))",
+    shelfLabel: "📜 Modul Hukum Tajwid",
+    intro: "Yuk kenalan sama hukum-hukum bacaan tajwid, biar makin lancar mengaji! 📖",
+    quizMode: "audio", quizIcon: "🎧", quizLabel: "Kuis Suara",
+    quizDesc: "Dengar contohnya, tebak nama hukum tajwidnya!",
+    matchDesc: "Cocokkan contoh bacaan dengan nama hukumnya!"
+  },
+  nabi: {
+    label: "Kisah 25 Nabi", icon: "👳", desc: "Cerita seru para nabi & rasul",
+    heroTitle: "Yuk kenal para Nabi!",
+    heroDesc: "Baca kisah singkat 25 Nabi dan Rasul, teladan akhlak mulia untuk kita semua.",
+    heroGradient: "linear-gradient(135deg, var(--green), var(--teal))",
+    shelfLabel: "👳 Kisah Para Nabi",
+    intro: "Yuk baca kisah seru 25 Nabi dan Rasul pilihan Allah! 🌟",
+    quizMode: "text", quizIcon: "🕵️", quizLabel: "Tebak Nabi",
+    quizDesc: "Baca petunjuknya, lalu tebak siapa nabinya!",
+    matchDesc: "Cocokkan nama Arab dengan nama Indonesianya!"
+  }
+};
+
+// ============================================================
+// DATA KONTEN — IQRO (referensi metode Iqro 6 jilid yang umum
+// dipakai TPA/TPQ di Indonesia) + bonus lanjutan Al-Qur'an
+// ============================================================
+const IQRO_MODULES = [
+  {
+    id: "i1", warna: "#FF6F59", judul: "Jilid 1", deskripsi: "Kenalan sama huruf hijaiyah",
+    tujuan: "Mengenal 28 huruf hijaiyah tunggal berharakat fathah (bunyi 'a').",
+    kartu: [
+      { arab: "أَ", latin: "A", ket: "Alif fathah" },
+      { arab: "بَ", latin: "BA", ket: "Ba fathah" },
+      { arab: "تَ", latin: "TA", ket: "Ta fathah" },
+      { arab: "ثَ", latin: "TSA", ket: "Tsa fathah" },
+      { arab: "جَ", latin: "JA", ket: "Jim fathah" },
+      { arab: "حَ", latin: "HA", ket: "Ha (tebal) fathah" },
+      { arab: "خَ", latin: "KHA", ket: "Kha fathah" },
+      { arab: "دَ", latin: "DA", ket: "Dal fathah" },
+      { arab: "ذَ", latin: "DZA", ket: "Dzal fathah" },
+      { arab: "رَ", latin: "RA", ket: "Ra fathah" },
+      { arab: "زَ", latin: "ZA", ket: "Zai fathah" },
+      { arab: "سَ", latin: "SA", ket: "Sin fathah" },
+      { arab: "شَ", latin: "SYA", ket: "Syin fathah" },
+      { arab: "صَ", latin: "SHA", ket: "Shad fathah" },
+      { arab: "ضَ", latin: "DHA", ket: "Dhad fathah" },
+      { arab: "طَ", latin: "THA", ket: "Tha fathah" },
+      { arab: "ظَ", latin: "ZHA", ket: "Zha fathah" },
+      { arab: "عَ", latin: "'A", ket: "Ain fathah" },
+      { arab: "غَ", latin: "GHA", ket: "Ghain fathah" },
+      { arab: "فَ", latin: "FA", ket: "Fa fathah" },
+      { arab: "قَ", latin: "QA", ket: "Qaf fathah" },
+      { arab: "كَ", latin: "KA", ket: "Kaf fathah" },
+      { arab: "لَ", latin: "LA", ket: "Lam fathah" },
+      { arab: "مَ", latin: "MA", ket: "Mim fathah" },
+      { arab: "نَ", latin: "NA", ket: "Nun fathah" },
+      { arab: "وَ", latin: "WA", ket: "Wau fathah" },
+      { arab: "هَ", latin: "HA", ket: "Ha (lembut) fathah" },
+      { arab: "يَ", latin: "YA", ket: "Ya fathah" }
+    ]
+  },
+  {
+    id: "i2", warna: "#FFC93C", judul: "Jilid 2", deskripsi: "Huruf gandeng & bacaan panjang",
+    tujuan: "Membaca huruf yang disambung dan mengenal bacaan panjang (mad) dengan alif.",
+    kartu: [
+      { arab: "بَا", latin: "BAA", ket: "Ba panjang (mad alif)" },
+      { arab: "تَا", latin: "TAA", ket: "Ta panjang" },
+      { arab: "ثَا", latin: "TSAA", ket: "Tsa panjang" },
+      { arab: "جَا", latin: "JAA", ket: "Jim panjang" },
+      { arab: "حَا", latin: "HAA", ket: "Ha panjang" },
+      { arab: "دَا", latin: "DAA", ket: "Dal panjang" },
+      { arab: "رَا", latin: "RAA", ket: "Ra panjang" },
+      { arab: "سَا", latin: "SAA", ket: "Sin panjang" },
+      { arab: "فَا", latin: "FAA", ket: "Fa panjang" },
+      { arab: "كَا", latin: "KAA", ket: "Kaf panjang" },
+      { arab: "مَا", latin: "MAA", ket: "Mim panjang" },
+      { arab: "نَا", latin: "NAA", ket: "Nun panjang" },
+      { arab: "بَابَا", latin: "BAABAA", ket: "Kata: dua huruf disambung" },
+      { arab: "كَتَبَ", latin: "KATABA", ket: "Kata: ia telah menulis" },
+      { arab: "ذَهَبَ", latin: "DZAHABA", ket: "Kata: ia telah pergi" }
+    ]
+  },
+  {
+    id: "i3", warna: "#4FB0A5", judul: "Jilid 3", deskripsi: "Kasrah, dhommah, dan bacaan panjang",
+    tujuan: "Mengenal harakat kasrah (i), dhommah (u), serta mad dengan ya dan wau.",
+    kartu: [
+      { arab: "بِ", latin: "BI", ket: "Ba kasrah" },
+      { arab: "بُ", latin: "BU", ket: "Ba dhommah" },
+      { arab: "تِ", latin: "TI", ket: "Ta kasrah" },
+      { arab: "تُ", latin: "TU", ket: "Ta dhommah" },
+      { arab: "جِ", latin: "JI", ket: "Jim kasrah" },
+      { arab: "جُ", latin: "JU", ket: "Jim dhommah" },
+      { arab: "سِي", latin: "SII", ket: "Sin panjang (mad ya)" },
+      { arab: "نُو", latin: "NUU", ket: "Nun panjang (mad wau)" },
+      { arab: "دِي", latin: "DII", ket: "Dal panjang (mad ya)" },
+      { arab: "مُو", latin: "MUU", ket: "Mim panjang (mad wau)" },
+      { arab: "بِسْمِ", latin: "BISMI", ket: "Kata: dengan nama" },
+      { arab: "فِيهِ", latin: "FIIHI", ket: "Kata: di dalamnya" }
+    ]
+  },
+  {
+    id: "i4", warna: "#7C83FD", judul: "Jilid 4", deskripsi: "Tanwin & huruf mati",
+    tujuan: "Mengenal bunyi tanwin (an, in, un) dan huruf sukun (mati).",
+    kartu: [
+      { arab: "بً", latin: "BAN", ket: "Ba fathatain (tanwin)" },
+      { arab: "بٍ", latin: "BIN", ket: "Ba kasratain (tanwin)" },
+      { arab: "بٌ", latin: "BUN", ket: "Ba dhommatain (tanwin)" },
+      { arab: "أَبْ", latin: "AB", ket: "Alif - ba sukun" },
+      { arab: "مَنْ", latin: "MAN", ket: "Kata: siapa" },
+      { arab: "عَنْ", latin: "'AN", ket: "Kata: dari/tentang" },
+      { arab: "مِنْ", latin: "MIN", ket: "Kata: dari" },
+      { arab: "قَدْ", latin: "QAD", ket: "Kata: sungguh" },
+      { arab: "شَمْسٌ", latin: "SYAMSUN", ket: "Kata: matahari" },
+      { arab: "قَلَمٌ", latin: "QALAMUN", ket: "Kata: pena" }
+    ]
+  },
+  {
+    id: "i5", warna: "#E85D9C", judul: "Jilid 5", deskripsi: "Kalimat pendek & tanda berhenti",
+    tujuan: "Membaca rangkaian kata menjadi kalimat pendek dan mengenal tanda waqaf (berhenti).",
+    kartu: [
+      { arab: "قَالَ", latin: "QAALA", ket: "Kata: ia berkata" },
+      { arab: "كَانَ", latin: "KAANA", ket: "Kata: adalah" },
+      { arab: "خَلَقَ", latin: "KHALAQA", ket: "Kata: menciptakan" },
+      { arab: "رَحِمَ", latin: "RAHIMA", ket: "Kata: menyayangi" },
+      { arab: "الْقَلَمُ جَمِيلٌ", latin: "AL-QALAMU JAMIILUN", ket: "Kalimat: pena itu indah" },
+      { arab: "الشَّمْسُ كَبِيرَةٌ", latin: "ASY-SYAMSU KABIIRATUN", ket: "Kalimat: matahari itu besar" },
+      { arab: "مـ", latin: "(waqaf lazim)", ket: "Tanda: wajib berhenti" },
+      { arab: "لا", latin: "(laa waqaf)", ket: "Tanda: dilarang berhenti" },
+      { arab: "ج", latin: "(waqaf jaiz)", ket: "Tanda: boleh berhenti / boleh lanjut" }
+    ]
+  },
+  {
+    id: "i6", warna: "#2FA84F", judul: "Jilid 6", deskripsi: "Tajwid dasar & Surat Al-Fatihah",
+    tujuan: "Mengenal qalqalah, ghunnah, mad panjang lanjutan, dan membaca Surat Al-Fatihah.",
+    kartu: [
+      { arab: "قَبْ", latin: "QAB", ket: "Qalqalah pada huruf qaf sukun" },
+      { arab: "أَدْ", latin: "AD", ket: "Qalqalah pada huruf dal sukun" },
+      { arab: "إِنَّ", latin: "INNA", ket: "Ghunnah, dengung pada nun bertasydid" },
+      { arab: "ثُمَّ", latin: "TSUMMA", ket: "Ghunnah pada mim bertasydid" },
+      { arab: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", latin: "BISMILLAAHIRRAHMAANIRRAHIIM", ket: "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang" },
+      { arab: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", latin: "ALHAMDU LILLAAHI RABBIL 'AALAMIIN", ket: "Segala puji bagi Allah, Tuhan semesta alam" },
+      { arab: "الرَّحْمَٰنِ الرَّحِيمِ", latin: "ARRAHMAANIRRAHIIM", ket: "Yang Maha Pengasih, Maha Penyayang" },
+      { arab: "مَالِكِ يَوْمِ الدِّينِ", latin: "MAALIKI YAUMIDDIIN", ket: "Yang menguasai hari pembalasan" },
+      { arab: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", latin: "IYYAAKA NA'BUDU WA IYYAAKA NASTA'IIN", ket: "Hanya kepada-Mu kami menyembah dan memohon pertolongan" }
+    ]
+  },
+  {
+    id: "i7", warna: "#1B7A72", judul: "Jilid 7 · Bonus", deskripsi: "Yuk lanjut ke Al-Qur'an!",
+    tujuan: "Setelah lancar Iqro Jilid 1-6, latihan membaca surat-surat pendek dalam Al-Qur'an (Juz Amma).",
+    kartu: [
+      { arab: "قُلْ أَعُوذُ بِرَبِّ النَّاسِ", latin: "QUL A'UUDZU BIRABBIN NAAS", ket: "An-Naas ayat 1: Katakanlah, aku berlindung kepada Tuhan manusia" },
+      { arab: "مَلِكِ النَّاسِ", latin: "MALIKIN NAAS", ket: "An-Naas ayat 2: Raja manusia" },
+      { arab: "إِلَٰهِ النَّاسِ", latin: "ILAAHIN NAAS", ket: "An-Naas ayat 3: Sembahan manusia" },
+      { arab: "مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ", latin: "MIN SYARRIL WASWAASIL KHANNAAS", ket: "An-Naas ayat 4: Dari kejahatan bisikan setan yang bersembunyi" },
+      { arab: "الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ", latin: "ALLADZII YUWASWISU FII SHUDUURIN NAAS", ket: "An-Naas ayat 5: Yang membisikkan kejahatan ke dalam dada manusia" },
+      { arab: "مِنَ الْجِنَّةِ وَالنَّاسِ", latin: "MINAL JINNATI WAN NAAS", ket: "An-Naas ayat 6: Dari golongan jin dan manusia" },
+      { arab: "قُلْ هُوَ اللَّهُ أَحَدٌ", latin: "QUL HUWALLAAHU AHAD", ket: "Al-Ikhlas ayat 1: Katakanlah, Dialah Allah Yang Maha Esa" },
+      { arab: "اللَّهُ الصَّمَدُ", latin: "ALLAAHUSH SHAMAD", ket: "Al-Ikhlas ayat 2: Allah tempat bergantung segala sesuatu" },
+      { arab: "لَمْ يَلِدْ وَلَمْ يُولَدْ", latin: "LAM YALID WA LAM YUULAD", ket: "Al-Ikhlas ayat 3: Dia tiada beranak dan tiada diperanakkan" },
+      { arab: "وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ", latin: "WA LAM YAKUL LAHUU KUFUWAN AHAD", ket: "Al-Ikhlas ayat 4: Tidak ada satu pun yang setara dengan-Nya" },
+      { arab: "وَالْعَصْرِ", latin: "WAL 'ASHR", ket: "Al-'Ashr ayat 1: Demi masa" },
+      { arab: "إِنَّ الْإِنسَانَ لَفِي خُسْرٍ", latin: "INNAL INSAANA LAFII KHUSR", ket: "Al-'Ashr ayat 2: Sesungguhnya manusia benar-benar dalam kerugian" },
+      { arab: "إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ", latin: "ILLAL LADZIINA AAMANUU WA 'AMILUSH SHAALIHAATI WA TAWAASHAU BIL HAQQI WA TAWAASHAU BISH SHABR", ket: "Al-'Ashr ayat 3: Kecuali orang beriman, beramal saleh, saling menasihati dalam kebenaran dan kesabaran" }
+    ]
+  }
+];
+
+// ============================================================
+// DATA KONTEN — BELAJAR SHOLAT
+// ============================================================
+const SHOLAT_MODULES = [
+  {
+    id: "s1", warna: "#7C83FD", judul: "Wudhu", deskripsi: "Bersuci sebelum sholat",
+    tujuan: "Belajar niat dan urutan gerakan wudhu yang benar sebelum sholat.",
+    kartu: [
+      { arab: "نَوَيْتُ الْوُضُوءَ لِرَفْعِ الْحَدَثِ الْأَصْغَرِ فَرْضًا لِلَّهِ تَعَالَى", latin: "NAWAITUL WUDHUU-A LIRAF'IL HADATSIL ASHGHARI FARDHOL LILLAAHI TA'AALAA", ket: "Niat wudhu: menghilangkan hadas kecil, fardhu karena Allah" },
+      { arab: "غَسْلُ الْيَدَيْنِ", latin: "GHASLUL YADAIN", ket: "Membasuh kedua telapak tangan, 3 kali" },
+      { arab: "الْمَضْمَضَةُ", latin: "AL-MADHMADHAH", ket: "Berkumur-kumur membersihkan mulut, 3 kali" },
+      { arab: "الِاسْتِنْشَاقُ", latin: "AL-ISTINSYAAQ", ket: "Memasukkan air ke hidung lalu mengeluarkannya, 3 kali" },
+      { arab: "غَسْلُ الْوَجْهِ", latin: "GHASLUL WAJHI", ket: "Membasuh seluruh wajah, dari batas rambut sampai dagu, 3 kali" },
+      { arab: "غَسْلُ الْيَدَيْنِ إِلَى الْمِرْفَقَيْنِ", latin: "GHASLUL YADAINI ILAL MIRFAQAIN", ket: "Membasuh tangan sampai siku, mulai kanan, 3 kali" },
+      { arab: "مَسْحُ الرَّأْسِ", latin: "MASHUR RA'SI", ket: "Mengusap sebagian atau seluruh kepala dengan tangan basah" },
+      { arab: "مَسْحُ الْأُذُنَيْنِ", latin: "MASHUL UDZUNAIN", ket: "Mengusap bagian luar dan dalam kedua telinga" },
+      { arab: "غَسْلُ الرِّجْلَيْنِ إِلَى الْكَعْبَيْنِ", latin: "GHASLUR RIJLAINI ILAL KA'BAIN", ket: "Membasuh kaki sampai mata kaki, mulai kanan, 3 kali" },
+      { arab: "أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ اللَّهِ", latin: "ASYHADU ALLAA ILAAHA ILLALLAAH WA ASYHADU ANNA MUHAMMADAR RASUULULLAAH", ket: "Doa setelah wudhu: bersaksi tiada Tuhan selain Allah dan Nabi Muhammad utusan-Nya" }
+    ]
+  },
+  {
+    id: "s2", warna: "#FF6F59", judul: "Gerakan Sholat 1", deskripsi: "Niat sampai I'tidal",
+    tujuan: "Belajar bacaan dari niat, takbir, Al-Fatihah, ruku', sampai i'tidal.",
+    kartu: [
+      { arab: "أُصَلِّي فَرْضَ الصُّبْحِ رَكْعَتَيْنِ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى", latin: "USHALLII FARDHASH SHUBHI RAK'ATAINI MUSTAQBILAL QIBLATI ADAA-AL LILLAAHI TA'AALAA", ket: "Contoh niat sholat Subuh 2 rakaat" },
+      { arab: "اللَّهُ أَكْبَرُ", latin: "ALLAAHU AKBAR", ket: "Takbiratul ihram: mengangkat kedua tangan sambil mengucap Allahu Akbar, tanda mulai sholat" },
+      { arab: "اللَّهُمَّ بَاعِدْ بَيْنِي وَبَيْنَ خَطَايَايَ", latin: "ALLAAHUMMA BAA'ID BAINII WA BAINA KHATHAAYAAYA", ket: "Doa iftitah: memohon dijauhkan dari kesalahan" },
+      { arab: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", latin: "BISMILLAAHIR RAHMAANIR RAHIIM", ket: "Awal Surat Al-Fatihah, wajib dibaca tiap rakaat" },
+      { arab: "قُلْ هُوَ اللَّهُ أَحَدٌ", latin: "QUL HUWALLAAHU AHAD", ket: "Contoh surat pendek setelah Al-Fatihah" },
+      { arab: "سُبْحَانَ رَبِّيَ الْعَظِيمِ", latin: "SUBHAANA RABBIYAL 'AZHIIM", ket: "Bacaan ruku', badan membungkuk 90°, dibaca 3 kali" },
+      { arab: "سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ", latin: "SAMI'ALLAAHU LIMAN HAMIDAH", ket: "I'tidal: bangkit dari ruku' sambil mengangkat tangan" }
+    ]
+  },
+  {
+    id: "s3", warna: "#2FA84F", judul: "Gerakan Sholat 2", deskripsi: "Sujud sampai Salam",
+    tujuan: "Belajar bacaan sujud, tasyahud, sholawat, sampai salam penutup sholat.",
+    kartu: [
+      { arab: "سُبْحَانَ رَبِّيَ الْأَعْلَى", latin: "SUBHAANA RABBIYAL A'LAA", ket: "Bacaan sujud, dahi menyentuh lantai, dibaca 3 kali" },
+      { arab: "رَبِّ اغْفِرْ لِي", latin: "RABBIGHFIR LII", ket: "Duduk di antara dua sujud, memohon ampun" },
+      { arab: "التَّحِيَّاتُ لِلَّهِ", latin: "ATTAHIYYAATU LILLAAH", ket: "Awal bacaan tasyahud: segala kehormatan bagi Allah" },
+      { arab: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ", latin: "ALLAAHUMMA SHALLI 'ALAA MUHAMMAD", ket: "Bacaan sholawat pada tasyahud akhir" },
+      { arab: "السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ", latin: "ASSALAAMU 'ALAIKUM WA RAHMATULLAAH", ket: "Salam penutup sholat, menoleh ke kanan lalu ke kiri" }
+    ]
+  }
+];
+
+// ============================================================
+// DATA KONTEN — BELAJAR TAJWID DASAR
+// ============================================================
+const TAJWID_MODULES = [
+  {
+    id: "t1", warna: "#FFC93C", judul: "Nun Mati & Tanwin", deskripsi: "5 hukum bacaan",
+    tujuan: "Mengenal 5 hukum bacaan nun mati/tanwin bertemu huruf hijaiyah.",
+    kartu: [
+      { arab: "مَنْ آمَنَ", latin: "MAN AAMANA", ket: "Izhar: nun mati bertemu huruf tenggorokan, dibaca jelas tanpa dengung" },
+      { arab: "مَنْ يَقُولُ", latin: "MAYYAQUULU", ket: "Idgham Bighunnah: nun mati bertemu ي ن م و, melebur disertai dengung" },
+      { arab: "مِنْ رَبِّهِمْ", latin: "MIR RABBIHIM", ket: "Idgham Bilaghunnah: nun mati bertemu ل ر, melebur tanpa dengung" },
+      { arab: "مِنْ بَعْدِ", latin: "MIM BA'DI", ket: "Iqlab: nun mati bertemu ب, berubah bunyi jadi mim disertai dengung" },
+      { arab: "مَنْ كَانَ", latin: "MANGKAANA", ket: "Ikhfa: nun mati bertemu huruf ikhfa lainnya, dibaca samar dengan dengung" }
+    ]
+  },
+  {
+    id: "t2", warna: "#7C83FD", judul: "Mim Mati", deskripsi: "3 hukum bacaan",
+    tujuan: "Mengenal 3 hukum bacaan mim mati bertemu huruf hijaiyah.",
+    kartu: [
+      { arab: "هُمْ فِيهَا", latin: "HUM FIIHAA", ket: "Ikhfa Syafawi: mim mati bertemu ب, dibaca samar disertai dengung" },
+      { arab: "لَهُمْ مَا", latin: "LAHUM MAA", ket: "Idgham Mimi: mim mati bertemu mim, melebur jadi satu mim berdengung" },
+      { arab: "هُمْ نَاصِرُونَ", latin: "HUM NAASHIRUUN", ket: "Izhar Syafawi: mim mati bertemu huruf selain ب dan م, dibaca jelas" }
+    ]
+  },
+  {
+    id: "t3", warna: "#E85D9C", judul: "Mad & Qalqalah", deskripsi: "Bacaan panjang & pantul",
+    tujuan: "Mengenal jenis-jenis mad (bacaan panjang) dan qalqalah (bacaan pantul).",
+    kartu: [
+      { arab: "قَالَ", latin: "QAALA", ket: "Mad Thabi'i: bacaan panjang dasar, 2 harakat" },
+      { arab: "جَاءَ", latin: "JAA-A", ket: "Mad Wajib Muttashil: mad bertemu hamzah dalam satu kata, 4-5 harakat" },
+      { arab: "فِي أَنفُسِكُمْ", latin: "FII ANFUSIKUM", ket: "Mad Jaiz Munfashil: mad bertemu hamzah di kata berikutnya, 4-5 harakat" },
+      { arab: "يَقْطَعُونَ", latin: "YAQTHA'UUNA", ket: "Qalqalah Sughra: huruf qalqalah sukun di tengah kata, dipantulkan ringan" },
+      { arab: "الْفَلَقِ", latin: "AL-FALAQ", ket: "Qalqalah Kubra: huruf qalqalah di akhir kata/waqaf, dipantulkan lebih kuat" }
+    ]
+  }
+];
+
+// ============================================================
+// DATA KONTEN — KISAH 25 NABI & RASUL
+// ============================================================
+const NABI_MODULES = [
+  {
+    id: "n1", warna: "#FF6F59", judul: "Nabi Adam - Ishaq", deskripsi: "9 Nabi pertama",
+    tujuan: "Mengenal kisah singkat 9 Nabi pertama, dari Nabi Adam sampai Nabi Ishaq.",
+    kartu: [
+      { arab: "آدَم", latin: "Adam AS", ket: "Manusia dan nabi pertama, diciptakan Allah dari tanah, ayah seluruh manusia" },
+      { arab: "إِدْرِيس", latin: "Idris AS", ket: "Dikenal ahli ilmu, orang pertama yang pandai menulis dan menjahit" },
+      { arab: "نُوح", latin: "Nuh AS", ket: "Berdakwah ratusan tahun, membuat kapal besar agar umatnya selamat" },
+      { arab: "هُود", latin: "Hud AS", ket: "Diutus untuk kaum 'Ad yang sombong dan menyembah berhala" },
+      { arab: "صَالِح", latin: "Shaleh AS", ket: "Diutus untuk kaum Tsamud, mukjizatnya unta betina keluar dari batu" },
+      { arab: "إِبْرَاهِيم", latin: "Ibrahim AS", ket: "Bapak para nabi, sangat tabah, membangun Ka'bah bersama putranya" },
+      { arab: "لُوط", latin: "Luth AS", ket: "Berdakwah kepada kaumnya yang berperilaku menyimpang" },
+      { arab: "إِسْمَاعِيل", latin: "Ismail AS", ket: "Putra Nabi Ibrahim yang ikhlas, sumber mata air Zamzam" },
+      { arab: "إِسْحَاق", latin: "Ishaq AS", ket: "Putra Nabi Ibrahim, ayah dari Nabi Ya'qub" }
+    ]
+  },
+  {
+    id: "n2", warna: "#7C83FD", judul: "Nabi Ya'qub - Sulaiman", deskripsi: "9 Nabi berikutnya",
+    tujuan: "Mengenal kisah singkat 9 Nabi, dari Nabi Ya'qub sampai Nabi Sulaiman.",
+    kartu: [
+      { arab: "يَعْقُوب", latin: "Ya'qub AS", ket: "Ayah dari 12 anak, salah satunya Nabi Yusuf" },
+      { arab: "يُوسُف", latin: "Yusuf AS", ket: "Terkenal tampan dan pandai menafsirkan mimpi, sabar menghadapi ujian" },
+      { arab: "أَيُّوب", latin: "Ayyub AS", ket: "Terkenal sangat sabar menghadapi sakit dan ujian bertahun-tahun" },
+      { arab: "شُعَيْب", latin: "Syu'aib AS", ket: "Diutus untuk kaum Madyan agar jujur dalam berdagang" },
+      { arab: "هَارُون", latin: "Harun AS", ket: "Kakak Nabi Musa, membantu berdakwah karena pandai berbicara" },
+      { arab: "مُوسَى", latin: "Musa AS", ket: "Diberi mukjizat tongkat jadi ular dan membelah Laut Merah" },
+      { arab: "ذُو الْكِفْل", latin: "Zulkifli AS", ket: "Dikenal sabar dan tekun menjalankan tugas serta ibadahnya" },
+      { arab: "دَاوُد", latin: "Daud AS", ket: "Diberi Kitab Zabur dan suara merdu, bisa melunakkan besi" },
+      { arab: "سُلَيْمَان", latin: "Sulaiman AS", ket: "Putra Nabi Daud, bisa berbicara dengan hewan dan memerintah jin" }
+    ]
+  },
+  {
+    id: "n3", warna: "#2FA84F", judul: "Nabi Ilyas - Muhammad", deskripsi: "7 Nabi penutup",
+    tujuan: "Mengenal kisah singkat 7 Nabi terakhir, dari Nabi Ilyas sampai Nabi Muhammad SAW.",
+    kartu: [
+      { arab: "إِلْيَاس", latin: "Ilyas AS", ket: "Mengajak kaumnya berhenti menyembah berhala bernama Ba'al" },
+      { arab: "اَلْيَسَع", latin: "Ilyasa AS", ket: "Meneruskan dakwah Nabi Ilyas kepada Bani Israil" },
+      { arab: "يُونُس", latin: "Yunus AS", ket: "Pernah ditelan ikan besar, selamat karena banyak berdzikir" },
+      { arab: "زَكَرِيَّا", latin: "Zakariya AS", ket: "Berdoa sungguh-sungguh hingga dikaruniai anak di usia tua" },
+      { arab: "يَحْيَى", latin: "Yahya AS", ket: "Putra Nabi Zakariya, sejak kecil sudah rajin beribadah" },
+      { arab: "عِيسَى", latin: "Isa AS", ket: "Diberi mukjizat bisa bicara sejak bayi dan menyembuhkan orang sakit" },
+      { arab: "مُحَمَّد", latin: "Muhammad SAW", ket: "Nabi dan Rasul terakhir, teladan akhlak mulia bagi seluruh manusia" }
+    ]
+  }
+];
+
+const APP_DATA = {
+  iqro: Object.assign({}, CATEGORY_META.iqro, { modules: IQRO_MODULES }),
+  sholat: Object.assign({}, CATEGORY_META.sholat, { modules: SHOLAT_MODULES }),
+  tajwid: Object.assign({}, CATEGORY_META.tajwid, { modules: TAJWID_MODULES }),
+  nabi: Object.assign({}, CATEGORY_META.nabi, { modules: NABI_MODULES })
 };
 
 const MASKOT_KATA = {
-  sapaan: ["Halo, Sahabat! Yuk belajar mengaji bareng Kak Iqro! 👋"],
   benar: ["Betul sekali! Kamu hebat! 🌟", "Mantap! Lanjut yuk! 🎉", "Iya, tepat sekali! 👍"],
   salah: ["Belum tepat, coba dengarkan lagi ya! 🔁", "Ayo dicoba sekali lagi, pasti bisa! 💪"],
-  selesaiJilid: ["Horeee! Kamu keren! 🏆"],
+  selesaiJilid: ["Horeee! Kamu keren! 🏆"]
 };
 
 // ============================================================
 // APP LOGIC
 // ============================================================
 const root = document.getElementById("app");
-const PROGRESS_KEY = "iqro-ceria-progress-v1";
+const PROGRESS_KEY = "iqro-ceria-progress-v2";
+const MUSIC_KEY = "iqro-ceria-music";
 
-let state = { view: "home", jilidId: null, cardIndex: 0, quiz: null, match: null };
+let state = { view: "dashboard", category: null, jilidId: null, cardIndex: 0, quiz: null, match: null };
 
 // ---------------- Progress (localStorage, tanpa akun) ----------------
 function loadProgress() {
@@ -739,20 +1084,22 @@ function saveProgress(p) {
   try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(p)); }
   catch (e) { /* localStorage tidak tersedia */ }
 }
-function getJilidProgress(jilidId) {
+function progKey(cat, modId) { return cat + ":" + modId; }
+function getProgress(cat, modId) {
   const p = loadProgress();
-  return p[jilidId] || { seen: [], selesai: false };
+  return p[progKey(cat, modId)] || { seen: [], selesai: false };
 }
-function markCardSeen(jilidId, cardIdx) {
+function markCardSeen(cat, modId, cardIdx) {
   const p = loadProgress();
-  if (!p[jilidId]) p[jilidId] = { seen: [], selesai: false };
-  if (!p[jilidId].seen.includes(cardIdx)) p[jilidId].seen.push(cardIdx);
-  const jilid = IQRO_DATA.jilid.find((j) => j.id === jilidId);
-  if (jilid && p[jilidId].seen.length >= jilid.kartu.length) p[jilidId].selesai = true;
+  const key = progKey(cat, modId);
+  if (!p[key]) p[key] = { seen: [], selesai: false };
+  if (!p[key].seen.includes(cardIdx)) p[key].seen.push(cardIdx);
+  const mod = APP_DATA[cat].modules.find((m) => m.id === modId);
+  if (mod && p[key].seen.length >= mod.kartu.length) p[key].selesai = true;
   saveProgress(p);
 }
 
-// ---------------- Audio: Web Speech API (suara bawaan browser) ----------------
+// ---------------- Audio suara huruf: Web Speech API ----------------
 let arabicVoice = null;
 function pickArabicVoice() {
   const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
@@ -775,7 +1122,7 @@ function speak(text, onEnd) {
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = "ar-SA";
   if (arabicVoice) utter.voice = arabicVoice;
-  utter.rate = 0.75;
+  utter.rate = 0.72;
   utter.pitch = 1.05;
   utter.onend = () => onEnd && onEnd();
   utter.onerror = () => {
@@ -794,13 +1141,94 @@ function showAudioNote(msg) {
   audioNoteTimer = setTimeout(() => el.classList.add("hidden"), 4500);
 }
 
+// ---------------- Musik latar ringan (Web Audio, tanpa file audio) ----------------
+let musicOn = localStorage.getItem(MUSIC_KEY) !== "off";
+let audioCtx = null;
+let musicMaster = null;
+let musicTimer = null;
+function ensureCtx() {
+  if (!audioCtx) {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return null;
+    audioCtx = new Ctx();
+  }
+  return audioCtx;
+}
+function startMusic() {
+  if (!musicOn || musicTimer) return;
+  const ctx = ensureCtx();
+  if (!ctx) return;
+  if (ctx.state === "suspended") ctx.resume();
+  musicMaster = ctx.createGain();
+  musicMaster.gain.value = 0.05;
+  musicMaster.connect(ctx.destination);
+  const notes = [261.63, 293.66, 329.63, 392.0, 440.0, 392.0, 329.63, 293.66]; // pentatonis lembut
+  let step = 0;
+  musicTimer = setInterval(() => {
+    if (!musicOn || !audioCtx) return;
+    const freq = notes[step % notes.length];
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = "sine";
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(0, audioCtx.currentTime);
+    g.gain.linearRampToValueAtTime(0.7, audioCtx.currentTime + 0.08);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.3);
+    o.connect(g);
+    g.connect(musicMaster);
+    o.start();
+    o.stop(audioCtx.currentTime + 1.4);
+    step++;
+  }, 780);
+}
+function stopMusic() {
+  if (musicTimer) { clearInterval(musicTimer); musicTimer = null; }
+  if (musicMaster) { try { musicMaster.disconnect(); } catch (e) {} musicMaster = null; }
+}
+function updateMusicPlayback() {
+  if (state.view === "dashboard") startMusic();
+  else stopMusic();
+}
+function updateMusicBtn() {
+  const btn = document.getElementById("musicBtn");
+  if (!btn) return;
+  btn.textContent = musicOn ? "🎵" : "🔇";
+  btn.classList.toggle("muted", !musicOn);
+}
+document.getElementById("musicBtn").addEventListener("click", () => {
+  musicOn = !musicOn;
+  localStorage.setItem(MUSIC_KEY, musicOn ? "on" : "off");
+  updateMusicBtn();
+  if (musicOn) updateMusicPlayback(); else stopMusic();
+});
+updateMusicBtn();
+// beberapa browser memblokir autoplay audio sebelum ada interaksi pengguna;
+// begitu pengguna menyentuh layar pertama kali, coba lanjutkan musik dashboard.
+document.addEventListener("pointerdown", function resumeOnce() {
+  const ctx = ensureCtx();
+  if (ctx && ctx.state === "suspended") ctx.resume();
+  updateMusicPlayback();
+  document.removeEventListener("pointerdown", resumeOnce);
+}, { once: true });
+
 // ---------------- Render helpers ----------------
 function mascot(msg) {
   return `
     <div class="mascot-wrap">
-      <div class="mascot">
-        <div class="mascot-cap"></div>
-        <div class="mascot-body"><div class="mascot-eyes"><span></span><span></span></div></div>
+      <div class="mascot3d">
+        <div class="m-shadow"></div>
+        <div class="m-body">
+          <div class="m-collar"></div>
+          <div class="m-armL"></div>
+          <div class="m-armR"></div>
+          <div class="m-book"></div>
+        </div>
+        <div class="m-head">
+          <div class="m-peci"></div>
+          <div class="m-cheekL"></div><div class="m-cheekR"></div>
+          <div class="m-eyeL"></div><div class="m-eyeR"></div>
+          <div class="m-mouth"></div>
+        </div>
       </div>
       <div class="speech-bubble">${msg}</div>
     </div>`;
@@ -811,7 +1239,7 @@ function topbar(title, showBack) {
       <div class="brand">
         ${showBack ? `<button class="back-btn" id="btnBack">← Kembali</button>` : `<div class="brand-title">Iqro <span>Ceria</span></div>`}
       </div>
-      ${showBack ? `<div class="brand-title" style="font-size:18px">${title}</div>` : ""}
+      ${showBack ? `<div class="brand-title" style="font-size:17px">${title}</div>` : ""}
     </div>`;
 }
 function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
@@ -823,44 +1251,92 @@ function shuffle(arr) {
   }
   return a;
 }
+function arabSizeClass(text) {
+  const len = (text || "").length;
+  if (len > 40) return "small";
+  if (len > 16) return "medium";
+  return "";
+}
 
 function render() {
-  if (state.view === "home") renderHome();
+  if (state.view === "dashboard") renderDashboard();
+  else if (state.view === "category-home") renderCategoryHome();
   else if (state.view === "lesson") renderLesson();
   else if (state.view === "gamehub") renderGameHub();
   else if (state.view === "quiz") renderQuiz();
   else if (state.view === "match") renderMatch();
   attachGlobalHandlers();
+  updateMusicPlayback();
 }
 
-// ---------------- HOME ----------------
-function renderHome() {
-  const totalKartu = IQRO_DATA.jilid.reduce((a, j) => a + j.kartu.length, 0);
-  let seenTotal = 0;
-  IQRO_DATA.jilid.forEach((j) => (seenTotal += getJilidProgress(j.id).seen.length));
-
-  const books = IQRO_DATA.jilid.map((j) => {
-    const prog = getJilidProgress(j.id);
+// ---------------- DASHBOARD ----------------
+function renderDashboard() {
+  const cats = ["iqro", "sholat", "tajwid", "nabi"];
+  const tileHtml = cats.map((key) => {
+    const cat = APP_DATA[key];
+    const total = cat.modules.reduce((a, m) => a + m.kartu.length, 0);
+    let seen = 0;
+    cat.modules.forEach((m) => (seen += getProgress(key, m.id).seen.length));
     return `
-      <div class="book ${prog.selesai ? "book-selesai" : ""}" style="background:${j.warna}">
-        <div class="book-jilid">${j.judul}</div>
-        <div class="book-deskripsi">${j.deskripsi}</div>
-        <div class="book-progress">⭐ ${prog.seen.length}/${j.kartu.length}</div>
+      <button class="menu-tile tile-${key}" data-cat="${key}">
+        <div class="m-icon">${cat.icon}</div>
+        <h3>${cat.label}</h3>
+        <p>${cat.desc}</p>
+        <span class="m-progress">⭐ ${seen}/${total}</span>
+      </button>`;
+  }).join("");
+
+  root.innerHTML = `
+    <div class="topbar">
+      <div class="brand"><div class="brand-title">Iqro <span>Ceria</span></div></div>
+    </div>
+    ${mascot("Assalamu'alaikum, Sahabat! Yuk pilih mau belajar apa hari ini? 😊")}
+    <div class="dash-hero">
+      <h2>Ayo Belajar Islam Bareng!</h2>
+      <p>Iqro sampai Al-Qur'an, tajwid, sholat, sampai kisah para nabi — semua ada di sini, seru dan mudah dipahami!</p>
+    </div>
+    <div class="menu-grid">${tileHtml}</div>
+    <div class="footer-note">Dibuat dengan ❤️ untuk adik-adik belajar mengaji</div>
+  `;
+
+  root.querySelectorAll("[data-cat]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      state.view = "category-home";
+      state.category = btn.dataset.cat;
+      render();
+    });
+  });
+}
+
+// ---------------- CATEGORY HOME (rak modul) ----------------
+function renderCategoryHome() {
+  const cat = APP_DATA[state.category];
+  const totalKartu = cat.modules.reduce((a, m) => a + m.kartu.length, 0);
+  let seenTotal = 0;
+  cat.modules.forEach((m) => (seenTotal += getProgress(state.category, m.id).seen.length));
+
+  const books = cat.modules.map((m) => {
+    const prog = getProgress(state.category, m.id);
+    return `
+      <div class="book ${prog.selesai ? "book-selesai" : ""}" style="background:${m.warna}">
+        <div class="book-jilid">${m.judul}</div>
+        <div class="book-deskripsi">${m.deskripsi}</div>
+        <div class="book-progress">⭐ ${prog.seen.length}/${m.kartu.length}</div>
         <div class="book-actions">
-          <button class="btn-belajar" data-belajar="${j.id}">📖 Belajar</button>
-          <button class="btn-main" data-main="${j.id}">🎮 Main</button>
+          <button class="btn-belajar" data-belajar="${m.id}">📖 Belajar</button>
+          <button class="btn-main" data-main="${m.id}">🎮 Main</button>
         </div>
       </div>`;
   }).join("");
 
   root.innerHTML = `
-    ${topbar("", false)}
-    ${mascot("Halo, Sahabat! Pilih jilid buat mulai belajar ya! 👋")}
-    <div class="intro-card">
-      <h2>Belajar Iqro jadi seru!</h2>
-      <p>Dengar contoh pelafalan, lihat tulisan Arabnya, lalu main game serunya. Progres kamu: ${seenTotal}/${totalKartu} kartu ✨</p>
+    ${topbar(cat.label, true)}
+    ${mascot(cat.intro)}
+    <div class="intro-card" style="background:${cat.heroGradient}">
+      <h2>${cat.heroTitle}</h2>
+      <p>${cat.heroDesc} Progres kamu: ${seenTotal}/${totalKartu} ✨</p>
     </div>
-    <div class="shelf-label">📚 Rak Buku Iqro</div>
+    <div class="shelf-label">${cat.shelfLabel}</div>
     <div class="bookshelf">${books}</div>
     <div class="footer-note">Dibuat dengan ❤️ untuk adik-adik belajar mengaji</div>
   `;
@@ -868,39 +1344,41 @@ function renderHome() {
   root.querySelectorAll("[data-belajar]").forEach((btn) => {
     btn.addEventListener("click", () => {
       state.view = "lesson";
-      state.jilidId = Number(btn.dataset.belajar);
+      state.jilidId = btn.dataset.belajar;
       state.cardIndex = 0;
       render();
     });
   });
   root.querySelectorAll("[data-main]").forEach((btn) => {
     btn.addEventListener("click", () => {
-      state.jilidId = Number(btn.dataset.main);
+      state.jilidId = btn.dataset.main;
       state.view = "gamehub";
       render();
     });
   });
 }
 
-// ---------------- LESSON ----------------
+// ---------------- LESSON (flashcard) ----------------
 function renderLesson() {
-  const jilid = IQRO_DATA.jilid.find((j) => j.id === state.jilidId);
-  const kartu = jilid.kartu[state.cardIndex];
-  const prog = getJilidProgress(jilid.id);
-  const isLast = state.cardIndex === jilid.kartu.length - 1;
+  const cat = APP_DATA[state.category];
+  const mod = cat.modules.find((j) => j.id === state.jilidId);
+  const kartu = mod.kartu[state.cardIndex];
+  const prog = getProgress(state.category, mod.id);
+  const isLast = state.cardIndex === mod.kartu.length - 1;
   const sudahDilihat = prog.seen.includes(state.cardIndex);
+  const arabClass = arabSizeClass(kartu.arab);
 
-  const dots = jilid.kartu.map((_, i) => {
+  const dots = mod.kartu.map((_, i) => {
     const cls = i === state.cardIndex ? "active" : prog.seen.includes(i) ? "done" : "";
     return `<span class="dot ${cls}"></span>`;
   }).join("");
 
   root.innerHTML = `
-    ${topbar(jilid.judul, true)}
-    ${mascot(`${jilid.tujuan}`)}
+    ${topbar(mod.judul, true)}
+    ${mascot(`${mod.tujuan}`)}
     <div class="progress-dots">${dots}</div>
     <div class="flashcard">
-      <div class="arabic">${kartu.arab}</div>
+      <div class="arabic ${arabClass}">${kartu.arab}</div>
       <div class="latin">${kartu.latin}</div>
       <div class="ket">${kartu.ket}</div>
       <button class="speaker-btn" id="btnSpeak" aria-label="Dengarkan pelafalan">🔊</button>
@@ -920,7 +1398,7 @@ function renderLesson() {
     speak(kartu.arab, () => e.currentTarget.classList.remove("speaking"));
   });
   document.getElementById("btnBisa").addEventListener("click", () => {
-    markCardSeen(jilid.id, state.cardIndex);
+    markCardSeen(state.category, mod.id, state.cardIndex);
     render();
   });
   document.getElementById("btnPrev").addEventListener("click", () => {
@@ -934,56 +1412,60 @@ function renderLesson() {
 
 // ---------------- GAME HUB ----------------
 function renderGameHub() {
-  const jilid = IQRO_DATA.jilid.find((j) => j.id === state.jilidId);
+  const cat = APP_DATA[state.category];
+  const mod = cat.modules.find((j) => j.id === state.jilidId);
   root.innerHTML = `
-    ${topbar(jilid.judul + " · Main", true)}
+    ${topbar(mod.judul + " · Main", true)}
     ${mascot("Pilih mau main game yang mana? 🎮")}
     <div class="game-grid">
       <button class="game-tile quiz" id="tileQuiz">
-        <div class="icon">🎧</div>
-        <h3>Kuis Suara</h3>
-        <p>Dengar suaranya, tebak tulisannya yang benar!</p>
+        <div class="icon">${cat.quizIcon}</div>
+        <h3>${cat.quizLabel}</h3>
+        <p>${cat.quizDesc}</p>
       </button>
       <button class="game-tile match" id="tileMatch">
         <div class="icon">🧩</div>
         <h3>Cocok Kartu</h3>
-        <p>Buka dua kartu, cocokkan huruf Arab dengan bacaannya!</p>
+        <p>${cat.matchDesc}</p>
       </button>
     </div>
   `;
-  document.getElementById("tileQuiz").addEventListener("click", () => startQuiz(jilid.id));
-  document.getElementById("tileMatch").addEventListener("click", () => startMatch(jilid.id));
+  document.getElementById("tileQuiz").addEventListener("click", () => startQuiz(state.jilidId));
+  document.getElementById("tileMatch").addEventListener("click", () => startMatch(state.jilidId));
 }
 
-// ---------------- QUIZ: dengar & pilih ----------------
+// ---------------- QUIZ: dengar/baca & pilih ----------------
 function startQuiz(jilidId) {
-  const jilid = IQRO_DATA.jilid.find((j) => j.id === jilidId);
-  const totalSoal = Math.min(5, jilid.kartu.length);
-  const pool = shuffle(jilid.kartu.map((k, i) => i)).slice(0, totalSoal);
+  const cat = APP_DATA[state.category];
+  const mod = cat.modules.find((j) => j.id === jilidId);
+  const totalSoal = Math.min(5, mod.kartu.length);
+  const pool = shuffle(mod.kartu.map((k, i) => i)).slice(0, totalSoal);
   state.view = "quiz";
   state.jilidId = jilidId;
   state.quiz = { pool, index: 0, score: 0, total: totalSoal, answered: false };
   render();
 }
 function renderQuiz() {
-  const jilid = IQRO_DATA.jilid.find((j) => j.id === state.jilidId);
+  const cat = APP_DATA[state.category];
+  const mod = cat.modules.find((j) => j.id === state.jilidId);
   const q = state.quiz;
-  if (q.index >= q.total) { renderCelebration(jilid, { score: q.score, total: q.total }, "quiz"); return; }
+  if (q.index >= q.total) { renderCelebration(mod, { score: q.score, total: q.total }, "quiz"); return; }
 
   const cardIdx = q.pool[q.index];
-  const kartu = jilid.kartu[cardIdx];
-  const distractorPool = jilid.kartu.map((k, i) => i).filter((i) => i !== cardIdx);
+  const kartu = mod.kartu[cardIdx];
+  const distractorPool = mod.kartu.map((k, i) => i).filter((i) => i !== cardIdx);
   const distractors = shuffle(distractorPool).slice(0, Math.min(3, distractorPool.length));
   const options = shuffle([cardIdx, ...distractors]);
+  const isAudio = cat.quizMode !== "text";
 
   root.innerHTML = `
-    ${topbar(jilid.judul + " · Kuis", true)}
-    ${mascot("Dengarkan suaranya, lalu pilih tulisan yang cocok ya! 🎧")}
+    ${topbar(mod.judul + " · Kuis", true)}
+    ${mascot(isAudio ? "Dengarkan suaranya, lalu pilih tulisan yang cocok ya! 🎧" : "Baca petunjuknya, lalu tebak jawabannya ya! 🕵️")}
     <div class="quiz-card">
       <div class="quiz-question">Soal ${q.index + 1} dari ${q.total}</div>
-      <button class="speaker-btn" id="btnSpeakQuiz" aria-label="Dengarkan pelafalan">🔊</button>
+      ${isAudio ? `<button class="speaker-btn" id="btnSpeakQuiz" aria-label="Dengarkan pelafalan">🔊</button>` : `<div class="clue-box">${kartu.ket}</div>`}
       <div class="quiz-options" id="quizOptions">
-        ${options.map((i) => `<button class="quiz-opt" data-idx="${i}">${jilid.kartu[i].latin}</button>`).join("")}
+        ${options.map((i) => `<button class="quiz-opt" data-idx="${i}">${mod.kartu[i].latin}</button>`).join("")}
       </div>
       <div class="quiz-feedback" id="quizFeedback"></div>
       <div style="margin-top:10px"><span class="quiz-score">⭐ ${q.score}/${q.total}</span></div>
@@ -991,10 +1473,12 @@ function renderQuiz() {
     <div class="audio-note hidden" id="audioNote"></div>
   `;
 
-  const speakBtn = document.getElementById("btnSpeakQuiz");
-  const doSpeak = () => { speakBtn.classList.add("speaking"); speak(kartu.arab, () => speakBtn.classList.remove("speaking")); };
-  speakBtn.addEventListener("click", doSpeak);
-  setTimeout(doSpeak, 300);
+  if (isAudio) {
+    const speakBtn = document.getElementById("btnSpeakQuiz");
+    const doSpeak = () => { speakBtn.classList.add("speaking"); speak(kartu.arab, () => speakBtn.classList.remove("speaking")); };
+    speakBtn.addEventListener("click", doSpeak);
+    setTimeout(doSpeak, 300);
+  }
 
   document.querySelectorAll(".quiz-opt").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -1018,9 +1502,10 @@ function renderQuiz() {
 
 // ---------------- GAME: Cocok Kartu (memory match) ----------------
 function startMatch(jilidId) {
-  const jilid = IQRO_DATA.jilid.find((j) => j.id === jilidId);
-  const n = Math.min(6, jilid.kartu.length);
-  const chosen = shuffle(jilid.kartu.map((k, i) => i)).slice(0, n);
+  const cat = APP_DATA[state.category];
+  const mod = cat.modules.find((j) => j.id === jilidId);
+  const n = Math.min(6, mod.kartu.length);
+  const chosen = shuffle(mod.kartu.map((k, i) => i)).slice(0, n);
   let cards = [];
   chosen.forEach((idx) => {
     cards.push({ uid: idx + "-a", idx, type: "arab" });
@@ -1033,7 +1518,8 @@ function startMatch(jilidId) {
   render();
 }
 function renderMatch() {
-  const jilid = IQRO_DATA.jilid.find((j) => j.id === state.jilidId);
+  const cat = APP_DATA[state.category];
+  const mod = cat.modules.find((j) => j.id === state.jilidId);
   const m = state.match;
 
   if (m.matched.length === m.cards.length) {
@@ -1041,12 +1527,12 @@ function renderMatch() {
     let stars = 1;
     if (m.moves <= maxMoves) stars = 3;
     else if (m.moves <= maxMoves + 3) stars = 2;
-    renderCelebration(jilid, { moves: m.moves, stars }, "match");
+    renderCelebration(mod, { moves: m.moves, stars }, "match");
     return;
   }
 
   root.innerHTML = `
-    ${topbar(jilid.judul + " · Cocok Kartu", true)}
+    ${topbar(mod.judul + " · Cocok Kartu", true)}
     ${mascot("Buka dua kartu, cari pasangannya! 🧩")}
     <div class="match-stats">
       <span class="pill">🔁 Langkah: ${m.moves}</span>
@@ -1057,7 +1543,7 @@ function renderMatch() {
         const isMatched = m.matched.includes(c.uid);
         const isFlipped = m.flipped.some((f) => f.uid === c.uid) || isMatched;
         const label = isFlipped
-          ? (c.type === "arab" ? jilid.kartu[c.idx].arab : jilid.kartu[c.idx].latin)
+          ? (c.type === "arab" ? mod.kartu[c.idx].arab : mod.kartu[c.idx].latin)
           : "❓";
         const faceClass = isFlipped ? (c.type === "arab" ? "face-arab" : "face-latin") : "";
         return `<button class="match-card ${isFlipped ? "flipped" : ""} ${isMatched ? "matched" : ""} ${faceClass}"
@@ -1073,7 +1559,8 @@ function renderMatch() {
 }
 function onMatchCardClick(pos) {
   const m = state.match;
-  const jilid = IQRO_DATA.jilid.find((j) => j.id === state.jilidId);
+  const cat = APP_DATA[state.category];
+  const mod = cat.modules.find((j) => j.id === state.jilidId);
   if (m.busy) return;
   const card = m.cards[pos];
   if (m.matched.includes(card.uid)) return;
@@ -1093,7 +1580,7 @@ function onMatchCardClick(pos) {
         m.matched.push(a.uid, b.uid);
         m.flipped = [];
         m.busy = false;
-        speak(jilid.kartu[a.idx].arab);
+        speak(mod.kartu[a.idx].arab);
         render();
       }, 500);
     } else {
@@ -1107,7 +1594,7 @@ function onMatchCardClick(pos) {
 }
 
 // ---------------- Celebration ----------------
-function renderCelebration(jilid, result, kind) {
+function renderCelebration(mod, result, kind) {
   const isQuiz = kind === "quiz";
   const title = isQuiz ? "Kuis Selesai!" : "Semua Kartu Cocok!";
   const desc = isQuiz
@@ -1115,7 +1602,7 @@ function renderCelebration(jilid, result, kind) {
     : `Selesai dalam ${result.moves} langkah — ${"⭐".repeat(result.stars)}`;
 
   root.innerHTML = `
-    ${topbar(jilid.judul, true)}
+    ${topbar(mod.judul, true)}
     ${mascot(pick(MASKOT_KATA.selesaiJilid))}
     <div class="celebrate">
       <div class="celebrate-card">
@@ -1124,15 +1611,15 @@ function renderCelebration(jilid, result, kind) {
         <p>${desc}</p>
         <button class="btn btn-primary" id="btnUlangi">Main Lagi 🔁</button>
         <button class="btn btn-secondary" id="btnGameLain">Main Game Lain 🎮</button>
-        <button class="btn btn-secondary" id="btnKeHome">Kembali ke Rak Buku 📚</button>
+        <button class="btn btn-secondary" id="btnKeRak">Kembali ke Rak 📚</button>
       </div>
     </div>
   `;
   document.getElementById("btnUlangi").addEventListener("click", () => {
-    if (isQuiz) startQuiz(jilid.id); else startMatch(jilid.id);
+    if (isQuiz) startQuiz(mod.id); else startMatch(mod.id);
   });
   document.getElementById("btnGameLain").addEventListener("click", () => { state.view = "gamehub"; render(); });
-  document.getElementById("btnKeHome").addEventListener("click", () => { state.view = "home"; render(); });
+  document.getElementById("btnKeRak").addEventListener("click", () => { state.view = "category-home"; render(); });
 }
 
 // ---------------- Global handlers ----------------
@@ -1141,7 +1628,8 @@ function attachGlobalHandlers() {
   if (back) {
     back.addEventListener("click", () => {
       if (state.view === "quiz" || state.view === "match") state.view = "gamehub";
-      else state.view = "home";
+      else if (state.view === "gamehub" || state.view === "lesson") state.view = "category-home";
+      else state.view = "dashboard";
       render();
     });
   }
