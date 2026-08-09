@@ -172,6 +172,25 @@ a:focus-visible,
 }
 .mascot-illust.big { width: 132px; height: 164px; }
 .mascot-illust svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.mascot-mini { flex-shrink: 0; }
+.mascot-mini .mascot-illust { width: 40px; height: 50px; animation-duration: 3.4s; }
+.corner-mascot-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 4px;
+}
+.corner-mascot-block .mascot-illust.big { width: 108px; height: 134px; }
+.corner-mascot-note {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--teal-dark);
+  background: #fff;
+  border: 2px dashed var(--teal-dark);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+}
 
 @keyframes bob {
   0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -252,6 +271,227 @@ a:focus-visible,
 }
 .music-btn:active { transform: translateY(3px); box-shadow: none; }
 .music-btn.muted { opacity: 0.5; }
+
+/* ---------- Tema gelap ala Lingokids (dashboard, jalur kategori, progres) ---------- */
+body.dash-theme {
+  background: radial-gradient(120% 90% at 15% 0%, #4a3a86 0%, #2c2154 45%, #201638 100%);
+  background-image: none;
+}
+body.dash-theme .app { padding-bottom: 100px; }
+body.dash-theme .brand-title { color: #fff; }
+body.dash-theme .brand-title span { color: var(--yellow); }
+body.dash-theme .menu-section-title,
+body.dash-theme .shelf-label { color: #fff; }
+body.dash-theme .footer-note { color: rgba(255,255,255,0.5); }
+body.dash-theme .duo-node-label { color: #fff; }
+body.dash-theme .duo-node-progress { color: rgba(255,255,255,0.72); }
+body.dash-theme .duo-path::before { border-left-color: rgba(255,255,255,0.22); }
+body.dash-theme .back-btn { background: rgba(255,255,255,0.14); color: #fff; border-color: rgba(255,255,255,0.5); }
+body.dash-theme .corner-mascot-note { color: var(--teal-dark); }
+
+.dash-greet {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 0 20px;
+}
+.dash-greet .mascot-illust { width: 40px; height: 50px; }
+.dash-greet p { margin: 0; font-weight: 700; color: #fff; font-size: 15px; }
+
+.mascot-picker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255,255,255,0.08);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 22px;
+}
+.mp-label {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+  flex-shrink: 0;
+}
+.mp-options { display: flex; gap: 10px; }
+.mp-opt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+.mp-opt .mascot-illust { width: 32px; height: 40px; }
+.mp-opt span { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 10.5px; color: rgba(255,255,255,0.75); }
+.mp-opt.active { border-color: var(--yellow); background: rgba(255,255,255,0.1); }
+.mp-opt.active span { color: #fff; }
+.mp-opt:active { transform: scale(0.94); }
+
+.brand-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #5b6cf5, var(--violet));
+  color: #fff;
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  border-radius: 999px;
+  padding: 8px 14px;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.18);
+  white-space: nowrap;
+}
+
+/* ---------- Baris scroll horizontal: Pilihan Harian ---------- */
+.scroll-row {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 4px 4px 14px;
+  margin: 0 -4px 8px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.scroll-row::-webkit-scrollbar { display: none; }
+
+.pick-card {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+  width: 168px;
+  height: 190px;
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 0 rgba(0,0,0,0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.12s ease;
+}
+.pick-card:active { transform: translateY(5px); }
+.pick-card .pc-icon {
+  font-size: 64px;
+  filter: drop-shadow(0 4px 3px rgba(0,0,0,0.2));
+}
+.pick-card .pc-label {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(255,255,255,0.94);
+  color: var(--ink);
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 13.5px;
+  border-radius: 12px;
+  padding: 8px 10px;
+  text-align: left;
+  line-height: 1.15;
+}
+.pick-card .pc-star {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.28);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 999px;
+  padding: 3px 8px;
+}
+
+/* ---------- Baris scroll horizontal: Dunia untuk Dijelajahi ---------- */
+.world-item {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+  width: 92px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.12s ease;
+}
+.world-item:active { transform: scale(0.94); }
+.world-circle {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.22), inset 0 0 0 3px rgba(255,255,255,0.25);
+}
+.world-item .wi-label {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 11.5px;
+  color: #fff;
+  text-align: center;
+  line-height: 1.15;
+}
+
+/* ---------- Bottom nav ---------- */
+.bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  width: calc(100% - 28px);
+  max-width: 460px;
+  background: rgba(24, 16, 46, 0.92);
+  backdrop-filter: blur(6px);
+  border-radius: 999px;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 6px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.35);
+  z-index: 55;
+}
+.bn-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: rgba(255,255,255,0.6);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.bn-item .bn-icon { font-size: 19px; }
+.bn-item .bn-label { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 10.5px; }
+.bn-item.active { background: rgba(255,255,255,0.16); color: #fff; }
+.bottom-nav-spacer { height: 70px; }
+
+/* ---------- Halaman Progres ---------- */
+.progress-hero { display: flex; gap: 12px; margin: 4px 0 20px; }
+.ph-stat {
+  flex: 1;
+  background: rgba(255,255,255,0.1);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  text-align: center;
+}
+.ph-num { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 22px; color: #fff; }
+.ph-label { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.65); margin-top: 2px; }
+.prog-list { display: flex; flex-direction: column; gap: 14px; }
+.prog-row { display: flex; align-items: center; gap: 12px; }
+.prog-icon {
+  width: 50px; height: 50px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+}
+.prog-info { flex: 1; min-width: 0; }
+.prog-label { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 14px; color: #fff; margin-bottom: 4px; }
+.prog-bar { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.15); overflow: hidden; }
+.prog-bar-fill { height: 100%; border-radius: 999px; }
+.prog-pct { font-size: 11.5px; font-weight: 700; color: rgba(255,255,255,0.6); margin-top: 4px; }
 
 /* ---------- Dashboard ---------- */
 .dash-hero {
@@ -632,6 +872,26 @@ a:focus-visible,
 .speaker-btn:active { transform: translateY(6px); box-shadow: none; }
 .speaker-btn.speaking { animation: pulse 0.6s ease infinite; }
 
+.audio-tools-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+.audio-tool-btn {
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--ink);
+  box-shadow: 0 3px 0 rgba(43,33,64,0.2);
+  transition: transform 0.12s ease;
+}
+.audio-tool-btn:active { transform: translateY(3px); box-shadow: none; }
+
 @keyframes pulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.08); }
@@ -685,6 +945,111 @@ a:focus-visible,
 .game-tile.match { background: linear-gradient(135deg, var(--violet), var(--teal)); }
 .game-tile.order { background: linear-gradient(135deg, var(--yellow), var(--coral)); }
 .game-tile.tf { background: linear-gradient(135deg, var(--green), #57c2a8); }
+.game-tile.sheet { background: linear-gradient(135deg, #FF9F43, #FFC93C); }
+
+/* ---------- Lembar Latihan (worksheet) ---------- */
+.worksheet-paper {
+  background: #fffdf6;
+  border-radius: 16px;
+  padding: 20px 18px 22px 44px;
+  position: relative;
+  box-shadow: var(--card-shadow);
+  background-image: repeating-linear-gradient(to bottom, transparent 0px, transparent 36px, var(--paper-line) 37px);
+  margin: 14px 0;
+  border: 2px solid #EDE0C0;
+}
+.worksheet-paper::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: 34px;
+  width: 2px;
+  background: #FF9FB0;
+  opacity: 0.6;
+}
+.worksheet-holes {
+  position: absolute;
+  left: 10px;
+  top: 18px;
+  bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.worksheet-holes span {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid #E4D7B8;
+  display: block;
+}
+.ws-title {
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--teal-dark);
+  margin-bottom: 4px;
+}
+.ws-instruction {
+  font-size: 12px;
+  font-weight: 700;
+  color: #8A7F9C;
+  margin-bottom: 16px;
+}
+.ws-q { margin-bottom: 18px; }
+.ws-q-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.ws-q-num {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #fff;
+  font-weight: 800;
+  font-family: 'Baloo 2', sans-serif;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.ws-q-num.correct { background: var(--green); }
+.ws-q-num.wrong { background: var(--coral); }
+.ws-q-arab { font-family: 'Amiri', serif; font-size: 30px; direction: rtl; }
+.ws-q-arab.medium { font-size: 22px; }
+.ws-q-arab.small { font-size: 16px; }
+.ws-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-left: 36px;
+}
+.ws-opt {
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 8px 10px;
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 12.5px;
+  background: #fff;
+  text-align: left;
+  transition: transform 0.1s ease;
+}
+.ws-opt:active { transform: scale(0.96); }
+.ws-opt.selected { background: var(--yellow); }
+.ws-opt.correct { background: var(--green); color: #fff; border-color: var(--green); }
+.ws-opt.wrong { background: var(--coral); color: #fff; border-color: var(--coral); }
+.ws-submit-row { text-align: center; margin-top: 6px; }
+.ws-submit-row .btn { width: 100%; max-width: 320px; }
+.ws-stamp {
+  text-align: center;
+  padding: 12px;
+  margin-bottom: 4px;
+  border: 4px solid var(--coral);
+  border-radius: 16px;
+  transform: rotate(-2deg);
+  color: var(--coral);
+  font-family: 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  background: rgba(255,111,89,0.06);
+}
 
 /* ---------- Susun Urutan ---------- */
 .order-tip {
@@ -1471,6 +1836,14 @@ function isModuleLocked(cat, modules, index) {
 // ---------------- XP & Streak (gaya Duolingo, tanpa akun) ----------------
 const XP_KEY = "iqro-ceria-xp";
 const STREAK_KEY = "iqro-ceria-streak";
+const MASCOT_KEY = "iqro-ceria-mascot-char";
+function getMascotChar() {
+  const v = localStorage.getItem(MASCOT_KEY);
+  return v === "iqra" ? "iqra" : "iqro";
+}
+function setMascotChar(c) {
+  try { localStorage.setItem(MASCOT_KEY, c); } catch (e) {}
+}
 function getXP() {
   const v = parseInt(localStorage.getItem(XP_KEY) || "0", 10);
   return isNaN(v) ? 0 : v;
@@ -1507,19 +1880,45 @@ function getStreak() {
 }
 
 // ---------------- Audio suara huruf: Web Speech API ----------------
-let arabicVoice = null;
+// Beberapa perangkat punya lebih dari satu suara Arab dengan kualitas berbeda-beda.
+// Kita kumpulkan semua suara Arab yang tersedia, urutkan yang paling natural duluan,
+// dan sediakan tombol untuk pindah suara / mengulang pelan-pelan kalau pelafalannya
+// masih kurang pas di perangkat tertentu.
+let arabicVoices = [];
+let arabicVoiceIdx = 0;
+const VOICE_IDX_KEY = "iqro-ceria-voice-idx";
 function pickArabicVoice() {
   const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
-  arabicVoice =
-    voices.find((v) => v.lang && v.lang.toLowerCase() === "ar-sa") ||
-    voices.find((v) => v.lang && v.lang.toLowerCase().startsWith("ar")) ||
-    null;
+  const isArabic = (v) => v.lang && v.lang.toLowerCase().startsWith("ar");
+  const list = voices.filter(isArabic);
+  // Prioritaskan suara lokal (biasanya lebih natural) & nama-nama suara Arab yang umum bagus.
+  const goodNames = /naayf|hoda|majed|tarik|laila|maged|zeina|salma|google/i;
+  list.sort((a, b) => {
+    const score = (v) => (v.localService ? 2 : 0) + (goodNames.test(v.name) ? 1 : 0);
+    return score(b) - score(a);
+  });
+  arabicVoices = list;
+  const saved = parseInt(localStorage.getItem(VOICE_IDX_KEY) || "0", 10);
+  arabicVoiceIdx = list.length ? Math.min(saved, list.length - 1) : 0;
 }
 if (window.speechSynthesis) {
   pickArabicVoice();
   window.speechSynthesis.onvoiceschanged = pickArabicVoice;
 }
-function speak(text, onEnd) {
+function currentArabicVoice() {
+  return arabicVoices.length ? arabicVoices[arabicVoiceIdx] : null;
+}
+function cycleArabicVoice() {
+  if (arabicVoices.length < 2) {
+    showAudioNote("Perangkat ini cuma punya 1 suara Arab. Coba install suara Arab tambahan di pengaturan perangkat ya.");
+    return;
+  }
+  arabicVoiceIdx = (arabicVoiceIdx + 1) % arabicVoices.length;
+  localStorage.setItem(VOICE_IDX_KEY, String(arabicVoiceIdx));
+  const v = currentArabicVoice();
+  showAudioNote("Suara diganti ke: " + (v ? v.name : "default") + ". Coba dengarkan lagi ya!");
+}
+function speak(text, onEnd, rateOverride) {
   if (!window.speechSynthesis) {
     showAudioNote("Maaf, perangkat ini tidak mendukung suara. Coba pakai Chrome ya!");
     if (onEnd) onEnd();
@@ -1528,9 +1927,10 @@ function speak(text, onEnd) {
   window.speechSynthesis.cancel();
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = "ar-SA";
-  if (arabicVoice) utter.voice = arabicVoice;
-  utter.rate = 0.72;
-  utter.pitch = 1.05;
+  const v = currentArabicVoice();
+  if (v) { utter.voice = v; utter.lang = v.lang; }
+  utter.rate = rateOverride || 0.72;
+  utter.pitch = 1.02;
   utter.onend = () => onEnd && onEnd();
   utter.onerror = () => {
     showAudioNote("Suara Arab belum tersedia di perangkat ini. Coba di Chrome versi terbaru (desktop/Android).");
@@ -1622,22 +2022,26 @@ document.addEventListener("pointerdown", function resumeOnce() {
 // Ilustrasi maskot "Kak Iqro" — SVG vektor bergaya, dengan beberapa pose
 // supaya terasa hidup & bergambar penuh di tiap layar (bukan cuma kotak CSS).
 let mascotSvgCounter = 0;
-function mascotSVG(pose, big) {
+function mascotSVG(pose, big, char) {
   // Pose menentukan posisi lengan, mata, mulut, dan aksesoris kecil di sekitarnya.
+  // Char memilih gaya karakter: "iqro" (anak laki-laki berpeci) atau "iqra" (anak perempuan berhijab).
   const P = pose || "wave";
+  const C = char || getMascotChar();
+  const isIqra = C === "iqra";
   const uid = "m" + (mascotSvgCounter++);
+  const armColor = isIqra ? "#b23c72" : "#145b55";
   const armLeft = P === "wave"
-    ? `<g class="mas-armwave" transform="translate(20,64)"><rect x="-6" y="0" width="12" height="24" rx="6" fill="#145b55"/></g>`
+    ? `<g class="mas-armwave" transform="translate(20,64)"><rect x="-6" y="0" width="12" height="24" rx="6" fill="${armColor}"/></g>`
     : P === "read"
-    ? `<rect x="16" y="70" width="12" height="20" rx="6" fill="#145b55" transform="rotate(-18 22 80)"/>`
+    ? `<rect x="16" y="70" width="12" height="20" rx="6" fill="${armColor}" transform="rotate(-18 22 80)"/>`
     : P === "point"
-    ? `<rect x="10" y="62" width="12" height="26" rx="6" fill="#145b55" transform="rotate(-38 16 75)"/>`
-    : `<rect x="16" y="70" width="12" height="20" rx="6" fill="#145b55" transform="rotate(-10 22 80)"/>`;
+    ? `<rect x="10" y="62" width="12" height="26" rx="6" fill="${armColor}" transform="rotate(-38 16 75)"/>`
+    : `<rect x="16" y="70" width="12" height="20" rx="6" fill="${armColor}" transform="rotate(-10 22 80)"/>`;
   const armRight = P === "trophy"
-    ? `<rect x="72" y="56" width="12" height="26" rx="6" fill="#145b55" transform="rotate(28 78 69)"/>`
+    ? `<rect x="72" y="56" width="12" height="26" rx="6" fill="${armColor}" transform="rotate(28 78 69)"/>`
     : P === "search"
-    ? `<rect x="72" y="60" width="12" height="24" rx="6" fill="#145b55" transform="rotate(18 78 72)"/>`
-    : `<rect x="74" y="70" width="12" height="20" rx="6" fill="#145b55" transform="rotate(14 80 80)"/>`;
+    ? `<rect x="72" y="60" width="12" height="24" rx="6" fill="${armColor}" transform="rotate(18 78 72)"/>`
+    : `<rect x="74" y="70" width="12" height="20" rx="6" fill="${armColor}" transform="rotate(14 80 80)"/>`;
   const eyes = P === "puzzle"
     ? `<rect x="35" y="46" width="8" height="4" rx="2" fill="#2B2140" class="mas-blink"/><rect x="57" y="46" width="8" height="4" rx="2" fill="#2B2140" class="mas-blink"/>`
     : `<circle cx="39" cy="47" r="4.2" fill="#2B2140" class="mas-blink"/><circle cx="61" cy="47" r="4.2" fill="#2B2140" class="mas-blink"/>`;
@@ -1658,19 +2062,27 @@ function mascotSVG(pose, big) {
   const sparkles = `
     <g class="mas-sparkle s1"><path d="M78 12 L80 17 L85 18 L80 20 L78 25 L76 20 L71 18 L76 17 Z" fill="#FFC93C"/></g>
     <g class="mas-sparkle s3"><path d="M6 58 L7.5 61 L11 62 L7.5 63 L6 66 L4.5 63 L1 62 L4.5 61 Z" fill="#FF6F59"/></g>`;
+  // Penutup kepala: peci (laki-laki) atau hijab (perempuan, menutup sisi kepala turun ke bahu
+  // dengan lubang oval di tengah supaya wajah tetap terlihat, digambar pakai fill-rule evenodd).
+  const headwear = isIqra
+    ? `<path fill-rule="evenodd" fill="url(#${uid}hijabGrad)" d="M50 4 C20 4 10 30 14 50 C16 66 20 84 26 100 L40 100 C34 82 30 64 30 48 C30 24 38 10 50 10 C62 10 70 24 70 48 C70 64 66 82 60 100 L74 100 C80 84 84 66 86 50 C90 30 80 4 50 4 Z M30,48 A20,24 0 1,0 70,48 A20,24 0 1,0 30,48 Z"/>
+       <circle cx="70" cy="30" r="5" fill="#FFC93C" stroke="#2B2140" stroke-width="1.5"/>`
+    : `<path d="M22 30 a28 22 0 0 1 56 0 q0 -14 -28 -14 t-28 14 z" fill="#2b2140"/>
+       <rect x="20" y="26" width="60" height="7" rx="3.5" fill="#FFC93C"/>`;
+  const bodyStops = isIqra
+    ? `<stop offset="0" stop-color="#ff9dc0"/><stop offset="1" stop-color="#b23c72"/>`
+    : `<stop offset="0" stop-color="#37a99d"/><stop offset="1" stop-color="#145b55"/>`;
   return `
     <div class="mascot-illust${big ? " big" : ""}">
-      <svg viewBox="0 0 100 124" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Maskot Kak Iqro">
+      <svg viewBox="0 0 100 124" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${isIqra ? "Maskot Kak Iqra" : "Maskot Kak Iqro"}">
         <ellipse cx="50" cy="118" rx="24" ry="5" fill="rgba(43,33,64,0.18)"/>
         ${armLeft}${armRight}
-        <rect x="24" y="58" width="52" height="42" rx="22" fill="#1B7A72"/>
         <rect x="24" y="58" width="52" height="42" rx="22" fill="url(#${uid}bodyGrad)"/>
         <rect x="37" y="55" width="26" height="10" rx="5" fill="#FFC93C"/>
         <rect x="30" y="80" width="40" height="26" rx="4" fill="#FFF8EA" stroke="#2B2140" stroke-width="2.5"/>
         <line x1="50" y1="82" x2="50" y2="104" stroke="#2B2140" stroke-width="1.5"/>
         <circle cx="50" cy="38" r="30" fill="url(#${uid}headGrad)"/>
-        <path d="M22 30 a28 22 0 0 1 56 0 q0 -14 -28 -14 t-28 14 z" fill="#2b2140"/>
-        <rect x="20" y="26" width="60" height="7" rx="3.5" fill="#FFC93C"/>
+        ${headwear}
         <ellipse cx="30" cy="52" rx="5" ry="3.4" fill="#FF6F59" opacity="0.45"/>
         <ellipse cx="70" cy="52" rx="5" ry="3.4" fill="#FF6F59" opacity="0.45"/>
         ${eyes}
@@ -1678,20 +2090,21 @@ function mascotSVG(pose, big) {
         ${accessory}
         ${sparkles}
         <defs>
-          <linearGradient id="${uid}bodyGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#37a99d"/><stop offset="1" stop-color="#145b55"/>
-          </linearGradient>
+          <linearGradient id="${uid}bodyGrad" x1="0" y1="0" x2="0" y2="1">${bodyStops}</linearGradient>
           <radialGradient id="${uid}headGrad" cx="0.35" cy="0.32" r="0.75">
             <stop offset="0" stop-color="#FFE3BE"/><stop offset="1" stop-color="#F3C185"/>
           </radialGradient>
+          ${isIqra ? `<linearGradient id="${uid}hijabGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#c9a6ff"/><stop offset="1" stop-color="#7c4fd1"/>
+          </linearGradient>` : ""}
         </defs>
       </svg>
     </div>`;
 }
-function mascot(msg, pose) {
+function mascot(msg, pose, char) {
   return `
     <div class="mascot-wrap">
-      ${mascotSVG(pose)}
+      ${mascotSVG(pose, false, char)}
       <div class="speech-bubble">${msg}</div>
     </div>`;
 }
@@ -1699,7 +2112,7 @@ function topbar(title, showBack) {
   return `
     <div class="topbar">
       <div class="brand">
-        ${showBack ? `<button class="back-btn" id="btnBack">← Kembali</button>` : `<div class="brand-title">Iqro <span>Ceria</span></div>`}
+        ${showBack ? `<button class="back-btn" id="btnBack">← Kembali</button>` : `<div class="mascot-mini">${mascotSVG("point")}</div><div class="brand-title">Iqro <span>Ceria</span></div>`}
       </div>
       ${showBack ? `<div class="brand-title" style="font-size:17px">${title}</div>` : ""}
     </div>`;
@@ -1713,6 +2126,16 @@ function shuffle(arr) {
   }
   return a;
 }
+// Ambil pilihan pengecoh (distractor) yang "gayanya" mirip dengan jawaban benar —
+// supaya huruf tunggal tidak tercampur dengan kartu latihan gabungan huruf (yang
+// berisi " - "), sehingga pilihan ganda terlihat rapi dan setara.
+function pickDistractors(kartuArr, correctIdx, count) {
+  const target = kartuArr[correctIdx];
+  const isDrill = target.latin.includes(" - ");
+  let pool = kartuArr.map((k, i) => i).filter((i) => i !== correctIdx && kartuArr[i].latin.includes(" - ") === isDrill);
+  if (pool.length < count) pool = kartuArr.map((k, i) => i).filter((i) => i !== correctIdx);
+  return shuffle(pool).slice(0, count);
+}
 function arabSizeClass(text) {
   const len = (text || "").length;
   if (len > 40) return "small";
@@ -1720,15 +2143,48 @@ function arabSizeClass(text) {
   return "";
 }
 
+function bottomNav(active) {
+  const items = [
+    { key: "main", icon: "🏠", label: "Main" },
+    { key: "cerita", icon: "🌙", label: "Cerita" },
+    { key: "belajar", icon: "📖", label: "Belajar" },
+    { key: "progres", icon: "🏆", label: "Progres" },
+  ];
+  return `
+    <div class="bottom-nav">
+      ${items.map((it) => `
+        <button class="bn-item ${active === it.key ? "active" : ""}" data-nav="${it.key}">
+          <span class="bn-icon">${it.icon}</span>
+          <span class="bn-label">${it.label}</span>
+        </button>`).join("")}
+    </div>
+    <div class="bottom-nav-spacer"></div>`;
+}
+
+// Cari modul "lanjutkan belajar" pertama yang belum tuntas di sebuah kategori,
+// beserta kartu pertama yang belum pernah dilihat di modul tersebut.
+function findContinueTarget(catKey) {
+  const cat = APP_DATA[catKey];
+  let target = cat.modules.find((m) => !getProgress(catKey, m.id).selesai) || cat.modules[cat.modules.length - 1];
+  const prog = getProgress(catKey, target.id);
+  let cardIndex = target.kartu.findIndex((k, i) => !prog.seen.includes(i));
+  if (cardIndex === -1) cardIndex = 0;
+  return { modId: target.id, cardIndex };
+}
+
 function render() {
+  const darkViews = ["dashboard", "category-home", "progress"];
+  document.body.classList.toggle("dash-theme", darkViews.includes(state.view));
   if (state.view === "dashboard") renderDashboard();
   else if (state.view === "category-home") renderCategoryHome();
+  else if (state.view === "progress") renderProgress();
   else if (state.view === "lesson") renderLesson();
   else if (state.view === "gamehub") renderGameHub();
   else if (state.view === "quiz") renderQuiz();
   else if (state.view === "match") renderMatch();
   else if (state.view === "order") renderOrder();
   else if (state.view === "tf") renderTF();
+  else if (state.view === "sheet") renderSheet();
   attachGlobalHandlers();
   updateMusicPlayback();
 }
@@ -1736,21 +2192,26 @@ function render() {
 // ---------------- DASHBOARD ----------------
 function renderDashboard() {
   const cats = ["iqro", "sholat", "tajwid", "nabi", "arab"];
-  const tileHtml = cats.map((key) => {
+
+  const picksHtml = cats.map((key) => {
     const cat = APP_DATA[key];
     const total = cat.modules.reduce((a, m) => a + m.kartu.length, 0);
     let seen = 0;
     cat.modules.forEach((m) => (seen += getProgress(key, m.id).seen.length));
-    const tuntas = total > 0 && seen >= total;
     return `
-      <button class="menu-tile tile-${key}" data-cat="${key}">
-        ${tuntas ? `<span class="tile-badge">🏆</span>` : ""}
-        <div class="m-icon">${cat.icon}</div>
-        <div class="m-text">
-          <h3>${cat.label}</h3>
-          <p>${cat.desc}</p>
-        </div>
-        <span class="m-progress">⭐ ${seen}/${total}</span>
+      <button class="pick-card" data-cat="${key}" style="background:${cat.heroGradient}">
+        <span class="pc-star">⭐ ${seen}/${total}</span>
+        <span class="pc-icon">${cat.icon}</span>
+        <span class="pc-label">${cat.label}</span>
+      </button>`;
+  }).join("");
+
+  const worldsHtml = cats.map((key) => {
+    const cat = APP_DATA[key];
+    return `
+      <button class="world-item" data-world="${key}">
+        <span class="world-circle" style="background:${cat.heroGradient}">${cat.icon}</span>
+        <span class="wi-label">${cat.label.replace(/&amp;/g, "&")}</span>
       </button>`;
   }).join("");
 
@@ -1758,40 +2219,32 @@ function renderDashboard() {
   const xp = getXP();
   root.innerHTML = `
     <div class="topbar">
-      <div class="brand"><div class="brand-title">Iqro <span>Ceria</span></div></div>
-      <div class="stat-pills">
-        <span class="stat-pill streak">🔥 ${streak}</span>
-        <span class="stat-pill xp">✨ ${xp} XP</span>
+      <div class="brand"><div class="mascot-mini">${mascotSVG("point")}</div><div class="brand-title">Iqro <span>Ceria</span></div></div>
+      <div class="brand-pill">✨ ${xp} XP</div>
+    </div>
+    <div class="dash-greet">
+      ${mascotSVG("wave")}
+      <p>Assalamu'alaikum! Yuk pilih mau belajar apa hari ini? 😊 &nbsp; 🔥 ${streak} hari beruntun</p>
+    </div>
+    <div class="mascot-picker">
+      <span class="mp-label">Pilih maskotmu:</span>
+      <div class="mp-options">
+        <button class="mp-opt ${getMascotChar() === "iqro" ? "active" : ""}" data-char="iqro">
+          ${mascotSVG("wave", false, "iqro")}
+          <span>Kak Iqro</span>
+        </button>
+        <button class="mp-opt ${getMascotChar() === "iqra" ? "active" : ""}" data-char="iqra">
+          ${mascotSVG("wave", false, "iqra")}
+          <span>Kak Iqra</span>
+        </button>
       </div>
     </div>
-    <div class="hero-stage">
-      <svg class="hero-scene" viewBox="0 0 300 140" preserveAspectRatio="xMidYMid slice">
-        <circle class="hero-star d1" cx="30" cy="24" r="2" fill="#fff"/>
-        <circle class="hero-star d2" cx="70" cy="14" r="1.6" fill="#fff"/>
-        <circle class="hero-star d3" cx="250" cy="20" r="2" fill="#fff"/>
-        <circle class="hero-star d1" cx="270" cy="46" r="1.4" fill="#fff"/>
-        <circle class="hero-star d2" cx="20" cy="60" r="1.4" fill="#fff"/>
-        <path d="M255 20 a14 14 0 1 0 10 24 a18 18 0 1 1 -10 -24 z" fill="#FFF3D6"/>
-        <path d="M0 130 q30 -22 60 -4 q30 -20 60 4 v14 h-120 z" fill="#3a2f66" opacity="0.9"/>
-        <path d="M150 132 q30 -26 60 -4 q30 -22 60 2 v10 h-120 z" fill="#4a4184" opacity="0.9"/>
-        <rect x="128" y="96" width="10" height="36" fill="#584a94"/>
-        <rect x="162" y="96" width="10" height="36" fill="#584a94"/>
-        <path d="M120 96 q25 -30 50 0 z" fill="#6b5aac"/>
-        <circle cx="145" cy="72" r="9" fill="#6b5aac"/>
-      </svg>
-      ${mascotSVG("wave", true)}
-    </div>
-    ${mascot("Assalamu'alaikum, Sahabat! Yuk pilih mau belajar apa hari ini? 😊", "wave")}
-    <div class="dash-hero">
-      <span class="floaty" style="top:-6px; left:12px; font-size:22px; animation-delay:.2s">✨</span>
-      <span class="floaty" style="top:8px; right:18px; font-size:26px; animation-delay:.8s">🌟</span>
-      <span class="floaty" style="bottom:-4px; right:60px; font-size:18px; animation-delay:1.4s">☁️</span>
-      <h2>Ayo Belajar Islam Bareng!</h2>
-      <p>Iqro sampai Al-Qur'an, tajwid, sholat, bahasa Arab, sampai kisah para nabi — semua ada di sini, seru dan mudah dipahami!</p>
-    </div>
-    <div class="menu-section-title">🎯 Pilih Menu Belajar</div>
-    <div class="menu-grid">${tileHtml}</div>
+    <div class="menu-section-title">🌟 Pilihan Harian</div>
+    <div class="scroll-row">${picksHtml}</div>
+    <div class="menu-section-title">🌍 Dunia untuk Dijelajahi</div>
+    <div class="scroll-row">${worldsHtml}</div>
     <div class="footer-note">Dibuat oleh Desta · All Rights Reserved © 2026</div>
+    ${bottomNav("main")}
   `;
 
   root.querySelectorAll("[data-cat]").forEach((btn) => {
@@ -1801,6 +2254,60 @@ function renderDashboard() {
       render();
     });
   });
+  root.querySelectorAll("[data-world]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.world;
+      const target = findContinueTarget(key);
+      state.category = key;
+      state.jilidId = target.modId;
+      state.cardIndex = target.cardIndex;
+      state.view = "lesson";
+      render();
+    });
+  });
+  root.querySelectorAll("[data-char]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      setMascotChar(btn.dataset.char);
+      render();
+    });
+  });
+}
+
+// ---------------- PROGRES ----------------
+function renderProgress() {
+  const streak = getStreak();
+  const xp = getXP();
+  const cats = ["iqro", "sholat", "tajwid", "nabi", "arab"];
+  const rows = cats.map((key) => {
+    const cat = APP_DATA[key];
+    const total = cat.modules.reduce((a, m) => a + m.kartu.length, 0);
+    let seen = 0;
+    cat.modules.forEach((m) => (seen += getProgress(key, m.id).seen.length));
+    const persen = total ? Math.round((seen / total) * 100) : 0;
+    return `
+      <div class="prog-row">
+        <div class="prog-icon" style="background:${cat.heroGradient}">${cat.icon}</div>
+        <div class="prog-info">
+          <div class="prog-label">${cat.label}</div>
+          <div class="prog-bar"><div class="prog-bar-fill" style="width:${persen}%; background:${cat.heroGradient}"></div></div>
+          <div class="prog-pct">${seen}/${total} kartu (${persen}%)</div>
+        </div>
+      </div>`;
+  }).join("");
+
+  root.innerHTML = `
+    <div class="topbar">
+      <div class="brand"><div class="mascot-mini">${mascotSVG("trophy")}</div><div class="brand-title">Progres <span>Kamu</span></div></div>
+    </div>
+    <div class="progress-hero">
+      <div class="ph-stat"><div class="ph-num">🔥 ${streak}</div><div class="ph-label">Hari Beruntun</div></div>
+      <div class="ph-stat"><div class="ph-num">✨ ${xp}</div><div class="ph-label">Total XP</div></div>
+    </div>
+    <div class="menu-section-title">📊 Progres Belajar</div>
+    <div class="prog-list">${rows}</div>
+    <div class="footer-note">Dibuat oleh Desta · All Rights Reserved © 2026</div>
+    ${bottomNav("progres")}
+  `;
 }
 
 // ---------------- CATEGORY HOME (jalur belajar ala Duolingo) ----------------
@@ -1842,7 +2349,12 @@ function renderCategoryHome() {
     </div>
     <div class="shelf-label">${cat.shelfLabel}</div>
     <div class="duo-path">${nodes}</div>
+    <div class="corner-mascot-block">
+      ${mascotSVG("read", true)}
+      <div class="corner-mascot-note">Semangat terus belajarnya! 📖</div>
+    </div>
     <div class="footer-note">Dibuat oleh Desta · All Rights Reserved © 2026</div>
+    ${bottomNav(state.category === "nabi" ? "cerita" : state.category === "iqro" ? "belajar" : null)}
   `;
 
   root.querySelectorAll("[data-node]:not([disabled])").forEach((btn) => {
@@ -1887,6 +2399,10 @@ function renderLesson() {
       <div class="latin">${kartu.latin}</div>
       <div class="ket">${kartu.ket}</div>
       <button class="speaker-btn" id="btnSpeak" aria-label="Dengarkan pelafalan">🔊</button>
+      <div class="audio-tools-row">
+        <button class="audio-tool-btn" id="btnSlow">🐢 Pelan-pelan</button>
+        <button class="audio-tool-btn" id="btnVoice">🔁 Ganti Suara</button>
+      </div>
     </div>
     <div class="audio-note hidden" id="audioNote"></div>
     <div class="aku-bisa-row">
@@ -1901,6 +2417,14 @@ function renderLesson() {
   document.getElementById("btnSpeak").addEventListener("click", (e) => {
     e.currentTarget.classList.add("speaking");
     speak(kartu.arab, () => e.currentTarget.classList.remove("speaking"));
+  });
+  document.getElementById("btnSlow").addEventListener("click", () => {
+    const sp = document.getElementById("btnSpeak");
+    sp.classList.add("speaking");
+    speak(kartu.arab, () => sp.classList.remove("speaking"), 0.42);
+  });
+  document.getElementById("btnVoice").addEventListener("click", () => {
+    cycleArabicVoice();
   });
   document.getElementById("btnBisa").addEventListener("click", () => {
     markCardSeen(state.category, mod.id, state.cardIndex);
@@ -1922,7 +2446,7 @@ function renderGameHub() {
   const canOrder = mod.kartu.length >= 3;
   root.innerHTML = `
     ${topbar(mod.judul + " · Main", true)}
-    ${mascot("Sekarang ada 4 game seru buat dicoba! Pilih salah satu yuk 🎮", "point")}
+    ${mascot("Sekarang ada 5 game seru buat dicoba! Pilih salah satu yuk 🎮", "point")}
     <div class="game-grid">
       <button class="game-tile quiz" id="tileQuiz">
         <div class="icon">${cat.quizIcon}</div>
@@ -1944,10 +2468,16 @@ function renderGameHub() {
         <h3>Urutkan Yuk!</h3>
         <p>Susun kartu sesuai urutan yang benar</p>
       </button>
+      <button class="game-tile sheet" id="tileSheet">
+        <div class="icon">📝</div>
+        <h3>Lembar Latihan</h3>
+        <p>Kerjakan soal-soal seperti lembar kerja beneran!</p>
+      </button>
     </div>
   `;
   document.getElementById("tileQuiz").addEventListener("click", () => startQuiz(state.jilidId));
   document.getElementById("tileMatch").addEventListener("click", () => startMatch(state.jilidId));
+  document.getElementById("tileSheet").addEventListener("click", () => startSheet(state.jilidId));
   document.getElementById("tileTF").addEventListener("click", () => startTF(state.jilidId));
   const tileOrder = document.getElementById("tileOrder");
   if (canOrder) tileOrder.addEventListener("click", () => startOrder(state.jilidId));
@@ -2008,6 +2538,101 @@ function renderOrder() {
         else render();
       });
     });
+  }
+}
+
+// ---------------- GAME: Lembar Latihan (bergaya lembar kerja/worksheet) ----------------
+function startSheet(jilidId) {
+  const cat = APP_DATA[state.category];
+  const mod = cat.modules.find((j) => j.id === jilidId);
+  const total = Math.min(8, mod.kartu.length);
+  const pool = shuffle(mod.kartu.map((k, i) => i)).slice(0, total);
+  const questions = pool.map((idx) => {
+    const distractors = pickDistractors(mod.kartu, idx, 3);
+    const options = shuffle([idx, ...distractors]);
+    return { cardIdx: idx, options, chosen: null };
+  });
+  state.view = "sheet";
+  state.jilidId = jilidId;
+  state.sheet = { questions, submitted: false, xpGiven: false };
+  render();
+}
+function renderSheet() {
+  const cat = APP_DATA[state.category];
+  const mod = cat.modules.find((j) => j.id === state.jilidId);
+  const s = state.sheet;
+  const semuaTerjawab = s.questions.every((q) => q.chosen !== null);
+  const benar = s.questions.filter((q) => q.chosen === q.cardIdx).length;
+  const total = s.questions.length;
+  const persen = Math.round((benar / total) * 100);
+  const bintang = persen >= 90 ? 3 : persen >= 60 ? 2 : 1;
+
+  if (s.submitted && !s.xpGiven) { addXP(benar * 3 + bintang * 2); s.xpGiven = true; }
+
+  const holes = Array.from({ length: 8 }, () => `<span></span>`).join("");
+
+  const rows = s.questions.map((q, i) => {
+    const kartu = mod.kartu[q.cardIdx];
+    const numCls = !s.submitted ? "" : q.chosen === q.cardIdx ? "correct" : "wrong";
+    const numIcon = !s.submitted ? String(i + 1) : q.chosen === q.cardIdx ? "✓" : "✗";
+    const opts = q.options.map((optIdx, oi) => {
+      const letter = ["A", "B", "C", "D"][oi];
+      let cls = q.chosen === optIdx ? "selected" : "";
+      if (s.submitted) {
+        if (optIdx === q.cardIdx) cls += " correct";
+        else if (q.chosen === optIdx) cls += " wrong";
+      }
+      return `<button class="ws-opt ${cls}" data-q="${i}" data-opt="${optIdx}" ${s.submitted ? "disabled" : ""}>
+        <b>${letter}.</b> ${mod.kartu[optIdx].latin}
+      </button>`;
+    }).join("");
+    return `
+      <div class="ws-q">
+        <div class="ws-q-head">
+          <span class="ws-q-num ${numCls}">${numIcon}</span>
+          <span class="ws-q-arab ${arabSizeClass(kartu.arab)}">${kartu.arab}</span>
+        </div>
+        <div class="ws-options">${opts}</div>
+      </div>`;
+  }).join("");
+
+  root.innerHTML = `
+    ${topbar(mod.judul + " · Lembar Latihan", true)}
+    ${mascot(s.submitted ? "Sudah selesai dikoreksi! Lihat hasilnya di atas ya 📝" : "Kerjakan tiap nomor, lalu tekan Periksa Jawaban kalau sudah selesai semua! ✏️", "read")}
+    ${s.submitted ? `
+      <div class="ws-stamp">
+        NILAI ${persen} ${"⭐".repeat(bintang)}${"☆".repeat(3 - bintang)}
+        <div style="font-size:12px;font-weight:700;margin-top:4px">Benar ${benar} dari ${total} soal</div>
+      </div>` : ""}
+    <div class="worksheet-paper">
+      <div class="worksheet-holes">${holes}</div>
+      <div class="ws-title">📝 Lembar Latihan — ${mod.judul}</div>
+      <div class="ws-instruction">Lingkari (tap) jawaban A/B/C/D yang paling tepat untuk tiap nomor ya!</div>
+      ${rows}
+    </div>
+    <div class="ws-submit-row">
+      ${s.submitted
+        ? `<button class="btn btn-primary" id="btnSheetUlangi">Kerjakan Lagi 🔁</button>
+           <button class="btn btn-secondary" id="btnSheetGameLain" style="margin-top:10px">Main Game Lain 🎮</button>`
+        : `<button class="btn btn-ok" id="btnSheetSubmit" ${semuaTerjawab ? "" : "disabled"}>Periksa Jawaban ✓</button>
+           <p style="font-size:12px;color:#8A7F9C;font-weight:700;margin-top:8px">${semuaTerjawab ? "Semua sudah dijawab, yuk periksa!" : "Jawab semua nomor dulu ya (" + s.questions.filter(q=>q.chosen!==null).length + "/" + total + ")"}</p>`}
+    </div>
+  `;
+
+  if (!s.submitted) {
+    document.querySelectorAll(".ws-opt").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const qi = Number(btn.dataset.q);
+        const oi = Number(btn.dataset.opt);
+        s.questions[qi].chosen = oi;
+        render();
+      });
+    });
+    const submitBtn = document.getElementById("btnSheetSubmit");
+    if (submitBtn) submitBtn.addEventListener("click", () => { s.submitted = true; render(); });
+  } else {
+    document.getElementById("btnSheetUlangi").addEventListener("click", () => startSheet(mod.id));
+    document.getElementById("btnSheetGameLain").addEventListener("click", () => { state.view = "gamehub"; render(); });
   }
 }
 
@@ -2107,8 +2732,7 @@ function renderQuiz() {
 
   const cardIdx = q.pool[q.index];
   const kartu = mod.kartu[cardIdx];
-  const distractorPool = mod.kartu.map((k, i) => i).filter((i) => i !== cardIdx);
-  const distractors = shuffle(distractorPool).slice(0, Math.min(3, distractorPool.length));
+  const distractors = pickDistractors(mod.kartu, cardIdx, 3);
   const options = shuffle([cardIdx, ...distractors]);
   const isAudio = cat.quizMode !== "text";
 
@@ -2296,12 +2920,22 @@ function attachGlobalHandlers() {
   const back = document.getElementById("btnBack");
   if (back) {
     back.addEventListener("click", () => {
-      if (state.view === "quiz" || state.view === "match" || state.view === "order" || state.view === "tf") state.view = "gamehub";
+      if (state.view === "quiz" || state.view === "match" || state.view === "order" || state.view === "tf" || state.view === "sheet") state.view = "gamehub";
       else if (state.view === "gamehub" || state.view === "lesson") state.view = "category-home";
       else state.view = "dashboard";
       render();
     });
   }
+  document.querySelectorAll("[data-nav]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.nav;
+      if (key === "main") state.view = "dashboard";
+      else if (key === "cerita") { state.category = "nabi"; state.view = "category-home"; }
+      else if (key === "belajar") { state.category = "iqro"; state.view = "category-home"; }
+      else if (key === "progres") state.view = "progress";
+      render();
+    });
+  });
 }
 
 render();
