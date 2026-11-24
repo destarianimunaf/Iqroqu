@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>IqroQu — Belajar Iqro, Qur'an & Islam</title>
 <meta name="description" content="Aplikasi belajar Islam interaktif untuk anak-anak: Iqro jilid 1-6 sampai Al-Qur'an, belajar sholat, tajwid, dan kisah 25 nabi. Ringan, lucu, dan bisa dipakai di HP manapun." />
 <style>
@@ -1750,21 +1750,24 @@ a:focus-visible,
   .footer-note { margin-top: 14px; }
 }
 </style>
+<link rel="stylesheet" href="game.css" />
 </head>
 <body>
   <button class="music-btn" id="musicBtn" aria-label="Nyalakan/matikan musik">🎵</button>
-  <nav class="bottom-nav" id="bottomNav">
+  <nav class="bottom-nav" id="bottomNav" aria-label="Navigasi utama">
+    <a class="nav-brand" href="./" aria-label="IqroQu beranda"><span class="brand-book">ق</span><span>iqro<span>qu</span><small>BELAJAR JADI PETUALANGAN</small></span></a>
+    <div class="nav-caption">RUANG PETUALANG</div>
     <button class="bn-item" data-nav="main">
       <span class="bn-icon">🎮</span>
-      <span class="bn-label">Main</span>
+      <span class="bn-label">Arena Main</span>
     </button>
     <button class="bn-item" data-nav="dashboard">
       <span class="bn-icon">📖</span>
-      <span class="bn-label">Belajar</span>
+      <span class="bn-label">Petualangan</span>
     </button>
     <button class="bn-item" data-nav="progres">
       <span class="bn-icon">🏆</span>
-      <span class="bn-label">Reward</span>
+      <span class="bn-label">Pencapaian</span>
     </button>
     <button class="bn-item" data-nav="favorit">
       <span class="bn-icon">⭐</span>
@@ -1774,6 +1777,7 @@ a:focus-visible,
       <span class="bn-icon">⚙️</span>
       <span class="bn-label">Pengaturan</span>
     </button>
+    <div class="nav-bottom"><span class="nav-bottom-star">✦</span><strong>Sedikit setiap hari,<br>hebat di kemudian hari.</strong><small>Progres tersimpan di perangkatmu</small></div>
   </nav>
   <div class="app" id="app"></div>
 
@@ -2399,6 +2403,13 @@ function toggleFavorite(cat, modId) {
 // ---------------- XP & Streak (gaya Duolingo, tanpa akun) ----------------
 const XP_KEY = "iqro-ceria-xp";
 const STREAK_KEY = "iqro-ceria-streak";
+const DAILY_XP_KEY = "iqroqu-daily-xp";
+function getDailyXP() {
+  try {
+    const daily = JSON.parse(localStorage.getItem(DAILY_XP_KEY));
+    return daily && daily.date === todayStr() ? Math.max(0, Number(daily.xp) || 0) : 0;
+  } catch (e) { return 0; }
+}
 function getXP() {
   const v = parseInt(localStorage.getItem(XP_KEY) || "0", 10);
   return isNaN(v) ? 0 : v;
@@ -2407,6 +2418,7 @@ function addXP(amount) {
   try {
     const total = getXP() + amount;
     localStorage.setItem(XP_KEY, String(total));
+    localStorage.setItem(DAILY_XP_KEY, JSON.stringify({ date: todayStr(), xp: getDailyXP() + amount }));
     bumpStreak();
   } catch (e) {}
 }
@@ -2554,7 +2566,9 @@ function updateMusicPlayback() {
 function updateMusicBtn() {
   const btn = document.getElementById("musicBtn");
   if (!btn) return;
-  btn.textContent = musicOn ? "🎵" : "🔇";
+  btn.innerHTML = gameIcon(musicOn ? "sound" : "muted");
+  btn.setAttribute("aria-pressed", String(musicOn));
+  btn.setAttribute("aria-label", musicOn ? "Matikan musik" : "Nyalakan musik");
   btn.classList.toggle("muted", !musicOn);
 }
 document.getElementById("musicBtn").addEventListener("click", () => {
@@ -2575,9 +2589,12 @@ document.addEventListener("pointerdown", function resumeOnce() {
 
 // ---------------- Navigasi bawah (Beranda / Progres) ----------------
 document.querySelectorAll(".bn-item").forEach((btn) => {
+  const icons = { dashboard: "map", main: "game", progres: "trophy", favorit: "star", pengaturan: "settings" };
+  btn.querySelector(".bn-icon").innerHTML = gameIcon(icons[btn.dataset.nav]);
   btn.addEventListener("click", () => {
     state.view = btn.dataset.nav;
     render();
+    window.scrollTo({ top: 0 });
   });
 });
 function updateBottomNav() {
@@ -2585,10 +2602,27 @@ function updateBottomNav() {
   const activeTab = navViews.includes(state.view) ? state.view : "dashboard";
   document.querySelectorAll(".bn-item").forEach((btn) => {
     btn.classList.toggle("active", btn.dataset.nav === activeTab);
+    if (btn.dataset.nav === activeTab) btn.setAttribute("aria-current", "page");
+    else btn.removeAttribute("aria-current");
   });
 }
 
 // ---------------- Render helpers ----------------
+function gameIcon(name) {
+  const paths = {
+    map: '<path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/>',
+    game: '<path d="M7 7h10c3 0 5 10 3 12-2 2-5-3-6-3h-4c-1 0-4 5-6 3C2 17 4 7 7 7Z"/><path d="M7 10v5m-2.5-2.5h5M16 11h.01M18 14h.01"/>',
+    trophy: '<path d="M7 3h10v6a5 5 0 0 1-10 0V3ZM12 14v5m-4 2h8M7 5H3v3a4 4 0 0 0 5 4m9-7h4v3a4 4 0 0 1-5 4"/>',
+    star: '<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2-5.5-2.9-5.5 2.9 1-6.2L3 9.6l6.2-.9L12 3Z"/>',
+    settings: '<path d="m10 3-.7 2.3-2 .9L5 5.6 3 9l1.6 1.8v2.4L3 15l2 3.4 2.3-.6 2 .9L10 21h4l.7-2.3 2-.9 2.3.6 2-3.4-1.6-1.8v-2.4L21 9l-2-3.4-2.3.6-2-.9L14 3h-4Z"/><circle cx="12" cy="12" r="3"/>',
+    flame: '<path d="M13 3c1 6-6 5-4 11-2 0-3-2-3-3-5 8 6 14 11 7 4-6-2-12-4-15Z"/>',
+    arrow: '<path d="M5 12h14m-5-5 5 5-5 5"/>',
+    sound: '<path d="M11 4 5 9H2v6h3l6 5V4Zm5 4a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/>',
+    muted: '<path d="M11 4 5 9H2v6h3l6 5V4Zm5 5 6 6m0-6-6 6"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1 1m12 12 1 1M5 19l1-1M18 6l1-1"/>'
+  };
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.star}</svg>`;
+}
 // Ilustrasi maskot "Kak Iqro" — SVG vektor bergaya, dengan beberapa pose
 // supaya terasa hidup & bergambar penuh di tiap layar (bukan cuma kotak CSS).
 let mascotSvgCounter = 0;
@@ -2648,6 +2682,7 @@ function arabSizeClass(text) {
 }
 
 function render() {
+  root.classList.toggle("dashboard-view", state.view === "dashboard");
   if (state.view === "dashboard") renderDashboard();
   else if (state.view === "category-home") renderCategoryHome();
   else if (state.view === "lesson") renderLesson();
@@ -2680,72 +2715,70 @@ const DAILY_POSE = { iqro: "read", sholat: "point", tajwid: "search", nabi: "tro
 
 function renderDashboard() {
   const cats = ["iqro", "sholat", "tajwid", "nabi", "arab", "doa"];
-  const tileHtml = cats.map((key) => {
+  const worlds = {
+    iqro: { title: "Iqro & Al-Qur’an", desc: "Dari huruf pertama, sampai lancar mengaji", bg: "#eaf0d9", accent: "#729c48" },
+    sholat: { title: "Belajar Sholat", desc: "Langkah kecil untuk ibadah yang hebat", bg: "#e2efed", accent: "#679b92" },
+    tajwid: { title: "Belajar Tajwid", desc: "Baca lebih indah, mengaji lebih fasih", bg: "#eee8f5", accent: "#a08abd" },
+    nabi: { title: "Kisah 25 Nabi", desc: "Temukan teladan di setiap cerita", bg: "#fbedd5", accent: "#caa24d" },
+    arab: { title: "Bahasa Arab", desc: "Kenalan dengan kata-kata baru, yuk!", bg: "#f5e4dc", accent: "#c79377" },
+    doa: { title: "Doa Harian", desc: "Temani setiap harimu dengan doa", bg: "#e7edda", accent: "#93a36a" }
+  };
+  const tileHtml = cats.map((key, index) => {
     const cat = APP_DATA[key];
+    const world = worlds[key];
     const total = cat.modules.reduce((a, m) => a + m.kartu.length, 0);
-    let seen = 0;
-    cat.modules.forEach((m) => (seen += getProgress(key, m.id).seen.length));
-    const tuntas = total > 0 && seen >= total;
-    if (cat.badgeImg) {
-      return `
-        <button class="shell-card tile-${key}" data-cat="${key}">
-          <img class="shell-card-img" src="${cat.badgeImg}" alt="${cat.label}" />
-          ${tuntas ? `<span class="shell-card-crown">🏆</span>` : ""}
-          <span class="shell-card-pill">⭐ ${seen}/${total}</span>
-        </button>`;
-    }
-    return `
-      <button class="shell-card shell-card-fallback tile-${key}" data-cat="${key}">
-        <div class="iq-card-illust">
-          <span class="iq-illust-deco d1">✨</span>
-          <span class="iq-illust-deco d2">⭐</span>
-          <span class="iq-illust-icon">${cat.icon}</span>
-          ${tuntas ? `<span class="iq-card-crown">🏆</span>` : ""}
-        </div>
-        <div class="iq-card-label">
-          <div>
-            <div class="iq-card-title">${cat.label}</div>
-            <div class="iq-card-sub">⭐ ${seen}/${total}</div>
-          </div>
-          <span class="iq-card-star">⭐</span>
-        </div>
-      </button>`;
+    const seen = cat.modules.reduce((a, m) => a + getProgress(key, m.id).seen.length, 0);
+    const percent = total ? Math.min(100, Math.round(seen / total * 100)) : 0;
+    return `<button class="world-card" data-cat="${key}" style="--world-bg:${world.bg};--world-accent:${world.accent}" aria-label="Jelajahi ${world.title}">
+      <div class="world-visual"><span class="world-number">DUNIA 0${index + 1}</span><img src="${cat.badgeImg}" alt="" draggable="false"><span class="world-spark" aria-hidden="true">✦</span></div>
+      <div class="world-info"><div class="world-title-row"><h3>${world.title}</h3><span class="world-arrow" aria-hidden="true">↗</span></div><p>${world.desc}</p>
+      <div class="world-progress" role="progressbar" aria-label="Progres ${world.title}" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100"><span style="width:${percent}%"></span></div>
+      <div class="world-meta"><span>${cat.modules.length} level petualangan</span><span>${percent === 100 ? "✓ Tuntas" : percent + "% selesai"}</span></div></div>
+    </button>`;
   }).join("");
-
-  const streak = getStreak();
   const xp = getXP();
-  const sparkles = ["✨","⭐","🌟","💫","✨","⭐"];
-  const sparkleHtml = sparkles.map((s, i) => {
-    const top = [6, 15, 60, 72, 38, 20][i] + "%";
-    const left = [8, 88, 4, 90, 50, 70][i] + "%";
-    const delay = (i * 0.6).toFixed(1) + "s";
-    return `<span class="shell-sparkle" style="top:${top};left:${left};animation-delay:${delay}">${s}</span>`;
-  }).join("");
+  const level = Math.floor(xp / 100) + 1;
+  const dailyXP = getDailyXP();
+  const dailyPercent = Math.min(100, dailyXP / 20 * 100);
+  const next = getRecommendedModule("iqro");
+  const started = getProgress("iqro", next.id).seen.length > 0;
   root.innerHTML = `
-    <div class="game-shell" style="background-image:url('${IMG_BG}')">
-      ${sparkleHtml}
-      <div class="shell-topbar">
-        <div class="shell-title-badge">Pilih Mode Belajar</div>
-        <div class="shell-stats">
-          <span class="stat-pill streak">🔥 ${streak}</span>
-          <span class="stat-pill xp">⭐ ${xp}</span>
-        </div>
-      </div>
-      <div class="shell-body">
-        <div class="shell-mascot-col">
-          <img class="shell-mascot-img" src="${IMG_MASCOT}" alt="Raqi" />
-          <div class="hero-speech-bubble shell-bubble">Assalamu'alaikum! Yuk pilih mau belajar apa hari ini? 😊</div>
-        </div>
-        <div class="shell-cards-grid">${tileHtml}</div>
-      </div>
-    </div>
-    <div class="footer-note">Dibuat oleh Desta · All Rights Reserved © 2026</div>
-  `;
-
+    <header class="adventure-header"><div class="greeting-block"><p class="greeting">Assalamu’alaikum, Petualang!</p><div class="greeting-sub">Hari baru, petualangan seru menantimu.</div></div><div class="mobile-brand">iqro<span>qu</span></div>
+      <div class="player-stats"><div class="player-stat flame" title="Hari belajar berturut-turut">${gameIcon("flame")} ${getStreak()} <small>hari beruntun</small></div><div class="player-stat" title="Total pengalaman belajar">${gameIcon("star")} ${xp} <small>XP</small></div></div>
+    </header>
+    <div class="dashboard-layout"><div class="adventure-main">
+      <section class="quest-hero" aria-labelledby="adventure-title"><div class="hero-content"><span class="eyebrow hero-eyebrow">${gameIcon("sun")} BELAJAR, BERMAIN, BERTUMBUH</span><h1 id="adventure-title">Petualangan kecil,<br><span>pahala besar.</span></h1><p>Jelajahi dunia ilmu bersama Raqi.<br>Satu langkah hari ini, makin hebat esok hari!</p><button class="hero-cta" id="continueAdventure">${started ? "Lanjutkan" : "Mulai"} petualangan ${gameIcon("arrow")}</button></div>
+        <div class="hero-art" aria-hidden="true"><span class="floating-letter">ب</span><span class="hero-star">✦</span><img src="${IMG_MASCOT}" alt="" draggable="false"><span class="floating-letter second">ا</span></div>
+      </section>
+      <section aria-labelledby="worlds-title"><div class="section-heading"><div><h2 id="worlds-title">Pilih dunia belajarmu</h2><p>Setiap dunia punya cerita. Mau mulai dari mana?</p></div><span class="world-count">6 DUNIA SERU</span></div><div class="world-grid">${tileHtml}</div></section>
+    </div><aside class="adventure-aside" aria-label="Misi dan pencapaian">
+      <section class="side-card"><div class="side-title"><h2>Misi hari ini</h2><span class="tiny-label">HARIAN</span></div><div class="daily-visual" aria-hidden="true">🏆</div><p class="mission-title">${dailyXP >= 20 ? "Misi ditaklukkan!" : "Si kecil, semangat besar!"}</p><p class="mission-desc">${dailyXP >= 20 ? "Hebat! Teruskan petualanganmu<br>atau kembali lagi besok, ya." : "Kumpulkan 20 XP hari ini.<br>Belajar sedikit, berarti banyak."}</p><div class="mission-progress"><span>Progres misimu</span><strong>${Math.min(dailyXP, 20)} / 20 XP</strong></div><div class="daily-progress" role="progressbar" aria-label="Misi XP harian" aria-valuenow="${dailyPercent}" aria-valuemin="0" aria-valuemax="100"><span style="width:${dailyPercent}%"></span></div><button class="mission-link" id="dailyPlay">${dailyXP >= 20 ? "Main lagi, yuk" : "Ayo, kumpulkan XP"} <span aria-hidden="true">→</span></button></section>
+      <section class="side-card"><div class="side-title"><h2>Jejak belajarmu</h2>${gameIcon("star")}</div><div class="level-row"><div class="level-badge" aria-label="Level ${level}">${level}</div><div><strong>${level < 3 ? "Penjelajah Cilik" : level < 6 ? "Penjelajah Hebat" : "Bintang Petualang"}</strong><small>Level ${level} · Terus bertumbuh!</small></div></div><div class="level-track" role="progressbar" aria-label="Progres level" aria-valuenow="${xp % 100}" aria-valuemin="0" aria-valuemax="100"><span style="width:${xp % 100}%"></span></div><p class="level-caption">${100 - xp % 100} XP lagi menuju level ${level + 1}</p></section>
+      <div class="raqi-note"><span class="eyebrow">✦ PESAN DARI RAQI</span><p>“Tidak perlu buru-buru.<br>Yang penting, terus melangkah!”</p><small>Teman di setiap petualanganmu</small></div>
+    </aside></div>
+    <footer class="dashboard-footer"><span>Dibuat dengan sepenuh hati oleh Desta · © 2026 IqroQu</span><span>Belajar menyenangkan, tanpa akun.</span></footer>`;
   root.querySelectorAll("[data-cat]").forEach((btn) => {
     btn.addEventListener("click", () => {
-      openCategoryPopup(btn.dataset.cat);
+      state.category = btn.dataset.cat;
+      state.view = "category-home";
+      render();
+      window.scrollTo({ top: 0 });
     });
+  });
+  document.getElementById("continueAdventure").addEventListener("click", () => {
+    state.category = "iqro";
+    state.jilidId = next.id;
+    const seen = getProgress("iqro", next.id).seen;
+    const nextCard = next.kartu.findIndex((_, i) => !seen.includes(i));
+    state.cardIndex = nextCard < 0 ? 0 : nextCard;
+    state.view = "lesson";
+    render();
+    window.scrollTo({ top: 0 });
+  });
+  document.getElementById("dailyPlay").addEventListener("click", () => {
+    state.view = "main";
+    render();
+    window.scrollTo({ top: 0 });
   });
 }
 
@@ -2992,7 +3025,7 @@ function renderPengaturan() {
   });
   document.getElementById("setReset").addEventListener("click", () => {
     if (confirm("Yakin mau reset semua progres belajar, XP, dan streak? Tindakan ini tidak bisa dibatalkan.")) {
-      [PROGRESS_KEY, XP_KEY, STREAK_KEY, FAVORIT_KEY].forEach((k) => localStorage.removeItem(k));
+      [PROGRESS_KEY, XP_KEY, STREAK_KEY, FAVORIT_KEY, DAILY_XP_KEY].forEach((k) => localStorage.removeItem(k));
       render();
     }
   });
