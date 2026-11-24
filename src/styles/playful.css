@@ -1,0 +1,81 @@
+/* One illustrated WebP atlas, shared by every screen and device. */
+.game-icon {
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 1.35em;
+  height: 1.35em;
+  vertical-align: -.3em;
+  background: url("../../assets/images/game-icons.webp") var(--icon-x) var(--icon-y) / 500% 500% no-repeat;
+}
+.icon-arrowLeft { transform: scaleX(-1); }
+.icon-heartEmpty, .icon-starEmpty { filter: grayscale(1); opacity: .4; }
+.icon-muted::after { content: ""; position: absolute; inset: 48% 8% auto; height: 3px; background: #d95b4b; border-radius: 2px; transform: rotate(-45deg); }
+.player-stat .game-icon { width: 26px; height: 26px; }
+.bn-icon .game-icon { width: 34px; height: 34px; }
+.game-tile .icon .game-icon { width: 74px; height: 74px; }
+.speaker-btn > .game-icon { width: 50px; height: 50px; }
+.music-btn .game-icon { width: 29px; height: 29px; }
+.btn .game-icon, .audio-tool-btn .game-icon, .back-btn .game-icon { width: 25px; height: 25px; }
+.world-stars .game-icon { width: 21px; height: 21px; }
+.world-arrow .game-icon { width: 24px; height: 24px; }
+.intro-features .game-icon { width: 22px; height: 22px; }
+.hero-cta .game-icon { width: 35px; height: 35px; }
+.play-triangle { display: grid; place-items: center; }
+.ws-result { margin: 10px 0 0; font-size: 13px; font-weight: 800; color: #2d6261; }
+
+/* Primary, secondary, and utility controls share the same toy shape. */
+.btn, .hero-cta, .back-btn, .audio-tool-btn, .setting-btn, .intro-replay {
+  border-radius: 20px;
+  min-height: 46px;
+}
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
+.speaker-btn, .music-btn, .duo-node-fav, .duo-node-game { border-radius: 50%; }
+
+/* Animate existing, cached art using compositor-friendly transforms only. */
+.raqi-character, .mascot-illust img { transform-origin: 50% 90%; animation: raqiSway 4.4s ease-in-out infinite; }
+.intro-raqi { animation: introRaqi 900ms 150ms cubic-bezier(.2,.8,.3,1.18) both, raqiSway 4.4s 1100ms ease-in-out infinite; }
+@keyframes raqiSway {
+  0%, 65%, 100% { transform: translateY(0) rotate(0); }
+  20% { transform: translateY(-7px) rotate(-2deg); }
+  40% { transform: translateY(-3px) rotate(2deg); }
+}
+
+/* Short video-like success scene: no video download, canvas, or JS frame loop. */
+.success-scene { position: relative; width: 230px; height: 180px; margin: 0 auto; }
+.success-raqi { position: absolute; z-index: 1; inset: 15px 0 auto; width: 100%; height: 160px; object-fit: contain; transform-origin: 50% 95%; animation: raqiCheer 760ms cubic-bezier(.2,.7,.3,1) both; }
+.success-star { position: absolute; z-index: 2; font-size: 31px; animation: rewardPop 760ms both; }
+.star-left { left: 10px; top: 65px; rotate: -16deg; }
+.star-right { right: 8px; top: 55px; rotate: 13deg; animation-delay: 80ms; }
+.star-top { top: 0; left: 96px; font-size: 27px; animation-delay: 120ms; }
+.success-ripple { position: absolute; bottom: 3px; left: 50%; width: 110px; height: 18px; border: 3px solid #a6e2cc; border-radius: 50%; translate: -50% 0; animation: rewardRipple 760ms both; }
+.celebrate-card .success-scene { margin-top: -12px; }
+.celebrate-card .btn { width: 100%; margin-top: 12px; }
+.lesson-success { position: fixed; z-index: 2000; top: 50%; left: 50%; translate: -50% -50%; width: min(300px, calc(100% - 56px)); display: flex; flex-direction: column; align-items: center; padding: 12px 18px 22px; border: 5px solid white; border-radius: 30px; color: #2d6261; background: #fff9e7; box-shadow: 0 8px 0 #77be9a66, 0 20px 50px #22575633; pointer-events: none; animation: successPopup 760ms both; }
+.lesson-success[hidden] { display: none; }
+.lesson-success strong { font: 900 26px/1.2 "Baloo 2", "Nunito", sans-serif; }
+.lesson-success small { margin-top: 6px; font-weight: 800; }
+.flashcard.card-flow-out { animation-delay: 340ms; }
+.flashcard.card-flow-out::after { animation-delay: 340ms; }
+@keyframes raqiCheer {
+  0% { transform: translateY(8px) scale(.9); }
+  35% { transform: translateY(-15px) rotate(-6deg) scale(1.05); }
+  65% { transform: translateY(-5px) rotate(5deg); }
+  100% { transform: translateY(0) rotate(0) scale(1); }
+}
+@keyframes rewardPop { 0% { opacity: 0; transform: scale(.3) translateY(15px); } 45% { opacity: 1; transform: scale(1.18) translateY(-6px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+@keyframes rewardRipple { from { opacity: .2; transform: scale(.5); } 55% { opacity: 1; } to { opacity: .5; transform: scale(1.2); } }
+@keyframes successPopup { 0% { opacity: 0; transform: scale(.85); } 14%, 88% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(.96); } }
+@media (max-width: 600px) {
+  .player-stat .game-icon { width: 21px; height: 21px; }
+  .bn-icon .game-icon { width: 28px; height: 28px; }
+  .game-tile .icon .game-icon { width: 62px; height: 62px; }
+  .btn .game-icon, .audio-tool-btn .game-icon { width: 23px; height: 23px; }
+}
+@media (max-width: 900px) {
+  .bottom-nav.focus-mode { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lesson-success { animation: none; }
+  .raqi-character, .mascot-illust img, .intro-raqi, .success-raqi, .success-star, .success-ripple { animation: none; }
+}

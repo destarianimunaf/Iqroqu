@@ -1,0 +1,1743 @@
+/* ==========================================================
+   IQRO CERIA — stylesheet
+   Palet:  krem kertas #FFF8EA | tinta ungu #2B2140
+           teal utama #1B7A72 | kuning ceria #FFC93C
+           koral #FF6F59 | ungu lembut #7C83FD
+   Font:   Baloo 2 (judul), Nunito (isi), Amiri (huruf Arab)
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&family=Amiri:wght@400;700&display=swap');
+
+:root {
+  --paper: #FFF8EA;
+  --paper-line: #F0E4C8;
+  --ink: #2B2140;
+  --teal: #1B7A72;
+  --teal-dark: #145b55;
+  --yellow: #FFC93C;
+  --coral: #FF6F59;
+  --violet: #7C83FD;
+  --pink: #E85D9C;
+  --green: #2FA84F;
+  --card-shadow: 0 6px 0 rgba(43, 33, 64, 0.15);
+  --radius-lg: 26px;
+  --radius-md: 18px;
+}
+
+* { box-sizing: border-box; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'IqroQu Symbols', 'Nunito', sans-serif;
+  min-height: 100vh;
+}
+
+body {
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 38px,
+      var(--paper-line) 39px
+    );
+  background-attachment: local;
+}
+
+h1, h2, h3, .display {
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 800;
+  margin: 0;
+}
+
+.arabic {
+  font-family: 'Amiri', serif;
+  direction: rtl;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--violet);
+  outline-offset: 3px;
+}
+
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 18px 18px 92px;
+  min-height: 100vh;
+}
+
+/* ---------- Header ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding-right: 52px; /* ruang supaya tidak ketutup tombol musik mengambang */
+}
+.topbar .brand-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+  text-align: right;
+}
+.topbar .brand { flex-shrink: 0; }
+.stat-pills { display: flex; gap: 6px; flex-shrink: 0; }
+.stat-pill {
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  border-radius: 999px;
+  padding: 5px 10px;
+  box-shadow: var(--card-shadow);
+  white-space: nowrap;
+}
+.stat-pill.streak { background: #fff; color: var(--coral); border: 2px solid var(--coral); }
+.stat-pill.xp { background: #fff; color: var(--teal-dark); border: 2px solid var(--teal-dark); }
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-title {
+  font-size: 26px;
+  color: var(--teal-dark);
+  letter-spacing: 0.5px;
+}
+
+.brand-title span {
+  color: var(--coral);
+}
+.iqroqu-logo {
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.iqroqu-logo span { text-shadow: 1.5px 1.5px 0 rgba(43,33,64,0.18); }
+.iqroqu-logo.compact { font-size: 19px; }
+
+.back-btn {
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-weight: 700;
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.15s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.back-btn:active { transform: translateY(3px); box-shadow: none; }
+
+/* ---------- Mascot (ilustrasi SVG bergaya, banyak pose) ---------- */
+.mascot-wrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.mascot-illust {
+  width: 84px;
+  height: 104px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 6px 4px rgba(43,33,64,0.18));
+  animation: bob 2.8s ease-in-out infinite;
+}
+.mascot-illust.big { width: 132px; height: 164px; }
+.mascot-illust svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.mascot-illust img { width: 100%; height: 100%; display: block; object-fit: contain; -webkit-user-drag: none; }
+.mascot-mini { flex-shrink: 0; }
+.mascot-mini .mascot-illust { width: 40px; height: 50px; animation-duration: 3.4s; }
+.corner-mascot-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 4px;
+}
+.corner-mascot-block .mascot-illust.big { width: 108px; height: 134px; }
+.corner-mascot-note {
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--teal-dark);
+  background: #fff;
+  border: 2px dashed var(--teal-dark);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(-1.5deg); }
+}
+.mas-blink { animation: mblink 4.5s ease-in-out infinite; transform-origin: center; }
+@keyframes mblink { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.15); } }
+.mas-armwave { animation: mwave 2s ease-in-out infinite; transform-origin: top center; }
+@keyframes mwave { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-14deg); } }
+.mas-sparkle { animation: msparkle 1.8s ease-in-out infinite; transform-origin: center; }
+.mas-sparkle.s2 { animation-delay: .5s; }
+.mas-sparkle.s3 { animation-delay: 1s; }
+@keyframes msparkle { 0%,100% { opacity:.25; transform:scale(0.7); } 50% { opacity:1; transform:scale(1.15); } }
+.mas-float { animation: mfloat 3.2s ease-in-out infinite; }
+@keyframes mfloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+/* ---------- Panggung ilustrasi (hero dashboard) ---------- */
+.hero-stage {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  padding: 26px 18px 10px;
+  margin-bottom: 6px;
+  background: linear-gradient(180deg, #2b3a6b 0%, #4a4184 55%, #6b4f9e 100%);
+}
+.hero-stage svg.hero-scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-stage .mascot-illust { position: relative; z-index: 2; margin: 0; }
+.hero-mascot-wrap { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; width: fit-content; }
+.hero-mascot-wrap .mascot-illust { margin: 0; }
+.hero-ribbon {
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+  background: var(--violet);
+  color: #fff;
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 5px 16px;
+  border-radius: 8px;
+  margin-top: -6px;
+  box-shadow: 0 3px 0 #5a5fd6;
+  white-space: nowrap;
+}
+.hero-speech-bubble {
+  position: relative;
+  z-index: 2;
+  background: #fff;
+  border-radius: 16px;
+  padding: 10px 14px;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ink);
+  max-width: 220px;
+  margin: 0 0 12px 2px;
+  box-shadow: var(--card-shadow);
+}
+.hero-speech-bubble::after {
+  content: "";
+  position: absolute;
+  left: 24px;
+  bottom: -7px;
+  border-width: 8px 7px 0;
+  border-style: solid;
+  border-color: #fff transparent transparent;
+}
+.hero-star { animation: msparkle 2.4s ease-in-out infinite; }
+.hero-star.d1 { animation-delay: .3s; } .hero-star.d2 { animation-delay: .9s; } .hero-star.d3 { animation-delay: 1.5s; }
+
+.speech-bubble {
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  flex: 1;
+}
+.speech-bubble::before {
+  content: "";
+  position: absolute;
+  left: -9px;
+  bottom: 14px;
+  border-width: 8px 10px 8px 0;
+  border-style: solid;
+  border-color: transparent var(--ink) transparent transparent;
+}
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  left: -6px;
+  bottom: 15px;
+  border-width: 7px 8px 7px 0;
+  border-style: solid;
+  border-color: transparent #fff transparent transparent;
+}
+
+/* ---------- Floating music button ---------- */
+.music-btn {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 60;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--ink);
+  box-shadow: var(--card-shadow);
+  font-size: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.12s ease;
+}
+.music-btn:active { transform: translateY(3px); box-shadow: none; }
+.music-btn.muted { opacity: 0.5; }
+
+/* ---------- Navigasi bawah (persisten) ---------- */
+.bottom-nav {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 60;
+  background: #fff;
+  border-top: 2px solid var(--paper-line);
+  display: flex;
+  justify-content: space-around;
+  gap: 2px;
+  padding: 7px 4px calc(7px + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -4px 10px rgba(43,33,64,0.08);
+}
+.bn-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 8px;
+  border-radius: 14px;
+  transition: background 0.15s ease, transform 0.12s ease;
+  flex: 1;
+  min-width: 0;
+}
+.bn-item:active { transform: scale(0.94); }
+.bn-icon { font-size: 20px; opacity: 0.5; filter: grayscale(1); transition: all 0.15s ease; }
+.bn-label { font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif; font-weight: 700; font-size: 9.5px; color: #ab9fc4; white-space: nowrap; }
+.bn-item.active { background: var(--paper); }
+.bn-item.active .bn-icon { opacity: 1; filter: none; transform: translateY(-1px); }
+.bn-item.active .bn-label { color: var(--teal-dark); }
+
+/* ---------- Halaman Progres ---------- */
+.progres-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 18px 0 22px;
+}
+.progres-summary-item {
+  background: #fff;
+  border-radius: var(--radius-md);
+  padding: 14px 8px;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+}
+.ps-num { font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif; font-weight: 800; font-size: 19px; color: var(--teal-dark); }
+.ps-label { font-size: 10.5px; font-weight: 700; color: #8A7F9C; margin-top: 2px; }
+
+.progres-list { display: flex; flex-direction: column; gap: 12px; }
+.progres-row {
+  display: flex;
+  gap: 12px;
+  background: #fff;
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: var(--card-shadow);
+  align-items: center;
+}
+.progres-row-icon {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  box-shadow: 0 3px 0 rgba(43,33,64,0.2);
+}
+.progres-row-body { flex: 1; min-width: 0; }
+.progres-row-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 6px; }
+.progres-row-title { font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif; font-weight: 800; font-size: 14.5px; color: var(--ink); }
+.progres-row-count { font-size: 11px; font-weight: 700; color: #8A7F9C; white-space: nowrap; }
+.progres-row-badge {
+  font-size: 10.5px; font-weight: 800; color: var(--green);
+  background: rgba(47,168,79,0.12); border-radius: 999px; padding: 2px 8px; white-space: nowrap;
+}
+.intro-progress-bar.dark { background: var(--paper-line); height: 8px; }
+.progres-row-sub { font-size: 10.5px; font-weight: 700; color: #8A7F9C; margin-top: 4px; }
+
+/* ---------- Halaman Main (akses cepat game) ---------- */
+.main-play-list { display: flex; flex-direction: column; gap: 12px; }
+.main-play-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: var(--radius-md);
+  padding: 14px;
+  color: #fff;
+  box-shadow: var(--card-shadow);
+}
+.main-play-icon { font-size: 30px; flex-shrink: 0; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15)); }
+.main-play-body { flex: 1; min-width: 0; }
+.main-play-title { font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif; font-weight: 800; font-size: 15px; }
+.main-play-sub { font-size: 11.5px; font-weight: 700; opacity: 0.9; margin-top: 1px; }
+.main-play-btn {
+  background: #fff;
+  color: var(--ink);
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  flex-shrink: 0;
+  box-shadow: 0 3px 0 rgba(43,33,64,0.2);
+  transition: transform 0.12s ease;
+}
+.main-play-btn:active { transform: translateY(3px); box-shadow: none; }
+
+/* ---------- Halaman Favorit ---------- */
+.favorit-list { display: flex; flex-direction: column; gap: 12px; }
+.favorit-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: var(--radius-md);
+  padding: 14px;
+  color: #fff;
+  box-shadow: var(--card-shadow);
+}
+.favorit-icon { font-size: 28px; flex-shrink: 0; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15)); }
+.favorit-body { flex: 1; min-width: 0; }
+.favorit-title { font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif; font-weight: 800; font-size: 14.5px; }
+.favorit-sub { font-size: 11px; font-weight: 700; opacity: 0.9; margin-top: 1px; }
+.favorit-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.favorit-open {
+  background: #fff;
+  color: var(--ink);
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  box-shadow: 0 3px 0 rgba(43,33,64,0.2);
+  transition: transform 0.12s ease;
+}
+.favorit-open:active { transform: translateY(3px); box-shadow: none; }
+.favorit-remove {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.85);
+  font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 3px 0 rgba(43,33,64,0.15);
+  transition: transform 0.12s ease;
+}
+.favorit-remove:active { transform: translateY(3px); box-shadow: none; }
+.favorit-empty {
+  background: #fff;
+  border: 2px dashed var(--paper-line);
+  border-radius: var(--radius-md);
+  padding: 24px 18px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: #8A7F9C;
+}
+
+/* ---------- Halaman Pengaturan ---------- */
+.setting-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 8px; }
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #fff;
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: var(--card-shadow);
+}
+.setting-title { font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif; font-weight: 800; font-size: 14px; color: var(--ink); }
+.setting-sub { font-size: 11px; font-weight: 700; color: #8A7F9C; margin-top: 2px; }
+.setting-toggle {
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: #D8CFB8;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 3px 0 rgba(43,33,64,0.15);
+  transition: transform 0.12s ease, background 0.15s ease;
+}
+.setting-toggle:active { transform: translateY(3px); box-shadow: none; }
+.setting-toggle.on { background: var(--green); }
+.setting-btn {
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 12.5px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--teal);
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 3px 0 var(--teal-dark);
+  transition: transform 0.12s ease;
+}
+.setting-btn:active { transform: translateY(3px); box-shadow: none; }
+.setting-btn.danger { background: var(--coral); box-shadow: 0 3px 0 #c94a3b; }
+.about-card {
+  background: #fff;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--card-shadow);
+  text-align: center;
+}
+.about-card p { font-size: 12.5px; font-weight: 700; color: #8A7F9C; margin-top: 8px; line-height: 1.5; }
+
+/* ---------- Dashboard ---------- */
+.dash-hero {
+  background: linear-gradient(135deg, var(--violet), var(--pink));
+  border-radius: 38px 38px 60px 60px / 38px 38px 46px 46px;
+  padding: 26px 22px;
+  color: #fff;
+  margin-bottom: 26px;
+  box-shadow: 0 9px 0 rgba(43,33,64,0.22);
+  position: relative;
+  overflow: hidden;
+}
+.dash-hero h2 { font-size: 23px; margin-bottom: 6px; }
+.dash-hero p { margin: 0; font-weight: 600; opacity: 0.95; position: relative; z-index: 1; }
+
+.menu-section-title {
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+  color: var(--teal-dark);
+  margin: 4px 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---------- Pilihan Hari Ini (kartu gambar geser horizontal) ---------- */
+.daily-picks-scroll {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 2px 2px 14px;
+  margin-bottom: 8px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+.daily-picks-scroll::-webkit-scrollbar { height: 6px; }
+.daily-picks-scroll::-webkit-scrollbar-thumb { background: #E4D7B8; border-radius: 999px; }
+.daily-pick-card {
+  flex: 0 0 168px;
+  height: 200px;
+  border-radius: 22px;
+  position: relative;
+  overflow: hidden;
+  scroll-snap-align: start;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.12s ease;
+}
+.daily-pick-card:active { transform: scale(0.96); }
+.daily-pick-decor {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 26px;
+  opacity: 0.55;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15));
+}
+.daily-pick-mascot {
+  position: absolute;
+  bottom: 46px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.daily-pick-mascot .mascot-illust { width: 92px; height: 114px; filter: drop-shadow(0 5px 3px rgba(0,0,0,0.2)); }
+.daily-pick-label {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  background: rgba(20,15,35,0.42);
+  backdrop-filter: blur(1px);
+  padding: 9px 12px 10px;
+  text-align: left;
+}
+.dpl-title { font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif; font-weight: 800; font-size: 14px; color: #fff; line-height: 1.15; }
+.dpl-sub { font-size: 10.5px; font-weight: 700; color: rgba(255,255,255,0.85); margin-top: 1px; }
+
+/* ---------- Dunia Belajar (ikon bundar geser horizontal) ---------- */
+.worlds-scroll {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding: 4px 4px 16px;
+  margin-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+.worlds-scroll::-webkit-scrollbar { height: 6px; }
+.world-item {
+  flex: 0 0 84px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.world-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 7px 0 rgba(43,33,64,0.25);
+  transition: transform 0.12s ease;
+  flex-shrink: 0;
+}
+.world-circle:active { transform: translateY(5px); box-shadow: 0 2px 0 rgba(43,33,64,0.25); }
+.world-icon { font-size: 36px; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15)); }
+.world-label {
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 11.5px;
+  color: var(--ink);
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* ---------- Kartu Menu Belajar (gaya ilustrasi ala IqroQu) ---------- */
+.iq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 8px;
+}
+.iq-card {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  transition: transform 0.12s ease;
+  background: #fff;
+}
+.iq-card:active { transform: translateY(4px); }
+.iq-card-illust {
+  position: relative;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.iq-illust-icon {
+  font-size: 42px;
+  filter: drop-shadow(0 3px 2px rgba(0,0,0,0.18));
+  animation: iconBounce 2.8s ease-in-out infinite;
+}
+.iq-illust-deco {
+  position: absolute;
+  font-size: 15px;
+  opacity: 0.85;
+  animation: floatY 4.2s ease-in-out infinite;
+}
+.iq-illust-deco.d1 { top: 8px; left: 10px; }
+.iq-illust-deco.d2 { bottom: 8px; right: 12px; animation-delay: 1.1s; }
+.iq-card-crown {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 18px;
+  animation: iconBounce 2s ease-in-out infinite;
+}
+.iq-card-label {
+  background: #fff;
+  padding: 9px 11px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+.iq-card-title { font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif; font-weight: 800; font-size: 13px; color: var(--ink); line-height: 1.15; }
+.iq-card-sub { font-size: 10px; font-weight: 700; color: #8A7F9C; margin-top: 2px; }
+.iq-card-star {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--yellow);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 0 rgba(43,33,64,0.2);
+}
+
+/* ============================================================
+   GAME SHELL — layar Beranda penuh 1 layar, responsif di semua
+   perangkat (HP, tablet, desktop), pakai aset desain IqroQu
+   ============================================================ */
+.game-shell {
+  position: relative;
+  margin: -18px -18px 0;
+  border-radius: 0 0 36px 36px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center 22%;
+  background-repeat: no-repeat;
+  min-height: calc(100dvh - 92px);
+  display: flex;
+  flex-direction: column;
+  padding: 16px 16px 26px;
+  box-shadow: 0 8px 22px rgba(43,33,64,0.18);
+}
+.game-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255,255,255,0.55) 0, transparent 3%),
+    radial-gradient(circle at 88% 14%, rgba(255,255,255,0.5) 0, transparent 2.4%),
+    radial-gradient(circle at 78% 46%, rgba(255,255,255,0.5) 0, transparent 2%),
+    radial-gradient(circle at 20% 62%, rgba(255,255,255,0.45) 0, transparent 2.2%);
+}
+.shell-sparkle {
+  position: absolute;
+  font-size: 18px;
+  opacity: 0.85;
+  animation: floatY 4.5s ease-in-out infinite;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15));
+  pointer-events: none;
+}
+.shell-topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  position: relative;
+  z-index: 2;
+  padding-right: 46px;
+}
+.shell-title-badge {
+  background: linear-gradient(160deg, #1f8a4c, #146138);
+  color: #fff;
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: clamp(13px, 3.4vw, 17px);
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 3px solid var(--yellow);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+  white-space: nowrap;
+}
+.shell-stats { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+.shell-stats .stat-pill { background: #fff; }
+
+.shell-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding-top: 8px;
+  position: relative;
+  z-index: 2;
+}
+.shell-mascot-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.shell-mascot-img {
+  width: clamp(120px, 28vw, 200px);
+  height: auto;
+  filter: drop-shadow(0 10px 8px rgba(0,0,0,0.25));
+  animation: bob 3.2s ease-in-out infinite;
+}
+.shell-bubble {
+  margin: 0;
+  max-width: 260px;
+  text-align: center;
+  font-size: 12.5px;
+}
+.shell-bubble::after { left: 50%; transform: translateX(-50%); }
+
+.shell-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 2.6vw, 18px);
+  width: 100%;
+  max-width: 680px;
+}
+.shell-card {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 7px 0 rgba(43,33,64,0.24);
+  transition: transform 0.12s ease;
+  aspect-ratio: 5 / 4;
+  animation: cardPopIn 0.5s cubic-bezier(.34,1.56,.64,1) backwards;
+}
+.shell-card:nth-child(1) { animation-delay: 0.05s; }
+.shell-card:nth-child(2) { animation-delay: 0.12s; }
+.shell-card:nth-child(3) { animation-delay: 0.19s; }
+.shell-card:nth-child(4) { animation-delay: 0.26s; }
+.shell-card:nth-child(5) { animation-delay: 0.33s; }
+@keyframes cardPopIn {
+  0% { opacity: 0; transform: scale(0.7) translateY(14px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+.shell-card:active { transform: translateY(4px) scale(0.98); }
+.shell-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.shell-card-crown {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 18px;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+}
+.shell-card-pill {
+  position: absolute;
+  left: 8px;
+  top: 7px;
+  background: rgba(255,255,255,0.92);
+  color: var(--ink);
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  box-shadow: 0 2px 0 rgba(43,33,64,0.15);
+}
+.shell-card.shell-card-fallback {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+.shell-card.shell-card-fallback .iq-card-illust {
+  flex: 1;
+  min-height: 0;
+  border-radius: 0;
+  background: linear-gradient(150deg, #FF9F43, var(--coral));
+}
+.shell-card.shell-card-fallback .iq-card-label {
+  flex-shrink: 0;
+  box-shadow: none;
+}
+.shell-cards-grid .shell-card:nth-child(5):last-child {
+  grid-column: 1 / -1;
+  aspect-ratio: auto;
+  min-height: 84px;
+}
+.shell-cards-grid .shell-card:nth-child(5):last-child.shell-card-fallback { flex-direction: row; }
+.shell-cards-grid .shell-card:nth-child(5):last-child.shell-card-fallback .iq-card-illust { flex: 0 0 84px; border-radius: 0; }
+.shell-cards-grid .shell-card:nth-child(5):last-child.shell-card-fallback .iq-card-label { flex: 1; }
+
+/* Tablet & desktop: maskot besar di kiri, kartu tersusun di kanan seperti mockup */
+@media (min-width: 760px) {
+  .game-shell { padding: 22px 28px 26px; min-height: auto; }
+  .shell-body { flex-direction: row; align-items: center; justify-content: center; gap: clamp(20px, 4vw, 56px); padding: 24px 0; }
+  .shell-mascot-img { width: clamp(160px, 15vw, 220px); }
+  .shell-cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 440px; gap: 14px; }
+}
+@media (min-width: 1080px) {
+  .app { max-width: 1100px; }
+  .shell-cards-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 780px; }
+  .shell-mascot-img { width: clamp(180px, 12vw, 230px); }
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 14px;
+  position: relative;
+}
+@media (min-width: 480px) {
+  .menu-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.menu-tile {
+  border-radius: 40% 60% 58% 42% / 48% 42% 58% 52%;
+  padding: 22px 16px 18px;
+  color: #fff;
+  text-align: left;
+  box-shadow: 0 9px 0 rgba(43,33,64,0.26);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 172px;
+  transition: transform 0.15s cubic-bezier(.34,1.6,.64,1), box-shadow 0.15s ease, border-radius 0.3s ease;
+  position: relative;
+}
+.menu-tile:nth-child(odd) { transform: rotate(-1.6deg); }
+.menu-tile:nth-child(even) { transform: rotate(1.8deg); }
+.menu-tile:active {
+  transform: translateY(7px) scale(0.96) rotate(0deg) !important;
+  box-shadow: 0 2px 0 rgba(43,33,64,0.26);
+  border-radius: var(--radius-lg);
+}
+.menu-tile .m-icon {
+  font-size: 40px;
+  display: inline-block;
+  animation: iconBounce 2.6s ease-in-out infinite;
+  filter: drop-shadow(0 3px 2px rgba(0,0,0,0.15));
+}
+.menu-tile:nth-child(2) .m-icon { animation-delay: .3s; }
+.menu-tile:nth-child(3) .m-icon { animation-delay: .6s; }
+.menu-tile:nth-child(4) .m-icon { animation-delay: .9s; }
+.menu-tile:nth-child(5) .m-icon { animation-delay: 1.2s; }
+@keyframes iconBounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(-6deg); }
+}
+.menu-tile h3 { font-size: 17px; margin: 2px 0 0; line-height: 1.15; }
+.menu-tile p { font-size: 11.5px; font-weight: 700; margin: 0; opacity: 0.95; }
+.menu-tile .m-progress {
+  margin-top: auto;
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(255,255,255,0.28);
+  border-radius: 999px;
+  padding: 4px 11px;
+  width: fit-content;
+}
+.tile-badge {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: 20px;
+  animation: iconBounce 2s ease-in-out infinite;
+}
+.tile-iqro { background: linear-gradient(150deg, #26a89a, var(--violet)); }
+.tile-sholat { background: linear-gradient(150deg, var(--coral), #ffb14c); }
+.tile-tajwid { background: linear-gradient(150deg, var(--violet), var(--pink)); }
+.tile-nabi { background: linear-gradient(150deg, var(--green), #2fc9a8); }
+.tile-arab { background: linear-gradient(150deg, #FF9F43, var(--coral)); }
+.tile-doa { background: linear-gradient(150deg, #2FA84F, #FFC93C); }
+.menu-grid .menu-tile:nth-child(5):last-child {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  min-height: 108px;
+  border-radius: 34px 60px 60px 34px / 50% 50% 50% 50%;
+}
+.menu-grid .menu-tile:nth-child(5):last-child .m-icon { font-size: 46px; }
+.menu-grid .menu-tile:nth-child(5):last-child .m-text { flex: 1; }
+.menu-grid .menu-tile:nth-child(5):last-child .m-progress { margin-top: 0; flex-shrink: 0; }
+
+/* ---------- Dekorasi mengambang (nuansa playful gaya app anak) ---------- */
+.floaty-layer {
+  position: relative;
+  height: 0;
+}
+.floaty {
+  position: absolute;
+  opacity: 0.55;
+  animation: floatY 5s ease-in-out infinite;
+  pointer-events: none;
+  user-select: none;
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(8deg); }
+}
+
+/* ---------- Home: bookshelf ---------- */
+.intro-card {
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  color: #fff;
+  margin-bottom: 24px;
+  box-shadow: var(--card-shadow);
+}
+.intro-card h2 { font-size: 22px; margin-bottom: 6px; }
+.intro-card p { margin: 0; font-weight: 600; opacity: 0.95; }
+
+.intro-progress-bar {
+  margin-top: 14px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.35);
+  overflow: hidden;
+}
+.intro-progress-fill {
+  height: 100%;
+  background: #fff;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.shelf-label {
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--teal-dark);
+  margin: 8px 0 12px;
+}
+
+/* ---------- Jalur belajar (path ala Duolingo) ---------- */
+.duo-path {
+  position: relative;
+  padding: 12px 0 24px;
+}
+.duo-path::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  bottom: 10px;
+  border-left: 4px dashed var(--paper-line);
+  transform: translateX(-50%);
+  z-index: 0;
+}
+.duo-node-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+.duo-node-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  position: relative;
+}
+.duo-node {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: var(--node-color, var(--teal));
+  box-shadow: 0 7px 0 rgba(43,33,64,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  position: relative;
+}
+.duo-node:active { transform: translateY(6px); box-shadow: 0 1px 0 rgba(43,33,64,0.25); }
+.duo-node-icon { font-size: 28px; color: #fff; }
+.duo-node.done { background: var(--green); }
+.duo-node.done .duo-node-icon { font-size: 30px; }
+.duo-node.locked {
+  background: #D8CFB8;
+  box-shadow: 0 7px 0 rgba(43,33,64,0.12);
+  cursor: not-allowed;
+}
+.duo-node.locked .duo-node-icon { font-size: 24px; opacity: 0.8; }
+.duo-node-ring {
+  position: absolute;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  border: 3px dashed var(--coral);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ringspin 6s linear infinite;
+}
+@keyframes ringspin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+.duo-node-label {
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ink);
+  text-align: center;
+  max-width: 96px;
+}
+.duo-node-progress {
+  font-size: 10.5px;
+  font-weight: 800;
+  color: #8A7F9C;
+}
+.duo-node-game {
+  margin-top: 2px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--ink);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 0 rgba(43,33,64,0.15);
+}
+.duo-node-fav {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--ink);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  box-shadow: 0 2px 0 rgba(43,33,64,0.15);
+}
+.duo-node-fav.active { background: var(--yellow); }
+.duo-node-game:active { transform: translateY(2px); box-shadow: none; }
+
+.bookshelf {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (min-width: 520px) {
+  .bookshelf { grid-template-columns: repeat(3, 1fr); }
+}
+
+.book {
+  border-radius: var(--radius-md);
+  padding: 16px 14px;
+  color: #fff;
+  text-align: left;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 140px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.book-jilid { font-family: 'Baloo 2'; font-size: 20px; }
+.book-deskripsi { font-size: 13px; font-weight: 700; opacity: 0.95; }
+.book-progress {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  background: rgba(255,255,255,0.25);
+  border-radius: 999px;
+  padding: 4px 10px;
+  width: fit-content;
+}
+.book-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 6px;
+}
+.book-actions button {
+  flex: 1;
+  border-radius: 999px;
+  padding: 7px 6px;
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 12.5px;
+  background: rgba(255,255,255,0.9);
+  color: var(--ink);
+  transition: transform 0.12s ease;
+}
+.book-actions button:active { transform: translateY(2px); }
+.book-actions .btn-belajar { background: #fff; }
+.book-actions .btn-main { background: rgba(255,255,255,0.55); }
+.book-selesai::after {
+  content: "✓ Selesai";
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 11px;
+  font-weight: 800;
+  background: #fff;
+  color: var(--green);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+/* ---------- Lesson view ---------- */
+.progress-dots {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 14px 0 6px;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #E6DCC0;
+}
+.dot.active { background: var(--coral); transform: scale(1.3); }
+.dot.done { background: var(--green); }
+
+.flashcard {
+  background: #fff;
+  border: 3px dashed var(--ink);
+  border-radius: var(--radius-lg);
+  padding: 30px 18px 26px;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  margin: 14px 0;
+}
+
+.flashcard .arabic {
+  font-size: 68px;
+  line-height: 1.4;
+  color: var(--ink);
+  word-break: break-word;
+}
+.flashcard .arabic.medium { font-size: 40px; }
+.flashcard .arabic.small { font-size: 27px; line-height: 1.7; }
+
+.flashcard .latin {
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-size: 20px;
+  color: var(--teal-dark);
+  margin-top: 10px;
+  letter-spacing: 0.5px;
+}
+
+.flashcard .ket {
+  font-size: 14px;
+  font-weight: 700;
+  color: #8A7F9C;
+  margin-top: 6px;
+}
+
+.speaker-btn {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: var(--coral);
+  color: #fff;
+  font-size: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 18px auto 0;
+  box-shadow: 0 6px 0 #C94A3B;
+  transition: transform 0.12s ease;
+}
+.speaker-btn:active { transform: translateY(6px); box-shadow: none; }
+.speaker-btn.speaking { animation: pulse 0.6s ease infinite; }
+
+.audio-tools-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+.audio-tool-btn {
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--ink);
+  box-shadow: 0 3px 0 rgba(43,33,64,0.2);
+  transition: transform 0.12s ease;
+}
+.audio-tool-btn:active { transform: translateY(3px); box-shadow: none; }
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.nav-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.btn {
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 999px;
+  padding: 14px 18px;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  flex: 1;
+}
+.btn:active { transform: translateY(4px); box-shadow: none; }
+.btn-primary { background: var(--teal); color: #fff; }
+.btn-secondary { background: #fff; color: var(--ink); border: 2px solid var(--ink); }
+.btn-ok { background: var(--yellow); color: var(--ink); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.aku-bisa-row { text-align: center; margin-top: 12px; }
+.aku-bisa-row .btn { flex: none; padding: 12px 28px; }
+
+/* ---------- Game hub ---------- */
+.game-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+.game-tile {
+  border-radius: var(--radius-lg);
+  padding: 18px 14px;
+  color: #fff;
+  text-align: left;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.12s ease;
+}
+.game-tile:active { transform: translateY(4px); }
+.game-tile .icon { font-size: 30px; }
+.game-tile h3 { font-size: 15.5px; margin: 6px 0 3px; line-height: 1.15; }
+.game-tile p { margin: 0; font-size: 11.5px; font-weight: 700; opacity: 0.95; }
+.game-tile.quiz { background: linear-gradient(135deg, var(--coral), var(--pink)); }
+.game-tile.match { background: linear-gradient(135deg, var(--violet), var(--teal)); }
+.game-tile.order { background: linear-gradient(135deg, var(--yellow), var(--coral)); }
+.game-tile.tf { background: linear-gradient(135deg, var(--green), #57c2a8); }
+.game-tile.sheet { background: linear-gradient(135deg, #FF9F43, #FFC93C); }
+
+/* ---------- Lembar Latihan (worksheet) ---------- */
+.worksheet-paper {
+  background: #fffdf6;
+  border-radius: 16px;
+  padding: 20px 18px 22px 44px;
+  position: relative;
+  box-shadow: var(--card-shadow);
+  background-image: repeating-linear-gradient(to bottom, transparent 0px, transparent 36px, var(--paper-line) 37px);
+  margin: 14px 0;
+  border: 2px solid #EDE0C0;
+}
+.worksheet-paper::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: 34px;
+  width: 2px;
+  background: #FF9FB0;
+  opacity: 0.6;
+}
+.worksheet-holes {
+  position: absolute;
+  left: 10px;
+  top: 18px;
+  bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.worksheet-holes span {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid #E4D7B8;
+  display: block;
+}
+.ws-title {
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--teal-dark);
+  margin-bottom: 4px;
+}
+.ws-instruction {
+  font-size: 12px;
+  font-weight: 700;
+  color: #8A7F9C;
+  margin-bottom: 16px;
+}
+.ws-q { margin-bottom: 18px; }
+.ws-q-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.ws-q-num {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #fff;
+  font-weight: 800;
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.ws-q-num.correct { background: var(--green); }
+.ws-q-num.wrong { background: var(--coral); }
+.ws-q-arab { font-family: 'Amiri', serif; font-size: 30px; direction: rtl; }
+.ws-q-arab.medium { font-size: 22px; }
+.ws-q-arab.small { font-size: 16px; }
+.ws-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-left: 36px;
+}
+.ws-opt {
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 8px 10px;
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 12.5px;
+  background: #fff;
+  text-align: left;
+  transition: transform 0.1s ease;
+}
+.ws-opt:active { transform: scale(0.96); }
+.ws-opt.selected { background: var(--yellow); }
+.ws-opt.correct { background: var(--green); color: #fff; border-color: var(--green); }
+.ws-opt.wrong { background: var(--coral); color: #fff; border-color: var(--coral); }
+.ws-submit-row { text-align: center; margin-top: 6px; }
+.ws-submit-row .btn { width: 100%; max-width: 320px; }
+.ws-stamp {
+  text-align: center;
+  padding: 12px;
+  margin-bottom: 4px;
+  border: 4px solid var(--coral);
+  border-radius: 16px;
+  transform: rotate(-2deg);
+  color: var(--coral);
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  background: rgba(255,111,89,0.06);
+}
+
+/* ---------- Susun Urutan ---------- */
+.order-tip {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #8A7F9C;
+  margin: 4px 0 12px;
+}
+.order-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+.order-chip {
+  position: relative;
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  padding: 14px 44px 14px 16px;
+  text-align: left;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.12s ease;
+}
+.order-chip:active { transform: translateY(3px); }
+.order-chip .oc-arab { font-family: 'Amiri', serif; direction: rtl; font-size: 22px; }
+.order-chip .oc-latin { font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif; font-size: 12.5px; color: var(--teal-dark); margin-top: 2px; }
+.order-chip .oc-badge {
+  position: absolute; top: 50%; right: 10px; transform: translateY(-50%);
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--paper-line);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif; font-weight: 800; font-size: 13px; color: var(--ink);
+}
+.order-chip.placed { background: var(--paper); }
+.order-chip.placed .oc-badge { background: var(--yellow); }
+.order-chip.right .oc-badge { background: var(--green); color: #fff; }
+.order-chip.wrong .oc-badge { background: var(--coral); color: #fff; }
+.order-chip:disabled { cursor: default; }
+.order-actions { text-align: center; margin-top: 16px; }
+
+/* ---------- Benar / Salah ---------- */
+.tf-card {
+  background: #fff;
+  border: 3px dashed var(--ink);
+  border-radius: var(--radius-lg);
+  padding: 26px 18px;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  margin: 14px 0 8px;
+}
+.tf-card .tf-arab { font-family: 'Amiri', serif; direction: rtl; font-size: 46px; color: var(--ink); }
+.tf-card .tf-latin { font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif; font-size: 18px; color: var(--teal-dark); margin-top: 8px; }
+.tf-card .tf-hint { font-size: 12.5px; font-weight: 700; color: #8A7F9C; margin-top: 6px; }
+.tf-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
+.tf-btn {
+  border-radius: var(--radius-md);
+  padding: 18px 10px;
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.12s ease;
+  color: #fff;
+}
+.tf-btn:active { transform: translateY(4px); }
+.tf-btn.tf-yes { background: var(--green); }
+.tf-btn.tf-no { background: var(--coral); }
+.tf-btn:disabled { opacity: 0.5; }
+
+/* ---------- Quiz ---------- */
+.quiz-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  box-shadow: var(--card-shadow);
+  text-align: center;
+  margin-top: 14px;
+}
+.quiz-question { font-size: 15px; font-weight: 800; color: var(--teal-dark); margin-bottom: 4px; }
+.hearts-row { font-size: 20px; letter-spacing: 3px; margin-bottom: 10px; }
+.quiz-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 18px;
+}
+.quiz-opt {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  padding: 16px 8px;
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  transition: transform 0.12s ease;
+}
+.quiz-opt:active { transform: translateY(3px); }
+.quiz-opt.correct { background: var(--green); color: #fff; border-color: var(--green); }
+.quiz-opt.wrong { background: var(--coral); color: #fff; border-color: var(--coral); }
+
+.quiz-feedback {
+  min-height: 26px;
+  font-weight: 800;
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  margin-top: 14px;
+  color: var(--teal-dark);
+}
+
+.quiz-score {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--yellow);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-weight: 800;
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+}
+
+.clue-box {
+  background: var(--paper);
+  border: 2px dashed var(--ink);
+  border-radius: var(--radius-md);
+  padding: 16px 14px;
+  font-weight: 700;
+  font-size: 14.5px;
+  text-align: center;
+  margin-top: 6px;
+  color: var(--ink);
+}
+
+/* ---------- Memory match game ---------- */
+.match-stats {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 14px 0;
+  flex-wrap: wrap;
+}
+.match-stats .pill {
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+}
+.match-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (min-width: 420px) {
+  .match-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.match-card {
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  background: var(--teal);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 4px 0 rgba(43,33,64,0.2);
+  transition: transform 0.15s ease, background 0.15s ease;
+  padding: 4px;
+  text-align: center;
+  word-break: break-word;
+}
+.match-card.face-latin { font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif; font-size: 13px; }
+.match-card.face-arab { font-family: 'Amiri', serif; font-size: 26px; }
+.match-card.flipped { background: #fff; color: var(--ink); border: 2px solid var(--violet); }
+.match-card.matched { background: var(--green); color: #fff; opacity: 0.85; cursor: default; }
+.match-card:active { transform: scale(0.95); }
+
+/* ---------- Celebration overlay ---------- */
+/* ---------- Popup pratinjau kategori ---------- */
+.cat-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(43,33,64,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 70;
+  padding: 20px;
+  animation: fadeInOverlay 0.2s ease;
+}
+@keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+.cat-popup-card {
+  background: #fff;
+  border-radius: 28px;
+  padding: 22px 22px 24px;
+  max-width: 340px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 14px 0 rgba(43,33,64,0.2);
+  animation: cardPopIn 0.3s cubic-bezier(.34,1.56,.64,1);
+}
+.cat-popup-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  font-weight: 800;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cat-popup-img {
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  margin: 4px auto 6px;
+  display: block;
+}
+.cat-popup-fallback {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  margin: 6px auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+}
+.cat-popup-title { font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif; font-weight: 800; font-size: 21px; color: var(--teal-dark); margin-bottom: 4px; }
+.cat-popup-desc { font-size: 13px; font-weight: 700; color: #8A7F9C; margin-bottom: 12px; }
+.cat-popup-progress { font-size: 11.5px; font-weight: 700; color: #8A7F9C; margin: 6px 0 16px; }
+.cat-popup-start { width: 100%; }
+
+.celebrate {
+  position: fixed;
+  inset: 0;
+  background: rgba(43,33,64,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 20px;
+}
+.celebrate-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 32px 26px;
+  text-align: center;
+  max-width: 320px;
+  width: 100%;
+  box-shadow: 0 10px 0 rgba(0,0,0,0.15);
+}
+.celebrate-card .big-star { font-size: 56px; }
+.celebrate-card h3 { font-size: 22px; color: var(--teal-dark); margin: 8px 0; }
+.celebrate-card p { font-weight: 700; color: #6b6280; margin-bottom: 6px; }
+.xp-earned {
+  font-family: 'IqroQu Symbols', 'Baloo 2', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--teal-dark);
+  background: var(--paper);
+  border-radius: 999px;
+  padding: 6px 12px;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+.celebrate-card .btn { width: 100%; margin-bottom: 10px; }
+
+/* ---------- Footer note ---------- */
+.audio-note {
+  font-size: 12px;
+  text-align: center;
+  color: #8A7F9C;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.footer-note {
+  text-align: center;
+  font-size: 12px;
+  color: #ab9fc4;
+  margin-top: 40px;
+  font-weight: 700;
+}
+
+.hidden { display: none !important; }
+
+@media (max-width: 360px) {
+  .flashcard .arabic { font-size: 54px; }
+  .menu-tile h3 { font-size: 15px; }
+}
+
+/* Layar pendek (HP kecil) — padatkan shell dashboard supaya makin dekat "1 layar penuh" */
+@media (max-height: 720px) {
+  .game-shell { padding: 12px 14px 18px; }
+  .shell-mascot-img { width: clamp(90px, 20vw, 150px); }
+  .shell-bubble { padding: 8px 12px; font-size: 12px; }
+  .shell-body { gap: 10px; padding-top: 4px; }
+  .shell-cards-grid { gap: 8px; }
+  .shell-card { aspect-ratio: 3 / 2; }
+  .shell-title-badge { padding: 7px 14px; }
+  .footer-note { margin-top: 14px; }
+}
