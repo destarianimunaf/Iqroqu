@@ -224,7 +224,7 @@ function renderFavorit() {
         </div>
         <div class="favorit-actions">
           <button class="favorit-open" data-open-cat="${catKey}" data-open-mod="${modId}">Buka</button>
-          <button class="favorit-remove" data-remove-cat="${catKey}" data-remove-mod="${modId}">☆</button>
+          <button class="favorit-remove" aria-label="Hapus ${mod.judul} dari favorit" data-remove-cat="${catKey}" data-remove-mod="${modId}">☆</button>
         </div>
       </div>`;
   }).filter(Boolean).join("");

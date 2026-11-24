@@ -388,6 +388,7 @@ function renderMatch() {
           : "❓";
         const faceClass = isFlipped ? (c.type === "arab" ? "face-arab" : "face-latin") : "";
         return `<button class="match-card ${isFlipped ? "flipped" : ""} ${isMatched ? "matched" : ""} ${faceClass}"
+                  aria-label="${isFlipped ? label : "Buka kartu " + (pos + 1)}" aria-pressed="${isFlipped}"
                   data-pos="${pos}" ${isMatched ? "disabled" : ""}>${label}</button>`;
       }).join("")}
     </div>

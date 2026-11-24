@@ -200,3 +200,11 @@ test('success continues to unread, unlocked learning without marking skipped car
   assert.equal(h.run('state.cardIndex'), 1);
   assert.equal(h.run('getProgress("iqro", state.jilidId).seen.length'), 1);
 });
+
+test('icon-only favorites and face-down matching controls keep accessible names', () => {
+  const h = harness();
+  h.run('saveFavorites(["iqro:" + APP_DATA.iqro.modules[0].id]); renderFavorit()');
+  assert.match(h.node('app').innerHTML, /class="favorit-remove" aria-label="Hapus .+ dari favorit"/);
+  h.run('state.category="iqro"; startMatch(APP_DATA.iqro.modules[0].id)');
+  assert.match(h.node('app').innerHTML, /aria-label="Buka kartu 1" aria-pressed="false"/);
+});
