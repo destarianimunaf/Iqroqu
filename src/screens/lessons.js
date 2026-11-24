@@ -101,7 +101,7 @@ function renderLesson() {
         <button class="audio-tool-btn" id="btnSlow">${gameIcon("slow")} Pelan-pelan</button>
         <button class="audio-tool-btn" id="btnVoice">${gameIcon("sound")} ${hasExample ? "Tentang suara" : "Ganti suara"}</button>
       </div>
-      <div class="audio-source">${audioSourceLabel(kartu.arab)}</div>
+      <div class="audio-source" id="lessonAudioSource"></div>
     </div>
     <div class="lesson-success" id="lessonSuccess" role="status" aria-live="polite" hidden>
       ${successScene()}
@@ -118,6 +118,8 @@ function renderLesson() {
     </div>
   `);
 
+  // Provider metadata is text, never part of the screen's HTML template.
+  document.getElementById("lessonAudioSource").textContent = audioSourceLabel(kartu.arab);
   document.getElementById("btnSpeak").addEventListener("click", () => playLessonAudio(kartu.arab));
   document.getElementById("btnSlow").addEventListener("click", () => playLessonAudio(kartu.arab, 0.42));
   document.getElementById("btnVoice").addEventListener("click", () => {

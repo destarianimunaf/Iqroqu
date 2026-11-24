@@ -312,7 +312,7 @@ function renderQuiz() {
     <div class="quiz-card">
       <div class="hearts-row" aria-label="Sisa ${q.hearts} dari 3 nyawa">${"❤️".repeat(q.hearts)}${"🤍".repeat(3 - q.hearts)}</div>
       <div class="quiz-question">Soal ${q.index + 1} dari ${q.total}</div>
-      ${isAudio ? `<button class="speaker-btn" id="btnSpeakQuiz" aria-label="Dengarkan pelafalan">${gameIcon("sound")}</button><div class="audio-source">${audioSourceLabel(kartu.arab)}</div>` : `<div class="clue-box">${kartu.ket}</div>`}
+      ${isAudio ? `<button class="speaker-btn" id="btnSpeakQuiz" aria-label="Dengarkan pelafalan">${gameIcon("sound")}</button><div class="audio-source" id="quizAudioSource"></div>` : `<div class="clue-box">${kartu.ket}</div>`}
       <div class="quiz-options ${isAudio ? "audio-options" : "text-options"}" id="quizOptions">
         ${options.map((i) => `<button class="quiz-opt" data-idx="${i}">${mod.kartu[i].latin}</button>`).join("")}
       </div>
@@ -323,6 +323,7 @@ function renderQuiz() {
   `);
 
   if (isAudio) {
+    document.getElementById("quizAudioSource").textContent = audioSourceLabel(kartu.arab);
     const speakBtn = document.getElementById("btnSpeakQuiz");
     const doSpeak = () => { stopSpeech(); speakBtn.classList.add("speaking"); speak(kartu.arab, () => speakBtn.classList.remove("speaking")); };
     speakBtn.addEventListener("click", doSpeak);

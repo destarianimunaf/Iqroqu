@@ -186,6 +186,20 @@ test('API recordings retain source text, hashes and whole-ayah coverage', () => 
   assert.match(h.run('audioSourceLabel(DOA_MODULES[0].kartu[1].arab)'), /sintetis.*Bukan acuan tajwid/);
 });
 
+test('imported source metadata is rendered as text, not executable screen markup', () => {
+  const h = harness();
+  const payload = '<img src=x onerror="globalThis.compromised=true">';
+  const recording = h.context.window.IQRO_RECORDINGS.entries[h.run('DOA_MODULES[0].kartu[0].arab.normalize("NFC")')];
+  recording.reciter = payload;
+  h.run('state.category="doa"; state.jilidId="d1"; state.cardIndex=0; state.view="lesson"; render()');
+  assert.equal(h.node('app').innerHTML.includes(payload), false);
+  assert.equal(h.node('lessonAudioSource').textContent.includes(payload), true);
+  h.run('startQuiz("d1"); state.quiz.pool[0]=state.cardIndex; render()');
+  assert.equal(h.node('app').innerHTML.includes(payload), false);
+  assert.equal(h.node('quizAudioSource').textContent.includes(payload), true);
+  assert.equal(h.run('globalThis.compromised'), undefined);
+});
+
 test('failed qari audio retries local then the provider, never substituting device TTS', () => {
   const h = harness();
   h.run('speak(IQRO_MODULES[6].kartu[1].arab)');
