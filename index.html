@@ -2625,6 +2625,9 @@ function gameIcon(name) {
     settings: '<path d="m10 3-.7 2.3-2 .9L5 5.6 3 9l1.6 1.8v2.4L3 15l2 3.4 2.3-.6 2 .9L10 21h4l.7-2.3 2-.9 2.3.6 2-3.4-1.6-1.8v-2.4L21 9l-2-3.4-2.3.6-2-.9L14 3h-4Z"/><circle cx="12" cy="12" r="3"/>',
     flame: '<path d="M13 3c1 6-6 5-4 11-2 0-3-2-3-3-5 8 6 14 11 7 4-6-2-12-4-15Z"/>',
     arrow: '<path d="M5 12h14m-5-5 5 5-5 5"/>',
+    arrowLeft: '<path d="M19 12H5m5-5-5 5 5 5"/>',
+    slow: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l-3 2"/>',
+    repeat: '<path d="m17 2 4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4m14-1v2a3 3 0 0 1-3 3H3"/>',
     sound: '<path d="M11 4 5 9H2v6h3l6 5V4Zm5 4a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/>',
     puzzle: '<path d="M4 4h5a3 3 0 1 1 6 0h5v5a3 3 0 1 0 0 6v5h-5a3 3 0 1 0-6 0H4v-5a3 3 0 1 1 0-6V4Z"/>',
     check: '<circle cx="12" cy="12" r="9"/><path d="m7 12 3 3 7-7"/>',
@@ -2660,12 +2663,20 @@ function mascot(msg, pose) {
 }
 function topbar(title, showBack) {
   return `
+    ${adventureHeader()}
     <div class="topbar">
       <div class="brand">
-        ${showBack ? `<button class="back-btn" id="btnBack">← Kembali</button>` : `<div class="mascot-mini">${mascotSVG("point")}</div>${logoHtml(true)}`}
+        ${showBack ? `<button class="back-btn" id="btnBack">${gameIcon("arrowLeft")} Kembali</button>` : ""}
       </div>
       ${showBack ? `<div class="brand-title" style="font-size:17px">${title}</div>` : ""}
     </div>`;
+}
+function adventureHeader() {
+  const xp = getXP();
+  const streak = getStreak();
+  return `<header class="adventure-header"><div class="game-logo" aria-label="IqroQu, belajar sambil bermain"><span class="logo-book">ق</span><div>iqro<span>qu</span><small>BELAJAR SAMBIL BERMAIN</small></div></div>
+    <div class="player-stats"><div class="player-stat flame" aria-label="${streak} hari belajar berturut-turut">${gameIcon("flame")} <strong>${streak}</strong><small>hari</small></div><div class="player-stat" aria-label="${xp} XP">${gameIcon("star")} <strong>${xp}</strong><small>XP</small></div></div>
+  </header>`;
 }
 function screenHeading(label, title) {
   return `<header class="play-heading screen-heading"><span class="garden-sign">${label}</span><h1>${title}</h1></header>`;
@@ -2762,9 +2773,7 @@ function renderDashboard() {
   const next = getRecommendedModule("iqro");
   const started = getProgress("iqro", next.id).seen.length > 0;
   root.innerHTML = `
-    <header class="adventure-header"><div class="game-logo" aria-label="IqroQu, belajar sambil bermain"><span class="logo-book">ق</span><div>iqro<span>qu</span><small>BELAJAR SAMBIL BERMAIN</small></div></div>
-      <div class="player-stats"><div class="player-stat flame" aria-label="${getStreak()} hari belajar berturut-turut">${gameIcon("flame")} <strong>${getStreak()}</strong><small>hari</small></div><div class="player-stat" aria-label="${xp} XP">${gameIcon("star")} <strong>${xp}</strong><small>XP</small></div></div>
-    </header>
+    ${adventureHeader()}
     <section class="play-heading" aria-labelledby="adventure-title"><span class="garden-sign">TAMAN BELAJAR RAQI</span><h1 id="adventure-title">Ayo, pilih petualanganmu!</h1><p>Sentuh gambarnya. Kita main sambil belajar!</p></section>
     <div class="playground-layout">
       <section class="raqi-welcome" aria-label="Teman bermainmu"><div class="raqi-speech">Assalamu’alaikum!<br><strong>Aku Raqi. Main bareng, yuk!</strong></div><img class="raqi-character" src="${IMG_MASCOT}" alt="Raqi melambaikan tangan" draggable="false"><button class="hero-cta" id="continueAdventure"><span class="play-triangle" aria-hidden="true">▶</span><span>${started ? "Lanjut main" : "Mulai main"}<small>Petualangan mengaji</small></span></button></section>
@@ -2871,13 +2880,7 @@ function renderProgres() {
   }).join("");
 
   root.innerHTML = `
-    <div class="topbar">
-      <div class="brand"><div class="mascot-mini">${mascotSVG("trophy")}</div>${logoHtml(true)}</div>
-      <div class="stat-pills">
-        <span class="stat-pill streak">🔥 ${streak}</span>
-        <span class="stat-pill xp">✨ ${xp} XP</span>
-      </div>
-    </div>
+    ${adventureHeader()}
     ${screenHeading("HARTA PETUALANGAN", "Bintang-bintangku!")}
     ${mascot("Setiap langkah bikin kamu makin hebat. Kumpulkan semua bintangnya, yuk!", "trophy")}
     <div class="progres-summary">
@@ -2918,9 +2921,7 @@ function renderMainPage() {
   }).join("");
 
   root.innerHTML = `
-    <div class="topbar">
-      <div class="brand"><div class="mascot-mini">${mascotSVG("point")}</div>${logoHtml(true)}</div>
-    </div>
+    ${adventureHeader()}
     ${screenHeading("ARENA MAIN RAQI", "Pilih dunia, yuk!")}
     ${mascot("Ada lima permainan di setiap dunia. Pilih gambarnya dan main bareng aku!", "point")}
     <div class="main-play-list">${cardsHtml}</div>
@@ -2962,9 +2963,7 @@ function renderFavorit() {
   }).filter(Boolean).join("");
 
   root.innerHTML = `
-    <div class="topbar">
-      <div class="brand"><div class="mascot-mini">${mascotSVG("point")}</div>${logoHtml(true)}</div>
-    </div>
+    ${adventureHeader()}
     ${screenHeading("KOLEKSI KESUKAANKU", "Tempat favoritku!")}
     ${mascot(favs.length ? "Petualangan kesukaanmu sudah menunggu. Kita main lagi, yuk!" : "Simpan petualangan kesukaanmu dengan tombol bintang di peta belajar!", "point")}
     ${items ? `<div class="favorit-list">${items}</div>` : `<div class="favorit-empty">Belum ada modul favorit. Yuk jelajahi menu Belajar dan tap bintang ☆ pada modul kesukaanmu!</div>`}
@@ -2992,9 +2991,7 @@ function renderFavorit() {
 function renderPengaturan() {
   const v = currentArabicVoice();
   root.innerHTML = `
-    <div class="topbar">
-      <div class="brand"><div class="mascot-mini">${mascotSVG("point")}</div>${logoHtml(true)}</div>
-    </div>
+    ${adventureHeader()}
     ${screenHeading("RUMAH RAQI", "Atur cara mainmu!")}
     ${mascot("Mau dengar musik atau pilih suara bacaan? Semuanya ada di sini!", "point")}
     <div class="setting-list">
@@ -3145,17 +3142,17 @@ function renderLesson() {
       <div class="ket">${kartu.ket}</div>
       <button class="speaker-btn" id="btnSpeak" aria-label="Dengarkan pelafalan">${gameIcon("sound")}</button>
       <div class="audio-tools-row">
-        <button class="audio-tool-btn" id="btnSlow">🐢 Pelan-pelan</button>
-        <button class="audio-tool-btn" id="btnVoice">🔁 Ganti Suara</button>
+        <button class="audio-tool-btn" id="btnSlow">${gameIcon("slow")} Pelan-pelan</button>
+        <button class="audio-tool-btn" id="btnVoice">${gameIcon("repeat")} Ganti suara</button>
       </div>
     </div>
     <div class="audio-note hidden" id="audioNote"></div>
     <div class="aku-bisa-row">
-      <button class="btn btn-ok" id="btnBisa">${sudahDilihat ? "✓ Sudah aku pelajari" : "Aku bisa! ✔️"}</button>
+      <button class="btn btn-ok" id="btnBisa">${gameIcon("check")} ${sudahDilihat ? "Sudah aku pelajari" : "Aku bisa!"}</button>
     </div>
     <div class="nav-row">
-      <button class="btn btn-secondary" id="btnPrev" ${state.cardIndex === 0 ? "disabled" : ""}>⬅ Sebelumnya</button>
-      ${isLast ? `<button class="btn btn-primary" id="btnGame">Main Yuk! 🎮</button>` : `<button class="btn btn-primary" id="btnNext">Selanjutnya ➡</button>`}
+      <button class="btn btn-secondary" id="btnPrev" ${state.cardIndex === 0 ? "disabled" : ""}>${gameIcon("arrowLeft")} Sebelumnya</button>
+      ${isLast ? `<button class="btn btn-primary" id="btnGame">Main yuk! ${gameIcon("game")}</button>` : `<button class="btn btn-primary" id="btnNext">Selanjutnya ${gameIcon("arrow")}</button>`}
     </div>
   `;
 
