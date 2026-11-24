@@ -2,7 +2,7 @@
 /* Local, subsetted Noto Emoji keeps game symbols visible without OS emoji fonts. */
 @font-face {
   font-family: "IqroQu Symbols";
-  src: url("assets/game-symbols.woff") format("woff");
+  src: url("../../assets/game-symbols.woff") format("woff");
   font-weight: 100 900;
   font-display: swap;
   unicode-range: U+2300-27FF, U+2B00-2BFF, U+1F000-1FAFF;
@@ -26,7 +26,7 @@ html {
 body {
   display: flow-root;
   min-height: 100vh;
-  background: #8bce57 url("assets/play-garden.webp") center top/cover no-repeat;
+  background: #8bce57 url("../../assets/play-garden.webp") center top/cover no-repeat;
   color: var(--ink);
   font-family: "IqroQu Symbols", "Nunito", sans-serif;
 }
@@ -2286,7 +2286,7 @@ body.intro-open { overflow: hidden; }
 .welcome-dialog::backdrop { background: #153b66b8; backdrop-filter: blur(7px); }
 .intro-skip { position: absolute; right: 20px; top: 16px; z-index: 3; display: inline-flex; align-items: center; gap: 7px; padding: 8px 13px; border: 0; border-radius: 20px; background: #eaeedb; color: #536448; font: inherit; font-weight: 800; cursor: pointer; }
 .intro-skip svg { width: 18px; height: 18px; }
-.intro-scene { position: relative; min-height: 430px; border-radius: 46% 46% 35% 35%; background: #bdeaf7 url("assets/play-garden.webp") center/cover; isolation: isolate; }
+.intro-scene { position: relative; min-height: 430px; border-radius: 46% 46% 35% 35%; background: #bdeaf7 url("../../assets/play-garden.webp") center/cover; isolation: isolate; }
 .intro-sun { position: absolute; inset: 25px 25px 30px; border-radius: 50%; background: #fff3afbb; animation: introSun 1.3s ease-out both; }
 .intro-raqi { position: absolute; bottom: 24px; left: 50%; width: 205px; height: 310px; object-fit: contain; translate: -50% 0; filter: drop-shadow(0 10px 0 #407a5a25); animation: introRaqi 900ms 150ms cubic-bezier(.2,.8,.3,1.18) both; }
 .intro-raqi-name { position: absolute; bottom: 10px; left: 50%; translate: -50% 0; white-space: nowrap; padding: 9px 20px; border: 3px solid white; border-radius: 25px; background: #ffe28b; color: #775622; font-weight: 900; rotate: -4deg; box-shadow: 0 4px 0 #ac7b2b33; animation: introFeature 500ms 700ms both; }

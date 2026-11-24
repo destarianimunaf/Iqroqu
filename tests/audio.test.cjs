@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const { test } = require('node:test');
-const root = path.resolve(__dirname, '..');
+const { root, loadApp } = require('./helpers/load-app.cjs');
 
 function harness() {
   const nodes = new Map();
@@ -36,9 +36,7 @@ function harness() {
       pause() { this.paused = true; }
     }
   });
-  vm.runInContext(fs.readFileSync(path.join(root, 'assets/arabic-audio.js'), 'utf8'), context);
-  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-  vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1], context);
+  loadApp(context);
   return { context, run(code) { return vm.runInContext(code, context); }, audios, utterances, timers, node };
 }
 

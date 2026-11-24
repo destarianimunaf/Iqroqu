@@ -10,7 +10,7 @@ Adiwijaya; UNTARI NOVIA WISESTY; Mohamad Syahrul Mubarok (2021),
 version 1.1. <https://doi.org/10.34820/FK2/XACWLX>
 
 The dataset metadata states **CC0 / CC0 Waiver**. Original file names, individual
-file DOI links, and licenses are retained in `../arabic-audio.js`. Downloaded WAVs
+file DOI links, and licenses are retained in `manifest.js`. Downloaded WAVs
 are checked against the source MD5 before conversion. Silence is trimmed; 160 ms
 of trailing silence keeps adjacent syllables distinct. Pronunciation is not
 generated from letter names.
