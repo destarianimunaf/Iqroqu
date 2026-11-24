@@ -14,6 +14,7 @@ function updateBottomNav() {
   // Small screens use the visible Kembali control during focused play.
   // The global dock must not intercept lesson or game buttons underneath it.
   const focusedViews = ["lesson", "gamehub", "quiz", "match", "order", "tf", "sheet"];
+  if (document.documentElement) document.documentElement.classList.toggle("game-session", focusedViews.includes(state.view));
   document.getElementById("bottomNav").classList.toggle("focus-mode", focusedViews.includes(state.view));
   const navViews = ["dashboard", "progres", "main", "favorit", "pengaturan"];
   const activeTab = navViews.includes(state.view) ? state.view : "dashboard";
@@ -39,7 +40,33 @@ function withGameIcons(markup) {
 }
 function setScreen(markup) {
   root.innerHTML = withGameIcons(markup) +
+    '<div class="answer-feedback" id="answerFeedback" role="status" aria-live="polite" hidden></div>' +
     '<footer class="footer-note">Dibuat oleh destalabs · IqroQu © 2026</footer>';
+}
+function gameGesturesLocked() {
+  return ["lesson", "gamehub", "quiz", "match", "order", "tf", "sheet"].includes(state.view);
+}
+// Keep one-finger scrolling, but avoid accidental game zoom on touch screens,
+// trackpads, and Safari's gesture events. Menus retain normal browser zoom.
+function preventGameZoom(event) {
+  if (!gameGesturesLocked()) return;
+  const zoomKey = event.type === "keydown" && (event.ctrlKey || event.metaKey) && ["+", "=", "-", "0"].includes(event.key);
+  if (event.type.startsWith("gesture") || (event.type === "wheel" && event.ctrlKey) || zoomKey) event.preventDefault();
+}
+["gesturestart", "gesturechange", "wheel", "keydown"].forEach((event) => {
+  document.addEventListener(event, preventGameZoom, { passive: false });
+});
+function showAnswerFeedback(correct, targets = [], message) {
+  const scene = document.getElementById("answerFeedback");
+  if (!scene) return;
+  scene.hidden = true;
+  scene.dataset.result = correct ? "correct" : "wrong";
+  scene.innerHTML = `<img src="${IMG_MASCOT}" alt="" draggable="false">${gameIcon(correct ? "star" : "heart")}<strong>${message || (correct ? "Hebat! Jawabanmu benar!" : "Belum tepat, coba lagi yuk!")}</strong>`;
+  // Restart the same small CSS scene even for consecutive answers in one view.
+  void scene.offsetWidth;
+  scene.hidden = false;
+  targets.forEach((target) => { if (target) target.classList.add(correct ? "answer-correct" : "answer-wrong"); });
+  scheduleGameStep(() => { scene.hidden = true; }, 1000);
 }
 function successScene() {
   return `<div class="success-scene" aria-hidden="true">

@@ -89,13 +89,18 @@ function renderOrder() {
 
   if (!o.reveal) {
     document.querySelectorAll(".order-chip").forEach((btn) => {
+      if (o.picks.includes(Number(btn.dataset.idx))) return;
       btn.disabled = false;
       btn.addEventListener("click", () => {
         const idx = Number(btn.dataset.idx);
+        if (o.reveal || o.picks.includes(idx)) return;
+        const correct = idx === o.correctOrder[o.picks.length];
         o.picks.push(idx);
+        if (o.picks.length >= o.total) o.reveal = true;
+        render();
         speak(mod.kartu[idx].arab);
-        if (o.picks.length >= o.total) { o.reveal = true; render(); scheduleGameStep(() => { o.done = true; render(); }, 1400); }
-        else render();
+        showAnswerFeedback(correct, [root.querySelector(`.order-chip[data-idx="${idx}"]`)]);
+        if (o.reveal) scheduleGameStep(() => { o.done = true; render(); }, 1400);
       });
     });
   }
@@ -190,7 +195,13 @@ function renderSheet() {
       });
     });
     const submitBtn = document.getElementById("btnSheetSubmit");
-    if (submitBtn) submitBtn.addEventListener("click", () => { s.submitted = true; render(); });
+    if (submitBtn) submitBtn.addEventListener("click", () => {
+      if (s.submitted) return;
+      s.submitted = true;
+      render();
+      const allCorrect = s.questions.every((q) => q.chosen === q.cardIdx);
+      showAnswerFeedback(allCorrect, [], allCorrect ? "Hebat! Semua jawaban benar!" : "Sudah diperiksa. Yuk, lihat koreksinya!");
+    });
   } else {
     document.getElementById("btnSheetUlangi").addEventListener("click", () => startSheet(mod.id));
     document.getElementById("btnSheetGameLain").addEventListener("click", () => { state.view = "gamehub"; render(); });
@@ -256,14 +267,12 @@ function renderTF() {
       t.answered = true;
       document.querySelectorAll(".tf-btn").forEach((b) => (b.disabled = true));
       const chosen = btn.dataset.ans === "true";
-      const feedback = document.getElementById("quizFeedback");
       if (chosen === r.isTrue) {
         t.score += 1;
-        feedback.innerHTML = withGameIcons(pick(MASKOT_KATA.benar));
       } else {
-        feedback.innerHTML = withGameIcons(pick(MASKOT_KATA.salah));
         t.hearts -= 1;
       }
+      showAnswerFeedback(chosen === r.isTrue, [btn]);
       scheduleGameStep(() => { t.index += 1; t.answered = false; render(); }, 1300);
     });
   });
@@ -325,17 +334,15 @@ function renderQuiz() {
       if (q.answered) return;
       q.answered = true;
       const chosen = Number(btn.dataset.idx);
-      const feedback = document.getElementById("quizFeedback");
       if (chosen === cardIdx) {
         btn.classList.add("correct");
         q.score += 1;
-        feedback.innerHTML = withGameIcons(pick(MASKOT_KATA.benar));
       } else {
         btn.classList.add("wrong");
         document.querySelector(`.quiz-opt[data-idx="${cardIdx}"]`).classList.add("correct");
-        feedback.innerHTML = withGameIcons(pick(MASKOT_KATA.salah));
         q.hearts -= 1;
       }
+      showAnswerFeedback(chosen === cardIdx, [btn]);
       scheduleGameStep(() => { q.index += 1; q.answered = false; render(); }, 1400);
     });
   });
@@ -418,20 +425,21 @@ function onMatchCardClick(pos) {
     m.moves += 1;
     const [a, b] = m.flipped;
     const isMatch = a.idx === b.idx && a.type !== b.type;
+    showAnswerFeedback(isMatch, m.flipped.map((flipped) => root.querySelector(`.match-card[data-pos="${m.cards.indexOf(flipped)}"]`)));
     if (isMatch) {
       scheduleGameStep(() => {
         m.matched.push(a.uid, b.uid);
         m.flipped = [];
         m.busy = false;
-        speak(mod.kartu[a.idx].arab);
         render();
-      }, 500);
+        speak(mod.kartu[a.idx].arab);
+      }, 1100);
     } else {
       scheduleGameStep(() => {
         m.flipped = [];
         m.busy = false;
         render();
-      }, 900);
+      }, 1100);
     }
   }
 }

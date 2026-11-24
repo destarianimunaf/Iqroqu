@@ -18,26 +18,27 @@ function harness() {
     });
     return nodes.get(id);
   };
-  const audios = [], utterances = [], timers = new Map(), storage = new Map([['iqro-ceria-music', 'off']]);
+  const audios = [], utterances = [], timers = new Map(), delays = new Map(), storage = new Map([['iqro-ceria-music', 'off']]);
   let timer = 0;
   const context = vm.createContext({
-    console, setTimeout(fn) {
+    console, setTimeout(fn, delay) {
       const id = ++timer;
+      delays.set(id, delay);
       timers.set(id, () => { timers.delete(id); fn(); });
       return id;
     }, clearTimeout(id) { timers.delete(id); },
     window: { scrollTo() {}, speechSynthesis: { cancel() {}, getVoices() { return []; }, speak(utterance) { utterances.push(utterance); } } },
-    document: { getElementById: node, querySelectorAll() { return []; }, addEventListener() {} },
+    document: { documentElement: node('html'), getElementById: node, querySelectorAll() { return []; }, addEventListener() {} },
     localStorage: { getItem(k) { return storage.get(k) ?? null; }, setItem(k, v) { storage.set(k, String(v)); }, removeItem(k) { storage.delete(k); } },
     SpeechSynthesisUtterance: class { constructor(text) { this.text = text; } },
     Audio: class {
       constructor(src) { this.src = src; this.plays = []; audios.push(this); }
-      play() { this.plays.push(this.src); return Promise.resolve(); }
+      play() { this.paused = false; this.plays.push(this.src); return Promise.resolve(); }
       pause() { this.paused = true; }
     }
   });
   loadApp(context);
-  return { context, run(code) { return vm.runInContext(code, context); }, audios, utterances, timers, node };
+  return { context, run(code) { return vm.runInContext(code, context); }, audios, utterances, timers, delays, node };
 }
 
 test('every vocabulary card and isolated harakat has an existing bundled example', () => {
@@ -47,6 +48,8 @@ test('every vocabulary card and isolated harakat has an existing bundled example
   assert.deepEqual(JSON.parse(h.run('JSON.stringify(ARAB_MODULES.slice(0,5).map(m=>[m.id,m.kartu.length]))')), [['a1',10],['a2',10],['a3',9],['a4',10],['a5',8]]);
   assert.equal(h.run('ARAB_MODULES.every(m=>m.kartu.every(c=>audioExamples(c.arab)))'), true);
   assert.equal(h.run('IQRO_MODULES[0].kartu.every(c=>audioExamples(c.arab))'), true);
+  assert.equal(h.run('DOA_MODULES.flatMap(m=>m.kartu).length'), 15);
+  assert.equal(h.run('DOA_MODULES.every(m=>m.kartu.every(c=>audioExamples(c.arab)))'), true);
   for (const clips of Object.values(h.context.window.IQRO_AUDIO.entries)) {
     for (const clip of clips) assert.ok(fs.statSync(path.join(root, clip)).size > 1000, clip);
   }
@@ -82,11 +85,13 @@ test('navigation and replacement stop previous audio and clear callbacks once', 
   h.run('globalThis.ended=0; speak("بَ",()=>ended++)');
   const staleEnd = h.audios[0].onended;
   h.run('speak("تَ",()=>ended++)');
-  assert.equal(h.audios[0].paused, true);
+  assert.equal(h.audios[0].paused, false, 'replacement keeps the shared player playing');
   staleEnd();
+  assert.equal(h.audios[0].paused, false, 'a stale callback cannot pause the replacement');
   assert.equal(h.run('ended'), 1);
   h.run('render()');
-  assert.equal(h.audios[1].paused, true);
+  assert.equal(h.audios.length, 1, 'the user-unlocked player is reused across lessons');
+  assert.equal(h.audios[0].paused, true);
   assert.equal(h.run('ended'), 2);
   assert.equal(h.timers.size, 0);
 });
@@ -222,4 +227,81 @@ test('worksheet corrections describe each result without relying on icon or colo
   `);
   assert.match(h.node('app').innerHTML, /Soal 1: Belum tepat\. Jawaban:/);
   assert.match(h.node('app').innerHTML, /Soal 2: Benar\. Jawaban:/);
+});
+
+test('prayers play without device voices and long playback is not cut off at ten seconds', () => {
+  const h = harness();
+  delete h.context.window.speechSynthesis;
+  h.run('globalThis.ended=0; speak(DOA_MODULES[2].kartu[1].arab,()=>ended++)');
+  const audio = h.audios[0];
+  assert.match(audio.src, /prayer-/);
+  audio.duration = 40;
+  audio.onplaying();
+  assert.equal([...h.timers.keys()].map(id => h.delays.get(id))[0], 45000);
+  audio.onwaiting();
+  assert.equal([...h.timers.keys()].map(id => h.delays.get(id))[0], 10000, 'stalled downloads still get a short recovery watchdog');
+  audio.onplaying();
+  audio.onended();
+  assert.equal(h.run('ended'), 1);
+  assert.equal(h.timers.size, 0);
+  assert.equal(h.utterances.length, 0);
+});
+
+test('Aku bisa primes on the tap and auto-plays the arriving card, including reduced motion', async () => {
+  const h = harness();
+  h.run('state.category="doa"; state.jilidId="d1"; state.cardIndex=0; state.view="lesson"; render()');
+  h.node('btnBisa').handlers.click();
+  assert.match(h.audios[0].src, /unlock.wav$/);
+  assert.ok(fs.existsSync(path.join(root, h.audios[0].src)));
+  await Promise.resolve();
+  h.timers.values().next().value();
+  assert.equal(h.audios.length, 1);
+  assert.equal(h.audios[0].src, h.run('audioExamples(DOA_MODULES[0].kartu[1].arab)[0]'));
+  assert.equal(h.audios[0].plays.length, 2);
+  h.context.window.matchMedia = () => ({ matches: true });
+  h.node('btnBisa').handlers.click();
+  h.timers.values().next().value();
+  const pausesBeforeLatePrime = h.audios[0].paused;
+  await Promise.resolve();
+  assert.equal(h.audios[0].paused, pausesBeforeLatePrime, 'a late priming callback cannot pause the new card');
+  assert.equal(h.audios[0].src, h.run('audioExamples(DOA_MODULES[0].kartu[2].arab)[0]'));
+  h.run('state.view="dashboard"; render()');
+  assert.equal(h.timers.size, 0);
+  assert.equal(h.audios[0].paused, true);
+});
+
+test('zoom prevention is scoped to every game and preserves ordinary scrolling and menu zoom', () => {
+  const h = harness();
+  for (const view of ['lesson', 'gamehub', 'quiz', 'match', 'order', 'tf', 'sheet', 'dashboard']) {
+    h.run(`state.view=${JSON.stringify(view)}`);
+    const locked = view !== 'dashboard';
+    for (const event of [
+      { type: 'gesturestart' }, { type: 'gesturechange' },
+      { type: 'wheel', ctrlKey: true }, { type: 'keydown', ctrlKey: true, key: '+' }
+    ]) {
+      let prevented = false;
+      h.context.zoomEvent = { ...event, preventDefault() { prevented = true; } };
+      h.run('preventGameZoom(zoomEvent)');
+      assert.equal(prevented, locked, `${view}: ${event.type}`);
+    }
+    h.context.zoomEvent = { type: 'wheel', preventDefault() { throw Error('normal scrolling was blocked'); } };
+    h.run('preventGameZoom(zoomEvent)');
+  }
+});
+
+test('shared answer scenes use illustrated feedback and cancel with navigation', () => {
+  const h = harness();
+  const control = h.node('answer');
+  const classes = [];
+  control.classList.add = cls => classes.push(cls);
+  h.context.answerControl = control;
+  h.run('showAnswerFeedback(true, [answerControl])');
+  assert.equal(h.node('answerFeedback').dataset.result, 'correct');
+  assert.match(h.node('answerFeedback').innerHTML, /icon-star/);
+  h.run('showAnswerFeedback(false, [answerControl])');
+  assert.equal(h.node('answerFeedback').dataset.result, 'wrong');
+  assert.match(h.node('answerFeedback').innerHTML, /Belum tepat/);
+  assert.deepEqual(classes, ['answer-correct', 'answer-wrong']);
+  h.run('state.view="dashboard"; render()');
+  assert.equal(h.timers.size, 0);
 });

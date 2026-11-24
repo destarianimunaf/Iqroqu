@@ -89,6 +89,9 @@ gerakan” menonaktifkan animasi tanpa menyembunyikan isinya.
 dan slide. Kartu terakhir membuka menu game. Ketukan cepat tidak melompati
 kartu; keluar dari pelajaran membatalkan perpindahan yang masih menunggu.
 Saat “kurangi gerakan” aktif, kartu langsung berlanjut tanpa animasi.
+Suara kartu berikutnya diputar otomatis setelah kartu baru tampil. Pemutar
+diaktifkan saat ketukan **Aku bisa!**, sehingga animasi tidak menghilangkan
+izin suara; bila perangkat masih memblokirnya, tombol dengarkan tetap tersedia.
 
 Raqi bergerak memakai gambar yang sudah dimuat dan CSS `transform`, tanpa
 video, library animasi, atau loop JavaScript per frame. Popup **Hebat! Kamu
@@ -100,22 +103,32 @@ Di HP, dock navigasi disembunyikan selama pelajaran dan permainan agar tidak
 menutupi tombol. Tombol **Kembali** tetap tersedia; dock muncul lagi di peta
 dan menu utama. Di desktop, rail navigasi tetap terlihat.
 
+Selama pelajaran dan kelima game, pinch/double-tap serta pintasan zoom browser
+dinonaktifkan agar ketukan bermain tidak memperbesar layar. Scroll tetap bisa
+dipakai, dan zoom kembali normal saat keluar ke peta atau menu utama.
+Kelima game memakai notifikasi Raqi, gerak benar/salah, dan ikon ilustrasi yang
+sama. Lembar latihan menampilkan koreksi setelah **Periksa Jawaban** ditekan;
+jawaban tidak dibocorkan saat memilih. Semua motion ini mengikuti “kurangi gerakan”.
+
 ## Pelafalan dan audio
 
 Bahasa Arab memiliki sembilan unit, termasuk 48 kata tambahan tentang hewan,
 makanan, tubuh, dan alam. ID serta posisi kartu unit lama tetap sama.
 
-Kosakata memakai MP3 bawaan dengan suara Arab Saudi Microsoft
+Kosakata dan seluruh 15 doa harian memakai MP3 bawaan dengan suara Arab Saudi Microsoft
 `ar-SA-HamedNeural`. Huruf hijaiyah berharakat memakai rekaman manusia dari
 **Marked Hijaiyah Letters' Pronunciation Dataset** berlisensi CC0. Latihan
 beberapa huruf memutar suku kata berurutan, bukan mengeja nama huruf.
 **Pelan-pelan** memperlambat suara tanpa mengubah nadanya.
 
-Pemutar memakai ulang elemen audio untuk rangkaian suku kata di Safari,
+Pemutar memakai ulang satu elemen audio untuk rangkaian suku kata dan lanjut kartu,
 mencoba ulang satu kali bila file gagal dimuat, lalu memakai suara perangkat
 sebagai cadangan. Pindah layar atau memutar contoh baru menghentikan audio lama.
 File diambil sesuai kebutuhan dari situs yang sama, tanpa API key atau layanan
 TTS saat bermain. Musik latar bersifat opsional.
+Doa panjang memakai batas waktu sesuai durasi, bukan diputus setelah sepuluh
+detik. `assets/audio/unlock.wav` hanya 50 ms audio hening untuk aktivasi pemutar,
+bukan rekaman pelajaran.
 
 Materi lain, termasuk Qur'an dan tajwid, masih memakai suara perangkat.
 Audio ini bukan pengganti bimbingan guru untuk makhraj/tajwid. Sumber, lisensi,

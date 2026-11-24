@@ -36,11 +36,30 @@ function cycleArabicVoice() {
   showAudioNote("Suara diganti ke: " + (v ? v.name : "default") + ". Coba dengarkan lagi ya!");
 }
 let activeSpeech = null;
+let speechPlayer = null;
+let speechPlayerVersion = 0;
+function getSpeechPlayer() {
+  if (!speechPlayer && typeof Audio !== "undefined") speechPlayer = new Audio();
+  return speechPlayer;
+}
+function primeSpeech() {
+  // Unlock the same player during Aku bisa's tap, before the visual transition.
+  // This tiny, silent clip avoids starting the next word behind the old card.
+  const player = getSpeechPlayer();
+  if (!player) return;
+  const version = ++speechPlayerVersion;
+  player.src = "assets/audio/unlock.wav";
+  player.play().then(() => {
+    if (version === speechPlayerVersion) player.pause();
+  }).catch(() => {}); // A blocked device still has the visible speaker retry.
+}
 function audioExamples(text) {
   return window.IQRO_AUDIO ? window.IQRO_AUDIO.entries[text.normalize("NFC")] : null;
 }
 function stopSpeech() {
+  speechPlayerVersion += 1;
   if (activeSpeech) activeSpeech();
+  if (speechPlayer) speechPlayer.pause();
   if (window.speechSynthesis) window.speechSynthesis.cancel();
 }
 function speak(text, onEnd, rateOverride) {
@@ -52,7 +71,7 @@ function speak(text, onEnd, rateOverride) {
   const cleanup = () => {
     clearTimeout(timeout);
     if (audio) {
-      audio.onended = audio.onerror = null;
+      audio.onended = audio.onerror = audio.onplaying = audio.onwaiting = null;
       audio.pause();
     }
   };
@@ -101,7 +120,7 @@ function speak(text, onEnd, rateOverride) {
     if (index >= clips.length) { finish(); return; }
     // Safari grants playback to a media element, not to the entire page.
     // Keep the element unlocked by the tap when moving between syllables.
-    if (!audio) audio = new Audio();
+    if (!audio) audio = getSpeechPlayer();
     const attempt = ++mediaAttempt;
     const clip = clips[index];
     audio.preload = "auto";
@@ -126,6 +145,19 @@ function speak(text, onEnd, rateOverride) {
       fallback();
     };
     audio.onerror = failed;
+    audio.onplaying = () => {
+      if (done || attempt !== mediaAttempt) return;
+      // A prayer can run well past ten seconds. Guard loading separately from
+      // playback so healthy long clips are not mistaken for stalled downloads.
+      clearTimeout(timeout);
+      const duration = Number.isFinite(audio.duration) ? audio.duration : Math.max(10, text.length * 0.2);
+      timeout = setTimeout(failed, Math.max(10000, duration * 1000 / audio.playbackRate + 5000));
+    };
+    audio.onwaiting = () => {
+      if (done || attempt !== mediaAttempt) return;
+      clearTimeout(timeout);
+      timeout = setTimeout(failed, 10000);
+    };
     timeout = setTimeout(failed, 10000);
     audio.play().catch((error) => {
       if (done || attempt !== mediaAttempt) return;

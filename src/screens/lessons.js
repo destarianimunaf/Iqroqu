@@ -131,7 +131,7 @@ function renderLesson() {
     speak(kartu.arab, () => sp.classList.remove("speaking"), 0.42);
   });
   document.getElementById("btnVoice").addEventListener("click", () => {
-    if (hasExample) showAudioNote(state.category === "arab" ? "Contoh kosakata memakai suara sintetis Arab (Saudi). Dengarkan lalu tirukan pelan-pelan, ya!" : "Huruf berharakat memakai rekaman manusia, bukan ejaan nama huruf.");
+    if (hasExample) showAudioNote(["arab", "doa"].includes(state.category) ? "Contoh bacaan memakai suara sintetis Arab (Saudi), bukan rekaman tilawah. Dengarkan lalu tirukan pelan-pelan, ya!" : "Huruf berharakat memakai rekaman manusia, bukan ejaan nama huruf.");
     else cycleArabicVoice();
   });
   document.getElementById("btnBisa").addEventListener("click", () => {
@@ -139,6 +139,7 @@ function renderLesson() {
     lessonAdvancing = true;
     const advanceId = ++lessonAdvanceId;
     stopSpeech();
+    if (!isLast) primeSpeech();
     markCardSeen(state.category, mod.id, state.cardIndex);
     const button = document.getElementById("btnBisa");
     button.textContent = isLast ? "Hebat! Ayo main!" : "Hebat! Lanjut yuk…";
@@ -154,7 +155,12 @@ function renderLesson() {
       if (isLast) state.view = "gamehub";
       else state.cardIndex += 1;
       render();
-      if (!isLast) root.querySelector(".flashcard").classList.add("card-flow-in");
+      if (!isLast) {
+        root.querySelector(".flashcard").classList.add("card-flow-in");
+        const speaker = document.getElementById("btnSpeak");
+        speaker.classList.add("speaking");
+        speak(mod.kartu[state.cardIndex].arab, () => speaker.classList.remove("speaking"));
+      }
       const nextFocus = document.getElementById(isLast ? "tileQuiz" : "btnBisa");
       if (nextFocus) nextFocus.focus({ preventScroll: true });
     }, reducedMotion ? 0 : 760);
