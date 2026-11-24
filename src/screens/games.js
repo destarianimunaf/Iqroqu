@@ -4,7 +4,7 @@ function renderGameHub() {
   const cat = APP_DATA[state.category];
   const mod = cat.modules.find((j) => j.id === state.jilidId);
   const canOrder = mod.kartu.length >= 3;
-  root.innerHTML = `
+  setScreen(`
     ${topbar(mod.judul + " · Main", true)}
     ${mascot("Sekarang ada 5 game seru buat dicoba! Pilih salah satu yuk 🎮", "point")}
     <div class="game-grid">
@@ -34,7 +34,7 @@ function renderGameHub() {
         <p>Kerjakan soal-soal seperti lembar kerja beneran!</p>
       </button>
     </div>
-  `;
+  `);
   document.getElementById("tileQuiz").addEventListener("click", () => startQuiz(state.jilidId));
   document.getElementById("tileMatch").addEventListener("click", () => startMatch(state.jilidId));
   document.getElementById("tileSheet").addEventListener("click", () => startSheet(state.jilidId));
@@ -68,7 +68,7 @@ function renderOrder() {
     return;
   }
 
-  root.innerHTML = `
+  setScreen(`
     ${topbar(mod.judul + " · Urutkan", true)}
     ${mascot("Ketuk kartu sesuai urutan yang benar, dari pertama sampai terakhir ya! 🔢", "point")}
     <div class="order-tip">${o.reveal ? "Ini urutan pilihanmu:" : `Langkah ke-${o.picks.length + 1} dari ${o.total}`}</div>
@@ -85,7 +85,7 @@ function renderOrder() {
         </button>`;
       }).join("")}
     </div>
-  `;
+  `);
 
   if (!o.reveal) {
     document.querySelectorAll(".order-chip").forEach((btn) => {
@@ -156,7 +156,7 @@ function renderSheet() {
       </div>`;
   }).join("");
 
-  root.innerHTML = `
+  setScreen(`
     ${topbar(mod.judul + " · Lembar Latihan", true)}
     ${mascot(s.submitted ? "Sudah selesai dikoreksi! Lihat hasilnya di atas ya 📝" : "Kerjakan tiap nomor, lalu tekan Periksa Jawaban kalau sudah selesai semua! ✏️", "read")}
     ${s.submitted ? `
@@ -177,7 +177,7 @@ function renderSheet() {
         : `<button class="btn btn-ok" id="btnSheetSubmit" ${semuaTerjawab ? "" : "disabled"}>Periksa Jawaban ✓</button>
            <p style="font-size:12px;color:#8A7F9C;font-weight:700;margin-top:8px">${semuaTerjawab ? "Semua sudah dijawab, yuk periksa!" : "Jawab semua nomor dulu ya (" + s.questions.filter(q=>q.chosen!==null).length + "/" + total + ")"}</p>`}
     </div>
-  `;
+  `);
 
   if (!s.submitted) {
     document.querySelectorAll(".ws-opt").forEach((btn) => {
@@ -231,10 +231,10 @@ function renderTF() {
   const r = t.rounds[t.index];
   const kartu = mod.kartu[r.idx];
 
-  root.innerHTML = `
+  setScreen(`
     ${topbar(mod.judul + " · Benar/Salah", true)}
     ${mascot("Perhatikan baik-baik, lalu tebak: benar atau salah? ⚡", "search")}
-    <div class="hearts-row" style="text-align:center">${"❤️".repeat(t.hearts)}${"🤍".repeat(3 - t.hearts)}</div>
+    <div class="hearts-row" aria-label="Sisa ${t.hearts} dari 3 nyawa" style="text-align:center">${"❤️".repeat(t.hearts)}${"🤍".repeat(3 - t.hearts)}</div>
     <div class="quiz-question" style="text-align:center;margin-bottom:6px">Soal ${t.index + 1} dari ${t.total}</div>
     <div class="tf-card">
       <div class="tf-arab">${kartu.arab}</div>
@@ -247,7 +247,7 @@ function renderTF() {
     </div>
     <div class="quiz-feedback" id="quizFeedback" style="text-align:center"></div>
     <div style="text-align:center;margin-top:10px"><span class="quiz-score">⭐ ${t.score}/${t.total}</span></div>
-  `;
+  `);
 
   document.querySelectorAll(".tf-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -296,11 +296,11 @@ function renderQuiz() {
   const options = shuffle([cardIdx, ...distractors]);
   const isAudio = cat.quizMode !== "text";
 
-  root.innerHTML = `
+  setScreen(`
     ${topbar(mod.judul + " · Kuis", true)}
     ${mascot(isAudio ? "Dengarkan suaranya, lalu pilih tulisan yang cocok ya! 🎧" : "Baca petunjuknya, lalu tebak jawabannya ya! 🕵️", "search")}
     <div class="quiz-card">
-      <div class="hearts-row">${"❤️".repeat(q.hearts)}${"🤍".repeat(3 - q.hearts)}</div>
+      <div class="hearts-row" aria-label="Sisa ${q.hearts} dari 3 nyawa">${"❤️".repeat(q.hearts)}${"🤍".repeat(3 - q.hearts)}</div>
       <div class="quiz-question">Soal ${q.index + 1} dari ${q.total}</div>
       ${isAudio ? `<button class="speaker-btn" id="btnSpeakQuiz" aria-label="Dengarkan pelafalan">${gameIcon("sound")}</button>` : `<div class="clue-box">${kartu.ket}</div>`}
       <div class="quiz-options ${isAudio ? "audio-options" : "text-options"}" id="quizOptions">
@@ -310,7 +310,7 @@ function renderQuiz() {
       <div style="margin-top:10px"><span class="quiz-score">⭐ ${q.score}/${q.total}</span></div>
     </div>
     <div class="audio-note hidden" id="audioNote"></div>
-  `;
+  `);
 
   if (isAudio) {
     const speakBtn = document.getElementById("btnSpeakQuiz");
@@ -372,7 +372,7 @@ function renderMatch() {
     return;
   }
 
-  root.innerHTML = `
+  setScreen(`
     ${topbar(mod.judul + " · Cocok Kartu", true)}
     ${mascot("Buka dua kartu, cari pasangannya! 🧩", "puzzle")}
     <div class="match-stats">
@@ -392,7 +392,7 @@ function renderMatch() {
       }).join("")}
     </div>
     <div class="audio-note hidden" id="audioNote"></div>
-  `;
+  `);
 
   document.querySelectorAll(".match-card").forEach((btn) => {
     btn.addEventListener("click", () => onMatchCardClick(Number(btn.dataset.pos)));
@@ -453,24 +453,41 @@ function renderCelebration(mod, result, kind) {
       : `Belum semua urutannya pas, yuk coba lagi! ${"⭐".repeat(result.stars)}`;
   }
 
-  root.innerHTML = `
+  setScreen(`
     ${topbar(mod.judul, true)}
     ${mascot(gagalNyawa ? "Tidak apa-apa, semua orang pasti pernah salah. Ayo coba lagi! 🤗" : pick(MASKOT_KATA.selesaiJilid), gagalNyawa ? "point" : "trophy")}
     <div class="celebrate">
       <div class="celebrate-card">
-        <div class="big-star">${gagalNyawa ? "💛" : "🏆"}</div>
+        ${gagalNyawa ? `<div class="big-star">${gameIcon("heart")}</div>` : successScene()}
         <h3>${title}</h3>
         <p>${desc}</p>
         <div class="xp-earned">✨ Total XP kamu sekarang: ${getXP()}</div>
-        <button class="btn btn-primary" id="btnUlangi">Main Lagi 🔁</button>
+        ${!gagalNyawa ? `<button class="btn btn-primary" id="btnNextAdventure">Lanjut petualangan ${gameIcon("arrow")}</button>` : ""}
+        <button class="btn ${gagalNyawa ? "btn-primary" : "btn-secondary"}" id="btnUlangi">Main Lagi 🔁</button>
         <button class="btn btn-secondary" id="btnGameLain">Main Game Lain 🎮</button>
         <button class="btn btn-secondary" id="btnKeRak">Kembali ke Rak 📚</button>
       </div>
     </div>
-  `;
+  `);
   document.getElementById("btnUlangi").addEventListener("click", () => {
     (CELEB_START[kind] || startQuiz)(mod.id);
   });
+  if (!gagalNyawa) document.getElementById("btnNextAdventure").addEventListener("click", continueLearning);
   document.getElementById("btnGameLain").addEventListener("click", () => { state.view = "gamehub"; render(); });
   document.getElementById("btnKeRak").addEventListener("click", () => { state.view = "category-home"; render(); });
+}
+
+// Continue to unread learning, without unlocking or marking skipped cards.
+function continueLearning() {
+  const modules = APP_DATA[state.category].modules;
+  const next = modules.find((mod, index) => !isModuleLocked(state.category, modules, index) && !getProgress(state.category, mod.id).selesai);
+  if (next) {
+    state.jilidId = next.id;
+    state.cardIndex = getResumeCardIndex(state.category, next.id);
+    state.view = "lesson";
+  } else {
+    state.view = "category-home";
+  }
+  render();
+  window.scrollTo({ top: 0 });
 }

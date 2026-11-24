@@ -154,6 +154,7 @@ test('Aku bisa advances exactly once, cancels on navigation, and opens games aft
   assert.equal(h.run('getXP()'), 2);
   assert.equal(h.run('getProgress("arab","a9").seen.length'), 1);
   assert.equal(h.run('state.cardIndex'), 0, 'keep the current card during its departure');
+  assert.equal(h.node('lessonSuccess').hidden, false, 'show the lightweight success scene before advancing');
   h.timers.values().next().value();
   assert.equal(h.run('state.cardIndex'), 1);
   assert.equal(h.run('getProgress("arab","a9").seen.length'), 1, 'do not mark the arriving card learned');
@@ -169,4 +170,33 @@ test('Aku bisa advances exactly once, cancels on navigation, and opens games aft
   h.timers.values().next().value();
   assert.equal(h.run('state.view'), 'gamehub');
   assert.equal(h.run('getProgress("arab","a9").selesai'), false, 'never complete skipped cards');
+});
+
+test('illustrated icons preserve Arabic content and accessible labels', () => {
+  const h = harness();
+  const markup = '<button aria-label="Suara ⭐ بَ" title="Putar ▶">بَ ▶ ☆</button>';
+  const result = h.run(`withGameIcons(${JSON.stringify(markup)})`);
+  assert.match(result, /aria-label="Suara ⭐ بَ" title="Putar ▶"/);
+  assert.match(result, />بَ <span/);
+  assert.match(result, /icon-play/);
+  assert.match(result, /icon-starEmpty/);
+});
+
+test('success continues to unread, unlocked learning without marking skipped cards', () => {
+  const h = harness();
+  h.run(`
+    state.category = "iqro";
+    const first = APP_DATA.iqro.modules[0];
+    const second = APP_DATA.iqro.modules[1];
+    first.kartu.forEach((_, i) => markCardSeen("iqro", first.id, i));
+    markCardSeen("iqro", second.id, 0);
+    state.jilidId = first.id;
+    state.view = "quiz";
+    renderCelebration(first, { score: 8, total: 8 }, "quiz");
+  `);
+  h.node('btnNextAdventure').handlers.click();
+  assert.equal(h.run('state.view'), 'lesson');
+  assert.equal(h.run('state.jilidId === APP_DATA.iqro.modules[1].id'), true);
+  assert.equal(h.run('state.cardIndex'), 1);
+  assert.equal(h.run('getProgress("iqro", state.jilidId).seen.length'), 1);
 });

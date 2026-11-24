@@ -2,7 +2,7 @@
 function showWelcome() {
   const dialog = document.getElementById("welcomeDialog");
   if (!dialog || typeof dialog.showModal !== "function" || dialog.open) return;
-  dialog.innerHTML = `
+  dialog.innerHTML = withGameIcons(`
     <button class="intro-skip" id="skipIntro">Lewati ${gameIcon("arrow")}</button>
     <div class="intro-scene" aria-hidden="true">
       <div class="intro-sun"></div><span class="intro-spark spark-one">✦</span><span class="intro-spark spark-two">✦</span>
@@ -20,7 +20,7 @@ function showWelcome() {
       <div class="intro-features"><span>${gameIcon("book")} 6 dunia belajar</span><span>${gameIcon("game")} 5 game seru</span><span>${gameIcon("star")} Bintang & XP</span></div>
       <button class="hero-cta intro-start" id="startIntro">${gameIcon("play")} Ayo, main bareng!</button>
       <small class="intro-footnote">Tanpa akun · Progresmu tetap tersimpan</small>
-    </div>`;
+    </div>`);
   const close = () => dialog.close();
   document.getElementById("skipIntro").addEventListener("click", close);
   document.getElementById("startIntro").addEventListener("click", close);

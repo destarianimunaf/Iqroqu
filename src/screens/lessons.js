@@ -29,7 +29,7 @@ function renderCategoryHome() {
       </div>`;
   }).join("");
 
-  root.innerHTML = `
+  setScreen(`
     ${topbar(cat.label, true)}
     ${mascot(cat.intro, "point")}
     <div class="intro-card" style="background:${cat.heroGradient}">
@@ -44,8 +44,8 @@ function renderCategoryHome() {
       ${mascotSVG("read", true)}
       <div class="corner-mascot-note">Semangat terus belajarnya! 📖</div>
     </div>
-    <div class="footer-note">Dibuat oleh Desta · All Rights Reserved © 2026</div>
-  `;
+
+  `);
 
   root.querySelectorAll("[data-node]:not([disabled])").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -88,7 +88,7 @@ function renderLesson() {
     return `<span class="dot ${cls}"></span>`;
   }).join("");
 
-  root.innerHTML = `
+  setScreen(`
     ${topbar(mod.judul, true)}
     ${mascot(`${mod.tujuan}`, "read")}
     <div class="progress-dots" role="status" aria-live="polite" aria-label="Kartu ${state.cardIndex + 1} dari ${mod.kartu.length}">${dots}</div>
@@ -103,6 +103,11 @@ function renderLesson() {
       </div>
       ${hasExample ? '<div class="audio-source">Contoh audio IqroQu · Dengar, lalu tirukan!</div>' : ''}
     </div>
+    <div class="lesson-success" id="lessonSuccess" role="status" aria-live="polite" hidden>
+      ${successScene()}
+      <strong>Hebat! Kamu bisa!</strong>
+      <small>${isLast ? "Ayo ke arena main!" : "Lanjut petualangan, yuk!"}</small>
+    </div>
     <div class="audio-note hidden" id="audioNote"></div>
     <div class="aku-bisa-row">
       <button class="btn btn-ok" id="btnBisa">${gameIcon("check")} ${sudahDilihat ? "Sudah aku pelajari" : "Aku bisa!"}</button>
@@ -111,7 +116,7 @@ function renderLesson() {
       <button class="btn btn-secondary" id="btnPrev" ${state.cardIndex === 0 ? "disabled" : ""}>${gameIcon("arrowLeft")} Sebelumnya</button>
       ${isLast ? `<button class="btn btn-primary" id="btnGame">Main yuk! ${gameIcon("game")}</button>` : `<button class="btn btn-primary" id="btnNext">Selanjutnya ${gameIcon("arrow")}</button>`}
     </div>
-  `;
+  `);
 
   document.getElementById("btnSpeak").addEventListener("click", (e) => {
     stopSpeech();
@@ -143,6 +148,7 @@ function renderLesson() {
     });
     root.querySelector(".flashcard").classList.add("card-flow-out");
     const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reducedMotion) document.getElementById("lessonSuccess").hidden = false;
     scheduleGameStep(() => {
       if (advanceId !== lessonAdvanceId) return;
       if (isLast) state.view = "gamehub";
@@ -151,7 +157,7 @@ function renderLesson() {
       if (!isLast) root.querySelector(".flashcard").classList.add("card-flow-in");
       const nextFocus = document.getElementById(isLast ? "tileQuiz" : "btnBisa");
       if (nextFocus) nextFocus.focus({ preventScroll: true });
-    }, reducedMotion ? 0 : 360);
+    }, reducedMotion ? 0 : 760);
   });
   document.getElementById("btnPrev").addEventListener("click", () => {
     if (!lessonAdvancing && state.cardIndex > 0) { state.cardIndex -= 1; render(); }

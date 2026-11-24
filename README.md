@@ -28,6 +28,7 @@ src/
     categories.js          Label, warna, dan pilihan game setiap kategori
     lessons.js             Semua isi pelajaran dan urutan kartu
     images.js              Jalur ilustrasi yang dipakai tampilan
+    icons.js               Nama dan pemetaan atlas ikon ilustrasi
   screens/
     menu.js                Beranda, pencapaian, favorit, dan pengaturan
     lessons.js             Peta modul dan kartu belajar
@@ -36,6 +37,7 @@ src/
   styles/
     base.css               Gaya dasar komponen
     game.css               Tema taman bermain, responsif, dan animasi
+    playful.css            Atlas ikon, bentuk tombol, dan perayaan Raqi
 assets/
   images/                  Ilustrasi yang sebelumnya tertanam di HTML
   audio/                   MP3, manifest.js, dan catatan sumber rekaman
@@ -58,6 +60,8 @@ tests/
 | Intro saat pertama buka | `src/screens/welcome.js` |
 | Tombol “Aku bisa!” dan perpindahan kartu | `src/screens/lessons.js` |
 | Warna, ukuran, tampilan HP, dan motion | `src/styles/game.css` |
+| Ikon ilustrasi dan gerak/perayaan Raqi | `src/data/icons.js` dan `src/styles/playful.css` |
+| Kredit footer seluruh layar | `setScreen()` di `src/ui.js` |
 | Suara dan penanganan gagal memutar | `src/audio.js` |
 
 Skrip memakai JavaScript biasa dan dimuat berurutan dengan `defer` di
@@ -85,6 +89,12 @@ gerakan” menonaktifkan animasi tanpa menyembunyikan isinya.
 dan slide. Kartu terakhir membuka menu game. Ketukan cepat tidak melompati
 kartu; keluar dari pelajaran membatalkan perpindahan yang masih menunggu.
 Saat “kurangi gerakan” aktif, kartu langsung berlanjut tanpa animasi.
+
+Raqi bergerak memakai gambar yang sudah dimuat dan CSS `transform`, tanpa
+video, library animasi, atau loop JavaScript per frame. Popup **Hebat! Kamu
+bisa!** tampil singkat sebelum kartu mengalir ke langkah berikutnya. Hasil
+game juga menampilkan perayaan Raqi dan tombol **Lanjut petualangan** untuk
+membuka materi yang belum selesai, tanpa melewati kunci modul.
 
 ## Pelafalan dan audio
 
@@ -134,8 +144,14 @@ localStorage, XP, streak, unlock modul, dan reset.
 
 ## Ilustrasi dan font
 
-Taman bermain adalah ilustrasi orisinal, bukan salinan referensi. Google Fonts
-opsional; font sistem dipakai saat jaringan tidak tersedia. Simbol game memakai
-subset lokal 87 KB dari Noto Color Emoji dengan nama keluarga
-`IqroQu Symbols`. Lisensi SIL Open Font License tersedia di
+Taman bermain dan ikon adalah ilustrasi yang dibuat untuk IqroQu, bukan salinan
+referensi. Semua kontrol memakai satu atlas WebP 25 ikon di
+`assets/images/game-icons.webp` (sekitar 157 KB, dimuat sekali dan dipakai ulang),
+bukan emoji sistem. Pemetaan nama ikon dan penanda pada teks lama tersedia di
+`src/data/icons.js`; atribut aksesibilitas dan tulisan Arab tidak diubah.
+Footer seluruh layar memakai kredit **destalabs**.
+
+Google Fonts opsional; font sistem dipakai saat jaringan tidak tersedia.
+Subset lokal Noto Color Emoji (`IqroQu Symbols`) dipertahankan sebagai fallback
+untuk simbol di luar atlas. Lisensi SIL Open Font License tersedia di
 `assets/Noto-Emoji-LICENSE.txt`.

@@ -40,15 +40,15 @@ function renderDashboard() {
   const dailyPercent = Math.min(100, dailyXP / 20 * 100);
   const next = getRecommendedModule("iqro");
   const started = getProgress("iqro", next.id).seen.length > 0;
-  root.innerHTML = `
+  setScreen(`
     ${adventureHeader()}
     <section class="play-heading" aria-labelledby="adventure-title"><span class="garden-sign">TAMAN BELAJAR RAQI</span><h1 id="adventure-title">Ayo, pilih petualanganmu!</h1><p>Sentuh gambarnya. Kita main sambil belajar!</p></section>
     <div class="playground-layout">
-      <section class="raqi-welcome" aria-label="Teman bermainmu"><div class="raqi-speech">Assalamu’alaikum!<br><strong>Aku Raqi. Main bareng, yuk!</strong></div><img class="raqi-character" src="${IMG_MASCOT}" alt="Raqi melambaikan tangan" draggable="false"><button class="hero-cta" id="continueAdventure"><span class="play-triangle" aria-hidden="true">▶</span><span>${started ? "Lanjut main" : "Mulai main"}<small>Petualangan mengaji</small></span></button></section>
+      <section class="raqi-welcome" aria-label="Teman bermainmu"><div class="raqi-speech">Assalamu’alaikum!<br><strong>Aku Raqi. Main bareng, yuk!</strong></div><img class="raqi-character" src="${IMG_MASCOT}" alt="Raqi, teman petualangan belajar" draggable="false"><button class="hero-cta" id="continueAdventure"><span class="play-triangle" aria-hidden="true">▶</span><span>${started ? "Lanjut main" : "Mulai main"}<small>Petualangan mengaji</small></span></button></section>
       <section class="world-map" aria-label="Enam dunia belajar"><div class="world-grid">${tileHtml}</div></section>
     </div>
     <section class="reward-strip" aria-label="Misi dan level"><div class="daily-trophy" aria-hidden="true">${gameIcon("trophy")}</div><div class="daily-mission"><h2>${dailyXP >= 20 ? "Hore, misi selesai!" : "Misi bintang hari ini"}</h2><div class="daily-progress" role="progressbar" aria-label="Misi XP harian" aria-valuenow="${dailyPercent}" aria-valuemin="0" aria-valuemax="100"><span style="width:${dailyPercent}%"></span></div><span>${Math.min(dailyXP, 20)} / 20 XP · ${dailyXP >= 20 ? "Kamu hebat!" : "Sedikit lagi, semangat!"}</span></div><button class="mission-link" id="dailyPlay">Main yuk! ${gameIcon("arrow")}</button><div class="player-level"><span class="level-medal">${level}</span><div><strong>Level ${level}</strong><small>${100 - xp % 100} XP ke level berikutnya</small></div></div></section>
-    <footer class="dashboard-footer"><button class="intro-replay" id="replayIntro">${gameIcon("repeat")} Putar intro IqroQu</button><span>Dibuat dengan sayang oleh Desta · IqroQu © 2026</span></footer>`;
+    <footer class="dashboard-footer"><button class="intro-replay" id="replayIntro">${gameIcon("repeat")} Putar intro IqroQu</button></footer>`);
   document.getElementById("replayIntro").addEventListener("click", showWelcome);
   root.querySelectorAll("[data-cat]").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -87,7 +87,7 @@ function openCategoryPopup(key) {
 
   const overlay = document.createElement("div");
   overlay.className = "cat-popup-overlay";
-  overlay.innerHTML = `
+  overlay.innerHTML = withGameIcons(`
     <div class="cat-popup-card">
       <button class="cat-popup-close" id="catPopupClose" aria-label="Tutup">✕</button>
       ${visual}
@@ -96,7 +96,7 @@ function openCategoryPopup(key) {
       <div class="intro-progress-bar"><div class="intro-progress-fill" style="width:${persen}%"></div></div>
       <div class="cat-popup-progress">⭐ ${seen}/${total} kartu dipelajari (${persen}%)</div>
       <button class="btn btn-primary cat-popup-start" id="catPopupStart">Mulai Belajar 🚀</button>
-    </div>`;
+    </div>`);
   document.body.appendChild(overlay);
 
   const close = () => overlay.remove();
@@ -146,7 +146,7 @@ function renderProgres() {
       </div>`;
   }).join("");
 
-  root.innerHTML = `
+  setScreen(`
     ${adventureHeader()}
     ${screenHeading("HARTA PETUALANGAN", "Bintang-bintangku!")}
     ${mascot("Setiap langkah bikin kamu makin hebat. Kumpulkan semua bintangnya, yuk!", "trophy")}
@@ -166,8 +166,8 @@ function renderProgres() {
     </div>
     <div class="menu-section-title">📊 Progres per Kategori</div>
     <div class="progres-list">${rows}</div>
-    <div class="footer-note">Dibuat oleh Desta · All Rights Reserved © 2026</div>
-  `;
+
+  `);
 }
 
 // ---------------- MAIN (akses cepat ke game, gaya tab "Play") ----------------
@@ -187,13 +187,13 @@ function renderMainPage() {
       </button>`;
   }).join("");
 
-  root.innerHTML = `
+  setScreen(`
     ${adventureHeader()}
     ${screenHeading("ARENA MAIN RAQI", "Pilih dunia, yuk!")}
     ${mascot("Ada lima permainan di setiap dunia. Pilih gambarnya dan main bareng aku!", "point")}
     <div class="main-play-list">${cardsHtml}</div>
-    <div class="footer-note">Dibuat oleh Desta · All Rights Reserved © 2026</div>
-  `;
+
+  `);
 
   root.querySelectorAll("[data-play-cat]").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -229,13 +229,13 @@ function renderFavorit() {
       </div>`;
   }).filter(Boolean).join("");
 
-  root.innerHTML = `
+  setScreen(`
     ${adventureHeader()}
     ${screenHeading("KOLEKSI KESUKAANKU", "Tempat favoritku!")}
     ${mascot(favs.length ? "Petualangan kesukaanmu sudah menunggu. Kita main lagi, yuk!" : "Simpan petualangan kesukaanmu dengan tombol bintang di peta belajar!", "point")}
     ${items ? `<div class="favorit-list">${items}</div>` : `<div class="favorit-empty">Belum ada modul favorit. Yuk jelajahi menu Belajar dan tap bintang ☆ pada modul kesukaanmu!</div>`}
-    <div class="footer-note">Dibuat oleh Desta · All Rights Reserved © 2026</div>
-  `;
+
+  `);
 
   root.querySelectorAll("[data-open-cat]").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -257,7 +257,7 @@ function renderFavorit() {
 // ---------------- PENGATURAN ----------------
 function renderPengaturan() {
   const v = currentArabicVoice();
-  root.innerHTML = `
+  setScreen(`
     ${adventureHeader()}
     ${screenHeading("RUMAH RAQI", "Atur cara mainmu!")}
     ${mascot("Mau dengar musik atau pilih suara bacaan? Semuanya ada di sini!", "point")}
@@ -289,8 +289,8 @@ function renderPengaturan() {
       <div>${logoHtml(false)}</div>
       <p>Aplikasi belajar Iqro, Al-Qur'an, tajwid, sholat, kisah nabi, dan Bahasa Arab untuk anak-anak — ringan, interaktif, dan bisa dipakai tanpa akun.</p>
     </div>
-    <div class="footer-note">Dibuat oleh Desta · All Rights Reserved © 2026</div>
-  `;
+
+  `);
 
   document.getElementById("setMusicToggle").addEventListener("click", () => {
     musicOn = !musicOn;

@@ -7,30 +7,31 @@
 <meta name="description" content="Aplikasi belajar Islam interaktif untuk anak-anak: Iqro jilid 1-6 sampai Al-Qur'an, belajar sholat, tajwid, dan kisah 25 nabi. Ringan, lucu, dan bisa dipakai di HP manapun." />
 <link rel="stylesheet" href="src/styles/base.css" />
 <link rel="stylesheet" href="src/styles/game.css" />
+<link rel="stylesheet" href="src/styles/playful.css" />
 </head>
 <body>
-  <button class="music-btn" id="musicBtn" aria-label="Nyalakan/matikan musik">🎵</button>
+  <button class="music-btn" id="musicBtn" aria-label="Nyalakan/matikan musik"></button>
   <nav class="bottom-nav" id="bottomNav" aria-label="Navigasi utama">
     <a class="nav-brand" href="./" aria-label="IqroQu beranda"><span class="brand-book">ق</span><span>iqro<span>qu</span><small>BELAJAR JADI PETUALANGAN</small></span></a>
     <div class="nav-caption">RUANG PETUALANG</div>
     <button class="bn-item" data-nav="main">
-      <span class="bn-icon">🎮</span>
+      <span class="bn-icon" aria-hidden="true"></span>
       <span class="bn-label">Arena Main</span>
     </button>
     <button class="bn-item" data-nav="dashboard">
-      <span class="bn-icon">📖</span>
+      <span class="bn-icon" aria-hidden="true"></span>
       <span class="bn-label">Petualangan</span>
     </button>
     <button class="bn-item" data-nav="progres">
-      <span class="bn-icon">🏆</span>
+      <span class="bn-icon" aria-hidden="true"></span>
       <span class="bn-label">Pencapaian</span>
     </button>
     <button class="bn-item" data-nav="favorit">
-      <span class="bn-icon">⭐</span>
+      <span class="bn-icon" aria-hidden="true"></span>
       <span class="bn-label">Favorit</span>
     </button>
     <button class="bn-item" data-nav="pengaturan">
-      <span class="bn-icon">⚙️</span>
+      <span class="bn-icon" aria-hidden="true"></span>
       <span class="bn-label">Pengaturan</span>
     </button>
     <div class="nav-bottom"><span class="nav-bottom-star">✦</span><strong>Sedikit setiap hari,<br>hebat di kemudian hari.</strong><small>Progres tersimpan di perangkatmu</small></div>
@@ -40,6 +41,7 @@
 
 <!-- Skrip defer dijalankan berurutan, setelah kerangka HTML siap. -->
 <script defer src="src/data/images.js"></script>
+<script defer src="src/data/icons.js"></script>
 <script defer src="src/data/categories.js"></script>
 <script defer src="src/data/lessons.js"></script>
 <script defer src="assets/audio/manifest.js"></script>
