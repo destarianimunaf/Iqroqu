@@ -2589,13 +2589,13 @@ function speak(text, onEnd, rateOverride) {
     if (audio) {
       audio.onended = audio.onerror = null;
       audio.pause();
-      audio = null;
     }
   };
   const finish = () => {
     if (done) return;
     done = true;
     cleanup();
+    audio = null;
     if (activeSpeech === finish) activeSpeech = null;
     if (onEnd) onEnd();
   };
@@ -2604,6 +2604,7 @@ function speak(text, onEnd, rateOverride) {
     if (done || fallbackStarted) return;
     fallbackStarted = true;
     cleanup();
+    audio = null;
     if (!window.speechSynthesis) {
       showAudioNote("Audio belum bisa diputar. Periksa koneksi lalu ketuk dengarkan lagi, ya.");
       finish();
@@ -2627,24 +2628,44 @@ function speak(text, onEnd, rateOverride) {
   const clips = audioExamples(text);
   if (!clips || typeof Audio === "undefined") { fallback(); return; }
   let index = 0;
-  const next = () => {
+  let attempts = 0;
+  let mediaAttempt = 0;
+  const next = (retry = false) => {
     if (done) return;
     cleanup();
     if (index >= clips.length) { finish(); return; }
-    audio = new Audio(clips[index++]);
+    // Safari grants playback to a media element, not to the entire page.
+    // Keep the element unlocked by the tap when moving between syllables.
+    if (!audio) audio = new Audio();
+    const attempt = ++mediaAttempt;
+    const clip = clips[index];
+    audio.preload = "auto";
+    audio.src = clip + (retry ? (clip.includes("?") ? "&" : "?") + "retry=1" : "");
     audio.playbackRate = rateOverride ? 0.7 : 1;
     audio.preservesPitch = true;
-    audio.onended = next;
-    audio.onerror = () => {
-      if (done) return;
+    audio.onended = () => {
+      if (done || attempt !== mediaAttempt) return;
+      index += 1;
+      attempts = 0;
+      next();
+    };
+    const failed = () => {
+      if (done || attempt !== mediaAttempt) return;
+      mediaAttempt += 1;
+      if (attempts++ === 0) {
+        showAudioNote("Sedang memuat ulang contoh suara, sebentar ya…");
+        next(true);
+        return;
+      }
       showAudioNote("Contoh audio belum termuat. Mencoba suara Arab perangkatmu.");
       fallback();
     };
-    timeout = setTimeout(() => { if (!done) { showAudioNote("Audio belum termuat. Coba dengarkan lagi, ya."); finish(); } }, 20000);
+    audio.onerror = failed;
+    timeout = setTimeout(failed, 10000);
     audio.play().catch((error) => {
-      if (done) return;
+      if (done || attempt !== mediaAttempt) return;
       if (error.name === "NotAllowedError") { showAudioNote("Ketuk dengarkan sekali lagi untuk mengaktifkan suara."); finish(); }
-      else fallback();
+      else failed();
     });
   };
   next();

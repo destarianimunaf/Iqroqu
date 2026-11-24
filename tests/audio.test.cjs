@@ -26,8 +26,8 @@ function harness() {
     localStorage: { getItem(k) { return storage.get(k) ?? null; }, setItem(k, v) { storage.set(k, String(v)); }, removeItem(k) { storage.delete(k); } },
     SpeechSynthesisUtterance: class { constructor(text) { this.text = text; } },
     Audio: class {
-      constructor(src) { this.src = src; audios.push(this); }
-      play() { return Promise.resolve(); }
+      constructor(src) { this.src = src; this.plays = []; audios.push(this); }
+      play() { this.plays.push(this.src); return Promise.resolve(); }
       pause() { this.paused = true; }
     }
   });
@@ -65,9 +65,10 @@ test('letter drills play human syllables sequentially, not letter-name TTS', () 
   const h = harness();
   h.run('globalThis.ended=0; speak("بَ تَ ثَ جَ",()=>ended++)');
   for (let index = 0; index < 4; index++) {
-    assert.equal(h.audios.length, index + 1);
-    assert.match(h.audios[index].src, /letter-/);
-    h.audios[index].onended();
+    assert.equal(h.audios.length, 1, 'reuse the element unlocked by the user gesture on Safari');
+    assert.match(h.audios[0].src, /letter-/);
+    assert.equal(h.audios[0].plays.length, index + 1);
+    h.audios[0].onended();
   }
   assert.equal(h.run('ended'), 1);
   assert.equal(h.utterances.length, 0);
@@ -92,6 +93,9 @@ test('failed MP3 falls back once; errors and timeout restore controls', () => {
   h.run('globalThis.ended=0; speak("بَ",()=>ended++)');
   const fail = h.audios[0].onerror;
   fail(); fail();
+  assert.equal(h.utterances.length, 0, 'one media retry precedes device fallback');
+  assert.match(h.audios[0].src, /\?retry=1$/);
+  h.audios[0].onerror();
   assert.equal(h.utterances.length, 1);
   h.utterances[0].onerror();
   h.utterances[0].onend();
@@ -99,6 +103,8 @@ test('failed MP3 falls back once; errors and timeout restore controls', () => {
   h.run('speak("تَ",()=>ended++)');
   // One timer hides a diagnostic, the other guards stalled media.
   for (const fn of [...h.timers.values()]) fn();
+  for (const fn of [...h.timers.values()]) fn();
+  h.utterances[1].onerror();
   assert.equal(h.run('ended'), 2);
 });
 
