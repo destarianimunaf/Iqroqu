@@ -388,6 +388,10 @@ function renderMatch() {
       <span class="pill">🔁 Langkah: ${m.moves}</span>
       <span class="pill">✅ ${m.matched.length / 2}/${m.total} pasang</span>
     </div>
+    ${m.reviewMismatch ? `<div class="match-review">
+      <p role="status">Belum cocok. Baca kedua kartu dulu, lalu coba pasangan lain.</p>
+      <button class="btn btn-secondary" id="btnMatchRetry">${gameIcon("repeat")} Coba pasangan lain</button>
+    </div>` : ""}
     <div class="match-grid${longFaces ? " long-faces" : ""}" id="matchGrid">
       ${m.cards.map((c, pos) => {
         const isMatched = m.matched.includes(c.uid);
@@ -398,7 +402,7 @@ function renderMatch() {
         const faceClass = isFlipped ? (c.type === "arab" ? "face-arab" : "face-latin") : "";
         return `<button class="match-card ${isFlipped ? "flipped" : ""} ${isMatched ? "matched" : ""} ${faceClass}"
                   aria-label="${isFlipped ? label : "Buka kartu " + (pos + 1)}" aria-pressed="${isFlipped}"
-                  data-pos="${pos}" ${isMatched ? "disabled" : ""}>${label}</button>`;
+                  data-pos="${pos}" ${isMatched || m.reviewMismatch ? "disabled" : ""}>${label}</button>`;
       }).join("")}
     </div>
     <div class="audio-note hidden" id="audioNote"></div>
@@ -406,6 +410,15 @@ function renderMatch() {
 
   document.querySelectorAll(".match-card").forEach((btn) => {
     btn.addEventListener("click", () => onMatchCardClick(Number(btn.dataset.pos)));
+  });
+  const retry = document.getElementById("btnMatchRetry");
+  if (m.reviewMismatch && retry) retry.addEventListener("click", () => {
+    m.reviewMismatch = false;
+    m.flipped = [];
+    m.busy = false;
+    render({ preserveSpeech: true });
+    const firstCard = root.querySelector(".match-card:not([disabled])");
+    if (firstCard) firstCard.focus({ preventScroll: true });
   });
 }
 function onMatchCardClick(pos) {
@@ -426,6 +439,12 @@ function onMatchCardClick(pos) {
     m.moves += 1;
     const [a, b] = m.flipped;
     const isMatch = a.idx === b.idx && a.type !== b.type;
+    if (!isMatch) {
+      // Never ask children to read and scroll a full prayer against a timer.
+      // Keep mismatches visible until they explicitly choose to try again.
+      m.reviewMismatch = true;
+      render({ preserveSpeech: true });
+    }
     showAnswerFeedback(isMatch, m.flipped.map((flipped) => root.querySelector(`.match-card[data-pos="${m.cards.indexOf(flipped)}"]`)));
     if (isMatch) {
       // Start inside the matching tap, not after the response timer: fresh
@@ -433,12 +452,6 @@ function onMatchCardClick(pos) {
       speak(mod.kartu[a.idx].arab);
       scheduleGameStep(() => {
         m.matched.push(a.uid, b.uid);
-        m.flipped = [];
-        m.busy = false;
-        render({ preserveSpeech: true });
-      }, 1100);
-    } else {
-      scheduleGameStep(() => {
         m.flipped = [];
         m.busy = false;
         render({ preserveSpeech: true });

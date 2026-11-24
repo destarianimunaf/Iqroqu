@@ -109,6 +109,9 @@ dipakai, dan zoom kembali normal saat keluar ke peta atau menu utama.
 Kelima game memakai notifikasi Raqi, gerak benar/salah, dan ikon ilustrasi yang
 sama. Lembar latihan menampilkan koreksi setelah **Periksa Jawaban** ditekan;
 jawaban tidak dibocorkan saat memilih. Semua motion ini mengikuti “kurangi gerakan”.
+Di **Cocok Kartu**, pasangan yang belum cocok tetap terbuka sampai tombol
+**Coba pasangan lain** ditekan, supaya doa panjang bisa dibaca sambil scroll
+tanpa dikejar waktu. Pasangan benar tetap tersimpan otomatis.
 
 ## Pelafalan dan audio
 

@@ -339,3 +339,18 @@ test('a fresh matching game starts speech in the matching tap and never restarts
   assert.equal(h.audios[0].paused, false);
   assert.equal(h.audios[0].plays.length, 1);
 });
+
+test('mismatched prayer faces stay readable until the player explicitly retries', () => {
+  const h = harness();
+  h.run('state.category="doa"; startMatch("d1"); onMatchCardClick(0); onMatchCardClick(state.match.cards.findIndex(c=>c.idx!==state.match.cards[0].idx))');
+  assert.equal(h.run('state.match.reviewMismatch'), true);
+  for (const fn of [...h.timers.values()]) fn();
+  assert.equal(h.run('state.match.flipped.length'), 2, 'feedback disappearing must not hide the prayer faces');
+  h.run('onMatchCardClick(0)');
+  assert.equal(h.run('state.match.moves'), 1, 'block picks while reading a mismatched pair');
+  assert.match(h.node('app').innerHTML, /Coba pasangan lain/);
+  h.node('btnMatchRetry').handlers.click();
+  assert.equal(h.run('state.match.flipped.length'), 0);
+  assert.equal(h.run('state.match.busy'), false);
+  assert.equal(h.run('state.match.reviewMismatch'), false);
+});
