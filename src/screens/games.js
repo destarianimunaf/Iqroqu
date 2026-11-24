@@ -427,12 +427,14 @@ function onMatchCardClick(pos) {
     const isMatch = a.idx === b.idx && a.type !== b.type;
     showAnswerFeedback(isMatch, m.flipped.map((flipped) => root.querySelector(`.match-card[data-pos="${m.cards.indexOf(flipped)}"]`)));
     if (isMatch) {
+      // Start inside the matching tap, not after the response timer: fresh
+      // players on gesture-restricted devices must be activated synchronously.
+      speak(mod.kartu[a.idx].arab);
       scheduleGameStep(() => {
         m.matched.push(a.uid, b.uid);
         m.flipped = [];
         m.busy = false;
         render({ preserveSpeech: true });
-        speak(mod.kartu[a.idx].arab);
       }, 1100);
     } else {
       scheduleGameStep(() => {

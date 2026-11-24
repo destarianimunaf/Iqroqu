@@ -326,3 +326,16 @@ test('game-only redraws do not truncate a prayer, but leaving the game still sto
   h.run('state.view="gamehub"; render()');
   assert.equal(h.audios[0].paused, true, 'Back still stops playback');
 });
+
+test('a fresh matching game starts speech in the matching tap and never restarts it on redraw', () => {
+  const h = harness();
+  h.run('state.category="doa"; startMatch("d1"); onMatchCardClick(0)');
+  assert.equal(h.audios.length, 0);
+  h.run('onMatchCardClick(state.match.cards.findIndex(c=>c.idx===state.match.cards[0].idx && c.type!==state.match.cards[0].type))');
+  assert.equal(h.audios.length, 1, 'play synchronously while still handling the second tap');
+  assert.match(h.audios[0].src, /prayer-/);
+  const responseTimer = [...h.timers.keys()].find(id => h.delays.get(id) === 1100);
+  h.timers.get(responseTimer)();
+  assert.equal(h.audios[0].paused, false);
+  assert.equal(h.audios[0].plays.length, 1);
+});
