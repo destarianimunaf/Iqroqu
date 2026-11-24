@@ -194,10 +194,29 @@ test('imported source metadata is rendered as text, not executable screen markup
   h.run('state.category="doa"; state.jilidId="d1"; state.cardIndex=0; state.view="lesson"; render()');
   assert.equal(h.node('app').innerHTML.includes(payload), false);
   assert.equal(h.node('lessonAudioSource').textContent.includes(payload), true);
+  const answer = h.node('testAnswer');
+  answer.dataset.idx = '0';
+  h.context.document.querySelectorAll = selector => selector === '.quiz-opt' ? [answer] : [];
   h.run('startQuiz("d1"); state.quiz.pool[0]=state.cardIndex; render()');
+  answer.handlers.click();
   assert.equal(h.node('app').innerHTML.includes(payload), false);
   assert.equal(h.node('quizAudioSource').textContent.includes(payload), true);
   assert.equal(h.run('globalThis.compromised'), undefined);
+});
+
+test('listening questions reveal source attribution only after an answer is locked', () => {
+  const h = harness();
+  const answer = h.node('testAnswer');
+  answer.dataset.idx = '0';
+  h.context.document.querySelectorAll = selector => selector === '.quiz-opt' ? [answer] : [];
+  h.run('state.category="doa"; startQuiz("d1"); state.quiz.pool[0]=0; render()');
+  assert.match(h.node('app').innerHTML, /id="quizAudioSource" hidden><\/div>/);
+  assert.equal(h.node('app').innerHTML.includes('Muhammad Jumah'), false);
+  assert.equal(h.node('quizAudioSource').textContent, undefined);
+  answer.handlers.click();
+  assert.equal(h.run('state.quiz.answered'), true);
+  assert.equal(h.node('quizAudioSource').hidden, false);
+  assert.match(h.node('quizAudioSource').textContent, /Muhammad Jumah/);
 });
 
 test('failed qari audio retries local then the provider, never substituting device TTS', () => {
