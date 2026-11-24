@@ -2345,6 +2345,14 @@ const PROGRESS_KEY = "iqro-ceria-progress-v2";
 const MUSIC_KEY = "iqro-ceria-music";
 
 let state = { view: "dashboard", category: null, jilidId: null, cardIndex: 0, quiz: null, match: null, order: null, tf: null };
+const gameStepTimers = new Set();
+function scheduleGameStep(callback, delay) {
+  const timer = setTimeout(() => {
+    gameStepTimers.delete(timer);
+    callback();
+  }, delay);
+  gameStepTimers.add(timer);
+}
 
 // ---------------- Progress (localStorage, tanpa akun) ----------------
 function loadProgress() {
@@ -2682,6 +2690,9 @@ function arabSizeClass(text) {
 }
 
 function render() {
+  // A pending game response must not redraw a screen the player has left.
+  gameStepTimers.forEach((timer) => clearTimeout(timer));
+  gameStepTimers.clear();
   root.classList.toggle("dashboard-view", state.view === "dashboard");
   if (state.view === "dashboard") renderDashboard();
   else if (state.view === "category-home") renderCategoryHome();
@@ -3144,8 +3155,9 @@ function renderLesson() {
   `;
 
   document.getElementById("btnSpeak").addEventListener("click", (e) => {
-    e.currentTarget.classList.add("speaking");
-    speak(kartu.arab, () => e.currentTarget.classList.remove("speaking"));
+    const button = e.currentTarget;
+    button.classList.add("speaking");
+    speak(kartu.arab, () => button.classList.remove("speaking"));
   });
   document.getElementById("btnSlow").addEventListener("click", () => {
     const sp = document.getElementById("btnSpeak");
@@ -3263,7 +3275,7 @@ function renderOrder() {
         const idx = Number(btn.dataset.idx);
         o.picks.push(idx);
         speak(mod.kartu[idx].arab);
-        if (o.picks.length >= o.total) { o.reveal = true; render(); setTimeout(() => { o.done = true; render(); }, 1400); }
+        if (o.picks.length >= o.total) { o.reveal = true; render(); scheduleGameStep(() => { o.done = true; render(); }, 1400); }
         else render();
       });
     });
@@ -3432,7 +3444,7 @@ function renderTF() {
         feedback.textContent = pick(MASKOT_KATA.salah);
         t.hearts -= 1;
       }
-      setTimeout(() => { t.index += 1; t.answered = false; renderTF(); }, 1300);
+      scheduleGameStep(() => { t.index += 1; t.answered = false; render(); }, 1300);
     });
   });
 }
@@ -3485,7 +3497,7 @@ function renderQuiz() {
     const speakBtn = document.getElementById("btnSpeakQuiz");
     const doSpeak = () => { speakBtn.classList.add("speaking"); speak(kartu.arab, () => speakBtn.classList.remove("speaking")); };
     speakBtn.addEventListener("click", doSpeak);
-    setTimeout(doSpeak, 300);
+    scheduleGameStep(doSpeak, 300);
   }
 
   document.querySelectorAll(".quiz-opt").forEach((btn) => {
@@ -3504,7 +3516,7 @@ function renderQuiz() {
         feedback.textContent = pick(MASKOT_KATA.salah);
         q.hearts -= 1;
       }
-      setTimeout(() => { q.index += 1; q.answered = false; renderQuiz(); }, 1400);
+      scheduleGameStep(() => { q.index += 1; q.answered = false; render(); }, 1400);
     });
   });
 }
@@ -3586,7 +3598,7 @@ function onMatchCardClick(pos) {
     const [a, b] = m.flipped;
     const isMatch = a.idx === b.idx && a.type !== b.type;
     if (isMatch) {
-      setTimeout(() => {
+      scheduleGameStep(() => {
         m.matched.push(a.uid, b.uid);
         m.flipped = [];
         m.busy = false;
@@ -3594,7 +3606,7 @@ function onMatchCardClick(pos) {
         render();
       }, 500);
     } else {
-      setTimeout(() => {
+      scheduleGameStep(() => {
         m.flipped = [];
         m.busy = false;
         render();
