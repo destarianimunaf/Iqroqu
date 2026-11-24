@@ -1,8 +1,9 @@
 // Titik masuk aplikasi: pilih layar, pasang tombol kembali, lalu mulai.
-function render() {
+function render({ preserveSpeech = false } = {}) {
   lessonAdvancing = false;
   lessonAdvanceId += 1;
-  stopSpeech();
+  // In-place game redraws may keep reading; navigation uses the default stop.
+  if (!preserveSpeech) stopSpeech();
   // A pending game response must not redraw a screen the player has left.
   gameStepTimers.forEach((timer) => clearTimeout(timer));
   gameStepTimers.clear();

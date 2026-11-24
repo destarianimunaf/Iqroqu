@@ -100,7 +100,7 @@ function renderOrder() {
         render();
         speak(mod.kartu[idx].arab);
         showAnswerFeedback(correct, [root.querySelector(`.order-chip[data-idx="${idx}"]`)]);
-        if (o.reveal) scheduleGameStep(() => { o.done = true; render(); }, 1400);
+        if (o.reveal) scheduleGameStep(() => { o.done = true; render({ preserveSpeech: true }); }, 1400);
       });
     });
   }
@@ -418,7 +418,7 @@ function onMatchCardClick(pos) {
   if (m.flipped.length >= 2) return;
 
   m.flipped.push(card);
-  render();
+  render({ preserveSpeech: true });
 
   if (m.flipped.length === 2) {
     m.busy = true;
@@ -431,14 +431,14 @@ function onMatchCardClick(pos) {
         m.matched.push(a.uid, b.uid);
         m.flipped = [];
         m.busy = false;
-        render();
+        render({ preserveSpeech: true });
         speak(mod.kartu[a.idx].arab);
       }, 1100);
     } else {
       scheduleGameStep(() => {
         m.flipped = [];
         m.busy = false;
-        render();
+        render({ preserveSpeech: true });
       }, 1100);
     }
   }

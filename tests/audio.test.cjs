@@ -305,3 +305,24 @@ test('shared answer scenes use illustrated feedback and cancel with navigation',
   h.run('state.view="dashboard"; render()');
   assert.equal(h.timers.size, 0);
 });
+
+test('game-only redraws do not truncate a prayer, but leaving the game still stops it', () => {
+  const h = harness();
+  h.run('state.category="doa"; startMatch("d1"); speak(DOA_MODULES[0].kartu[0].arab); onMatchCardClick(0)');
+  assert.equal(h.audios[0].paused, false, 'flipping another card does not interrupt the reading');
+  const orderButton = h.node('order-button');
+  h.context.document.querySelectorAll = selector => selector === '.order-chip' ? [orderButton] : [];
+  h.run('state.category="doa"; startOrder("d1"); state.order.picks=state.order.correctOrder.slice(0,-1)');
+  orderButton.dataset.idx = String(h.run('state.order.correctOrder.at(-1)'));
+  h.run('render()');
+  orderButton.handlers.click();
+  const source = h.audios[0].src;
+  const resultTimer = [...h.timers.keys()].find(id => h.delays.get(id) === 1400);
+  assert.ok(resultTimer);
+  h.timers.get(resultTimer)();
+  assert.equal(h.run('state.order.done'), true);
+  assert.equal(h.audios[0].paused, false, 'the result scene does not cut off the final prayer');
+  assert.equal(h.audios[0].src, source);
+  h.run('state.view="gamehub"; render()');
+  assert.equal(h.audios[0].paused, true, 'Back still stops playback');
+});
