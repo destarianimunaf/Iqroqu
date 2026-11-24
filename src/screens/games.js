@@ -153,6 +153,7 @@ function renderSheet() {
           <span class="ws-q-arab ${arabSizeClass(kartu.arab)}">${kartu.arab}</span>
         </div>
         <div class="ws-options">${opts}</div>
+        ${s.submitted ? `<p class="ws-result">Soal ${i + 1}: ${q.chosen === q.cardIdx ? "Benar" : "Belum tepat"}. Jawaban: ${kartu.latin}</p>` : ""}
       </div>`;
   }).join("");
 

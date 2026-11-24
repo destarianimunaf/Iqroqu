@@ -208,3 +208,18 @@ test('icon-only favorites and face-down matching controls keep accessible names'
   h.run('state.category="iqro"; startMatch(APP_DATA.iqro.modules[0].id)');
   assert.match(h.node('app').innerHTML, /aria-label="Buka kartu 1" aria-pressed="false"/);
 });
+
+test('worksheet corrections describe each result without relying on icon or color', () => {
+  const h = harness();
+  h.run(`
+    state.category = "iqro";
+    startSheet(APP_DATA.iqro.modules[0].id);
+    state.sheet.questions.forEach(q => { q.chosen = q.cardIdx; });
+    const wrong = state.sheet.questions[0];
+    wrong.chosen = wrong.options.find(index => index !== wrong.cardIdx);
+    state.sheet.submitted = true;
+    render();
+  `);
+  assert.match(h.node('app').innerHTML, /Soal 1: Belum tepat\. Jawaban:/);
+  assert.match(h.node('app').innerHTML, /Soal 2: Benar\. Jawaban:/);
+});

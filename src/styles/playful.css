@@ -22,6 +22,7 @@
 .intro-features .game-icon { width: 22px; height: 22px; }
 .hero-cta .game-icon { width: 35px; height: 35px; }
 .play-triangle { display: grid; place-items: center; }
+.ws-result { margin: 10px 0 0; font-size: 13px; font-weight: 800; color: #2d6261; }
 
 /* Primary, secondary, and utility controls share the same toy shape. */
 .btn, .hero-cta, .back-btn, .audio-tool-btn, .setting-btn, .intro-replay {
