@@ -32,6 +32,7 @@ button:focus-visible,a:focus-visible { outline:3px solid #a477e3; outline-offset
 .nav-bottom-star { display:block; color:#e1b345; font-size:32px; margin-bottom:9px; }
 .nav-bottom strong { font-size:11px; line-height:1.9; font-weight:600; }
 .nav-bottom small { display:block; color:#a2aa9c; font-size:8px; margin-top:24px; }
+@media(min-width:901px) { .bottom-nav { overflow-y:auto; overscroll-behavior:contain; } .nav-brand,.nav-caption,.nav-bottom { flex-shrink:0; } }
 .music-btn { right:clamp(24px,3vw,52px); top:35px; width:42px; height:42px; border:1px solid #e1e7d9; border-radius:13px; box-shadow:0 3px 0 #e5e9de; color:#56765d; background:#fffefa; }
 .music-btn svg { width:19px; height:19px; }
 .music-btn.muted { opacity:1; }
