@@ -2442,6 +2442,12 @@ function getProgress(cat, modId) {
   const p = loadProgress();
   return p[progKey(cat, modId)] || { seen: [], selesai: false };
 }
+function getResumeCardIndex(cat, modId) {
+  const mod = APP_DATA[cat].modules.find((m) => m.id === modId);
+  if (!mod) return 0;
+  const seen = getProgress(cat, modId).seen;
+  return Math.max(0, mod.kartu.findIndex((_, i) => !seen.includes(i)));
+}
 function markCardSeen(cat, modId, cardIdx) {
   const p = loadProgress();
   const key = progKey(cat, modId);
@@ -2926,9 +2932,7 @@ function renderDashboard() {
   document.getElementById("continueAdventure").addEventListener("click", () => {
     state.category = "iqro";
     state.jilidId = next.id;
-    const seen = getProgress("iqro", next.id).seen;
-    const nextCard = next.kartu.findIndex((_, i) => !seen.includes(i));
-    state.cardIndex = nextCard < 0 ? 0 : nextCard;
+    state.cardIndex = getResumeCardIndex("iqro", next.id);
     state.view = "lesson";
     render();
     window.scrollTo({ top: 0 });
@@ -3109,7 +3113,7 @@ function renderFavorit() {
       state.category = btn.dataset.openCat;
       state.view = "lesson";
       state.jilidId = btn.dataset.openMod;
-      state.cardIndex = 0;
+      state.cardIndex = getResumeCardIndex(state.category, state.jilidId);
       render();
     });
   });
@@ -3230,7 +3234,7 @@ function renderCategoryHome() {
     btn.addEventListener("click", () => {
       state.view = "lesson";
       state.jilidId = btn.dataset.node;
-      state.cardIndex = 0;
+      state.cardIndex = getResumeCardIndex(state.category, state.jilidId);
       render();
     });
   });

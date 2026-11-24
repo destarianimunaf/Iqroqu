@@ -111,3 +111,28 @@ test('autoplay rejection restores the speaker and never starts hidden speech', a
   assert.equal(h.utterances.length, 0);
   assert.equal(h.audios[0].paused, true);
 });
+
+test('map and Favorites reopen the first unread vocabulary card without changing saved progress', () => {
+  const h = harness();
+  h.run('saveProgress({"arab:a8":{seen:[],selesai:true},"arab:a9":{seen:[0],selesai:false}}); saveFavorites(["arab:a9"])');
+  const saved = h.run('JSON.stringify(loadProgress())');
+  const mapButton = h.node('map-a9');
+  mapButton.dataset.node = 'a9';
+  const favoriteButton = h.node('favorite-a9');
+  favoriteButton.dataset.openCat = 'arab';
+  favoriteButton.dataset.openMod = 'a9';
+  h.node('app').querySelectorAll = selector => {
+    if (selector === '[data-node]:not([disabled])') return [mapButton];
+    if (selector === '[data-open-cat]') return [favoriteButton];
+    return [];
+  };
+  h.run('state.category="arab"; state.view="category-home"; render()');
+  mapButton.handlers.click();
+  assert.equal(h.run('state.cardIndex'), 1);
+  h.run('state.view="favorit"; render()');
+  favoriteButton.handlers.click();
+  assert.equal(h.run('state.cardIndex'), 1);
+  assert.equal(h.run('JSON.stringify(loadProgress())'), saved);
+  h.run('saveProgress({"arab:a9":{seen:ARAB_MODULES[8].kartu.map((_,i)=>i),selesai:true}})');
+  assert.equal(h.run('getResumeCardIndex("arab","a9")'), 0, 'completed lessons restart for review');
+});
