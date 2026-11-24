@@ -1108,10 +1108,14 @@ button svg {
 .quiz-opt.correct {
   background: #e0f5b9;
   border-color: #7cb541;
+  color: #314923;
+  opacity: 1;
 }
 .quiz-opt.wrong {
   background: #ffe2da;
   border-color: #e2927c;
+  color: #823c2d;
+  opacity: 1;
 }
 .main-play-list {
   display: grid;
