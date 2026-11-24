@@ -1263,6 +1263,14 @@ button svg {
   border-radius: 32px;
   box-shadow: 0 20px 70px #184f6770;
 }
+.celebrate {
+  z-index: 100;
+}
+.celebrate-card {
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
 .stat-pill {
   font-size: 13px;
 }
