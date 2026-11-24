@@ -10,8 +10,12 @@ python3 -m http.server 4173
 ```
 
 Open `http://localhost:4173`. There is no build step or runtime dependency.
-Serve `index.html` and `game.css` together when deploying. Google Fonts are
+Serve `index.html`, `game.css`, and `assets/` together when deploying. The play
+garden illustration is an original generated asset, not copied reference art. Google Fonts are
 optional; the interface falls back to system fonts when they are unavailable.
+Game symbols use a locally bundled 87KB subset of Google's Noto Color Emoji so
+they also render on devices without emoji fonts. Its SIL Open Font License is
+included in `assets/Noto-Emoji-LICENSE.txt`.
 
 ## Progress
 
