@@ -40,6 +40,7 @@ function withGameIcons(markup) {
 }
 function setScreen(markup) {
   root.innerHTML = withGameIcons(markup) +
+    (markup.includes('id="audioNote"') ? '' : '<div class="audio-note hidden" id="audioNote"></div>') +
     '<div class="answer-feedback" id="answerFeedback" role="status" aria-live="polite" hidden></div>' +
     '<footer class="footer-note">Dibuat oleh destalabs · IqroQu © 2026</footer>';
 }

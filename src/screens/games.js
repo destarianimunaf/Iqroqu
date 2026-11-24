@@ -312,7 +312,7 @@ function renderQuiz() {
     <div class="quiz-card">
       <div class="hearts-row" aria-label="Sisa ${q.hearts} dari 3 nyawa">${"❤️".repeat(q.hearts)}${"🤍".repeat(3 - q.hearts)}</div>
       <div class="quiz-question">Soal ${q.index + 1} dari ${q.total}</div>
-      ${isAudio ? `<button class="speaker-btn" id="btnSpeakQuiz" aria-label="Dengarkan pelafalan">${gameIcon("sound")}</button>` : `<div class="clue-box">${kartu.ket}</div>`}
+      ${isAudio ? `<button class="speaker-btn" id="btnSpeakQuiz" aria-label="Dengarkan pelafalan">${gameIcon("sound")}</button><div class="audio-source">${audioSourceLabel(kartu.arab)}</div>` : `<div class="clue-box">${kartu.ket}</div>`}
       <div class="quiz-options ${isAudio ? "audio-options" : "text-options"}" id="quizOptions">
         ${options.map((i) => `<button class="quiz-opt" data-idx="${i}">${mod.kartu[i].latin}</button>`).join("")}
       </div>
@@ -326,13 +326,15 @@ function renderQuiz() {
     const speakBtn = document.getElementById("btnSpeakQuiz");
     const doSpeak = () => { stopSpeech(); speakBtn.classList.add("speaking"); speak(kartu.arab, () => speakBtn.classList.remove("speaking")); };
     speakBtn.addEventListener("click", doSpeak);
-    scheduleGameStep(doSpeak, 300);
+    // The first question must start inside the game tile's tap, not a timer.
+    doSpeak();
   }
 
   document.querySelectorAll(".quiz-opt").forEach((btn) => {
     btn.addEventListener("click", () => {
       if (q.answered) return;
       q.answered = true;
+      if (isAudio) { stopSpeech(); primeSpeech(); }
       const chosen = Number(btn.dataset.idx);
       if (chosen === cardIdx) {
         btn.classList.add("correct");

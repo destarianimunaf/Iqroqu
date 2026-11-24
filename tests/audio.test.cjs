@@ -126,6 +126,80 @@ test('autoplay rejection restores the speaker and never starts hidden speech', a
   assert.equal(h.audios[0].paused, true);
 });
 
+test('lesson entry, Next and Previous auto-play once without crediting progress', () => {
+  const h = harness();
+  delete h.context.window.speechSynthesis;
+  h.run('state.category="doa"; state.jilidId="d1"; state.cardIndex=0; state.view="lesson"; render()');
+  const progress = h.run('JSON.stringify(loadProgress())');
+  assert.equal(h.audios[0].src, h.run('audioExamples(DOA_MODULES[0].kartu[0].arab)[0]'));
+  h.node('btnNext').handlers.click();
+  assert.equal(h.audios[0].src, h.run('audioExamples(DOA_MODULES[0].kartu[1].arab)[0]'));
+  h.node('btnPrev').handlers.click();
+  assert.equal(h.audios[0].src, h.run('audioExamples(DOA_MODULES[0].kartu[0].arab)[0]'));
+  assert.equal(h.audios[0].plays.length, 3);
+  assert.equal(h.run('JSON.stringify(loadProgress())'), progress);
+});
+
+test('the first audio quiz question plays in the starting tap without a timer', () => {
+  const h = harness();
+  h.run('state.category="iqro"; startQuiz("i1")');
+  assert.equal(h.audios.length, 1);
+  assert.equal(h.audios[0].plays.length, 1);
+  assert.equal([...h.delays.values()].includes(300), false);
+  h.run('state.quiz.index++; render()');
+  assert.equal(h.audios[0].plays.length, 2);
+});
+
+test('blocked autoplay has a persistent tap recovery and stale recovery cannot play another screen', async () => {
+  const h = harness();
+  const normalPlay = h.context.Audio.prototype.play;
+  h.context.Audio.prototype.play = () => Promise.reject(Object.assign(new Error('gesture required'), { name: 'NotAllowedError' }));
+  h.run('state.category="doa"; state.jilidId="d1"; state.cardIndex=0; state.view="lesson"; render()');
+  await Promise.resolve();
+  assert.match(h.node('audioNote').innerHTML, /Aktifkan suara/);
+  assert.equal(h.timers.size, 0, 'the recovery action must not disappear on a timer');
+  const staleRetry = h.node('audioRetry').handlers.click;
+  h.context.Audio.prototype.play = normalPlay;
+  h.node('audioRetry').handlers.click();
+  assert.equal(h.audios[0].plays.length, 1);
+  assert.equal(h.audios[0].paused, false);
+  h.run('state.view="dashboard"; render()');
+  staleRetry();
+  assert.equal(h.audios[0].plays.length, 1);
+  assert.equal(h.audios[0].paused, true);
+});
+
+test('API recordings retain source text, hashes and whole-ayah coverage', () => {
+  const h = harness();
+  const { createHash } = require('node:crypto');
+  const entries = h.context.window.IQRO_RECORDINGS.entries;
+  assert.equal(Object.keys(entries).length, 32);
+  assert.equal(h.context.window.IQRO_RECORDINGS.unmatchedPrayers.length, 10);
+  assert.equal(h.run('IQRO_MODULES[6].kartu.every(c=>audioRecording(c.arab))'), true);
+  for (const entry of Object.values(entries)) {
+    const bytes = fs.readFileSync(path.join(root, entry.clip));
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), entry.sha256);
+    assert.match(entry.sourceApi, /^https:\/\/(api\.alquran\.cloud|api\.opendua\.org)\//);
+    assert.ok(entry.sourceText.length > 0);
+  }
+  assert.match(h.run('audioSourceLabel(DOA_MODULES[0].kartu[0].arab)'), /Muhammad Jumah/);
+  assert.match(h.run('audioSourceLabel(DOA_MODULES[0].kartu[1].arab)'), /sintetis.*Bukan acuan tajwid/);
+});
+
+test('failed qari audio retries local then the provider, never substituting device TTS', () => {
+  const h = harness();
+  h.run('speak(IQRO_MODULES[6].kartu[1].arab)');
+  const audio = h.audios[0];
+  assert.match(audio.src, /husary-/);
+  audio.onerror();
+  assert.match(audio.src, /retry=1$/);
+  audio.onerror();
+  assert.match(audio.src, /^https:\/\/cdn\.islamic\.network\//);
+  audio.onerror();
+  assert.equal(h.utterances.length, 0);
+  assert.match(h.node('audioNote').innerHTML, /audioRetry/);
+});
+
 test('map and Favorites reopen the first unread vocabulary card without changing saved progress', () => {
   const h = harness();
   h.run('saveProgress({"arab:a8":{seen:[],selesai:true},"arab:a9":{seen:[0],selesai:false}}); saveFavorites(["arab:a9"])');
@@ -234,7 +308,7 @@ test('prayers play without device voices and long playback is not cut off at ten
   delete h.context.window.speechSynthesis;
   h.run('globalThis.ended=0; speak(DOA_MODULES[2].kartu[1].arab,()=>ended++)');
   const audio = h.audios[0];
-  assert.match(audio.src, /prayer-/);
+  assert.equal(audio.src, h.run('audioExamples(DOA_MODULES[2].kartu[1].arab)[0]'));
   audio.duration = 40;
   audio.onplaying();
   assert.equal([...h.timers.keys()].map(id => h.delays.get(id))[0], 45000);
@@ -257,7 +331,7 @@ test('Aku bisa primes on the tap and auto-plays the arriving card, including red
   h.timers.values().next().value();
   assert.equal(h.audios.length, 1);
   assert.equal(h.audios[0].src, h.run('audioExamples(DOA_MODULES[0].kartu[1].arab)[0]'));
-  assert.equal(h.audios[0].plays.length, 2);
+  assert.equal(h.audios[0].plays.length, 3, 'entry autoplay, silent priming, then next card');
   h.context.window.matchMedia = () => ({ matches: true });
   h.node('btnBisa').handlers.click();
   h.timers.values().next().value();
@@ -333,7 +407,7 @@ test('a fresh matching game starts speech in the matching tap and never restarts
   assert.equal(h.audios.length, 0);
   h.run('onMatchCardClick(state.match.cards.findIndex(c=>c.idx===state.match.cards[0].idx && c.type!==state.match.cards[0].type))');
   assert.equal(h.audios.length, 1, 'play synchronously while still handling the second tap');
-  assert.match(h.audios[0].src, /prayer-/);
+  assert.match(h.audios[0].src, /prayer-|opendua-/);
   const responseTimer = [...h.timers.keys()].find(id => h.delays.get(id) === 1100);
   h.timers.get(responseTimer)();
   assert.equal(h.audios[0].paused, false);

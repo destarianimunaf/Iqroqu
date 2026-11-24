@@ -21,7 +21,7 @@ function showWelcome() {
       <button class="hero-cta intro-start" id="startIntro">${gameIcon("play")} Ayo, main bareng!</button>
       <small class="intro-footnote">Tanpa akun · Progresmu tetap tersimpan</small>
     </div>`);
-  const close = () => dialog.close();
+  const close = () => { primeSpeech(); dialog.close(); };
   document.getElementById("skipIntro").addEventListener("click", close);
   document.getElementById("startIntro").addEventListener("click", close);
   dialog.onclose = () => {

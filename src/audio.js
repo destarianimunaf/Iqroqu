@@ -54,7 +54,31 @@ function primeSpeech() {
   }).catch(() => {}); // A blocked device still has the visible speaker retry.
 }
 function audioExamples(text) {
+  const recording = audioRecording(text);
+  if (recording) return [recording.clip];
   return window.IQRO_AUDIO ? window.IQRO_AUDIO.entries[text.normalize("NFC")] : null;
+}
+function audioRecording(text) {
+  return window.IQRO_RECORDINGS ? window.IQRO_RECORDINGS.entries[text.normalize("NFC")] : null;
+}
+function audioSourceLabel(text) {
+  const recording = audioRecording(text);
+  if (recording) return `Rekaman ${recording.reciter} · ${recording.provider}${recording.prefixedBasmala ? " · Diawali basmalah" : ""}`;
+  const clips = audioExamples(text);
+  if (clips && clips.every((clip) => clip.includes("/letter-"))) return "Rekaman manusia · Latihan huruf berharakat";
+  return `${clips ? "Suara sintetis Arab" : "Suara Arab perangkat"} · Bukan acuan tajwid`;
+}
+function audioSourceDescription(text) {
+  const recording = audioRecording(text);
+  if (recording) return `${audioSourceLabel(text)}. Sumber: ${recording.reference}.${recording.provider === "OpenDua" ? " Hisn al-Muslim; lisensi CC BY 4.0 (opendua.org)." : " Rekaman asli pada kecepatan normal."}`;
+  return `${audioSourceLabel(text)}. Untuk panjang-pendek, makhraj, dan tajwid, tetap ikuti bimbingan guru. Rekaman manusia yang cocok belum tersedia untuk semua materi.`;
+}
+function playLessonAudio(text, rate) {
+  const speaker = document.getElementById("btnSpeak");
+  if (!speaker) return;
+  stopSpeech();
+  speaker.classList.add("speaking");
+  speak(text, () => speaker.classList.remove("speaking"), rate);
 }
 function stopSpeech() {
   speechPlayerVersion += 1;
@@ -64,6 +88,8 @@ function stopSpeech() {
 }
 function speak(text, onEnd, rateOverride) {
   stopSpeech();
+  const requestVersion = speechPlayerVersion;
+  const recording = audioRecording(text);
   let done = false;
   let audio = null;
   let timeout = null;
@@ -124,7 +150,8 @@ function speak(text, onEnd, rateOverride) {
     const attempt = ++mediaAttempt;
     const clip = clips[index];
     audio.preload = "auto";
-    audio.src = clip + (retry ? (clip.includes("?") ? "&" : "?") + "retry=1" : "");
+    const source = recording && attempts === 2 ? recording.remote : clip;
+    audio.src = source + (retry ? (source.includes("?") ? "&" : "?") + "retry=1" : "");
     audio.playbackRate = rateOverride ? 0.7 : 1;
     audio.preservesPitch = true;
     audio.onended = () => {
@@ -136,9 +163,18 @@ function speak(text, onEnd, rateOverride) {
     const failed = () => {
       if (done || attempt !== mediaAttempt) return;
       mediaAttempt += 1;
-      if (attempts++ === 0) {
+      if (attempts < (recording ? 2 : 1)) {
+        attempts += 1;
         showAudioNote("Sedang memuat ulang contoh suara, sebentar ya…");
-        next(true);
+        next(attempts === 1);
+        return;
+      }
+      if (recording) {
+        // Never silently replace a qari with device TTS after a network failure.
+        finish();
+        showAudioRetry("Rekaman belum termuat. Periksa koneksi, lalu coba lagi.", () => {
+          if (requestVersion === speechPlayerVersion) speak(text, onEnd, rateOverride);
+        });
         return;
       }
       showAudioNote("Contoh audio belum termuat. Mencoba suara Arab perangkatmu.");
@@ -161,13 +197,30 @@ function speak(text, onEnd, rateOverride) {
     timeout = setTimeout(failed, 10000);
     audio.play().catch((error) => {
       if (done || attempt !== mediaAttempt) return;
-      if (error.name === "NotAllowedError") { showAudioNote("Ketuk dengarkan sekali lagi untuk mengaktifkan suara."); finish(); }
+      if (error.name === "NotAllowedError") {
+        finish();
+        showAudioRetry("Browser meminta satu ketukan untuk mengaktifkan suara.", () => {
+          if (requestVersion === speechPlayerVersion) speak(text, onEnd, rateOverride);
+        });
+      }
       else failed();
     });
   };
   next();
 }
 let audioNoteTimer = null;
+function showAudioRetry(message, retry) {
+  const el = document.getElementById("audioNote");
+  if (!el) return;
+  clearTimeout(audioNoteTimer);
+  el.innerHTML = '<p id="audioFailureText" role="status"></p><button class="btn btn-secondary" id="audioRetry">Aktifkan suara</button>';
+  document.getElementById("audioFailureText").textContent = message;
+  el.classList.remove("hidden");
+  document.getElementById("audioRetry").addEventListener("click", () => {
+    el.classList.add("hidden");
+    retry();
+  });
+}
 function showAudioNote(msg) {
   const el = document.getElementById("audioNote");
   if (!el) return;

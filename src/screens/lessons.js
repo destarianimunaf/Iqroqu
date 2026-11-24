@@ -101,7 +101,7 @@ function renderLesson() {
         <button class="audio-tool-btn" id="btnSlow">${gameIcon("slow")} Pelan-pelan</button>
         <button class="audio-tool-btn" id="btnVoice">${gameIcon("sound")} ${hasExample ? "Tentang suara" : "Ganti suara"}</button>
       </div>
-      ${hasExample ? '<div class="audio-source">Contoh audio IqroQu · Dengar, lalu tirukan!</div>' : ''}
+      <div class="audio-source">${audioSourceLabel(kartu.arab)}</div>
     </div>
     <div class="lesson-success" id="lessonSuccess" role="status" aria-live="polite" hidden>
       ${successScene()}
@@ -118,20 +118,10 @@ function renderLesson() {
     </div>
   `);
 
-  document.getElementById("btnSpeak").addEventListener("click", (e) => {
-    stopSpeech();
-    const button = e.currentTarget;
-    button.classList.add("speaking");
-    speak(kartu.arab, () => button.classList.remove("speaking"));
-  });
-  document.getElementById("btnSlow").addEventListener("click", () => {
-    stopSpeech();
-    const sp = document.getElementById("btnSpeak");
-    sp.classList.add("speaking");
-    speak(kartu.arab, () => sp.classList.remove("speaking"), 0.42);
-  });
+  document.getElementById("btnSpeak").addEventListener("click", () => playLessonAudio(kartu.arab));
+  document.getElementById("btnSlow").addEventListener("click", () => playLessonAudio(kartu.arab, 0.42));
   document.getElementById("btnVoice").addEventListener("click", () => {
-    if (hasExample) showAudioNote(["arab", "doa"].includes(state.category) ? "Contoh bacaan memakai suara sintetis Arab (Saudi), bukan rekaman tilawah. Dengarkan lalu tirukan pelan-pelan, ya!" : "Huruf berharakat memakai rekaman manusia, bukan ejaan nama huruf.");
+    if (hasExample) showAudioNote(audioSourceDescription(kartu.arab));
     else cycleArabicVoice();
   });
   document.getElementById("btnBisa").addEventListener("click", () => {
@@ -157,9 +147,6 @@ function renderLesson() {
       render();
       if (!isLast) {
         root.querySelector(".flashcard").classList.add("card-flow-in");
-        const speaker = document.getElementById("btnSpeak");
-        speaker.classList.add("speaking");
-        speak(mod.kartu[state.cardIndex].arab, () => speaker.classList.remove("speaking"));
       }
       const nextFocus = document.getElementById(isLast ? "tileQuiz" : "btnBisa");
       if (nextFocus) nextFocus.focus({ preventScroll: true });
@@ -172,4 +159,7 @@ function renderLesson() {
   if (btnNext) btnNext.addEventListener("click", () => { if (!lessonAdvancing) { state.cardIndex += 1; render(); } });
   const btnGame = document.getElementById("btnGame");
   if (btnGame) btnGame.addEventListener("click", () => { if (!lessonAdvancing) { state.view = "gamehub"; render(); } });
+  // Entry from map, continue, favorites, Previous, Next and Aku bisa share this
+  // path. During a real navigation tap, play() runs before its gesture expires.
+  playLessonAudio(kartu.arab);
 }
