@@ -29,6 +29,10 @@ the current calendar day. Resetting progress in Settings also clears that missio
 A silent, skippable IqroQu welcome plays once per browser tab. Use **Putar intro
 IqroQu** on the home screen to replay it. Reduced-motion preferences disable
 entrances, character movement, and button transforms; the content remains visible.
+**Aku bisa!** saves the current card, sweeps it away with a water-like slide, and
+automatically opens the next card. The last card opens the game menu. Rapid taps
+cannot skip cards, leaving the lesson cancels the transition, and reduced motion
+advances without the slide.
 
 Arabic now has nine units, including 48 new words about animals, food, the body,
 and nature. Existing unit IDs and card positions are unchanged.

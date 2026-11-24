@@ -12,6 +12,7 @@ function harness() {
       innerHTML: '', dataset: {}, handlers: {},
       classList: { toggle() {}, add() {}, remove() {} },
       setAttribute() {}, removeAttribute() {},
+      focus() {},
       addEventListener(event, callback) { this.handlers[event] = callback; },
       querySelectorAll() { return []; }, querySelector() { return node(id + '-child'); }
     });
@@ -20,7 +21,11 @@ function harness() {
   const audios = [], utterances = [], timers = new Map(), storage = new Map([['iqro-ceria-music', 'off']]);
   let timer = 0;
   const context = vm.createContext({
-    console, setTimeout(fn) { timers.set(++timer, fn); return timer; }, clearTimeout(id) { timers.delete(id); },
+    console, setTimeout(fn) {
+      const id = ++timer;
+      timers.set(id, () => { timers.delete(id); fn(); });
+      return id;
+    }, clearTimeout(id) { timers.delete(id); },
     window: { scrollTo() {}, speechSynthesis: { cancel() {}, getVoices() { return []; }, speak(utterance) { utterances.push(utterance); } } },
     document: { getElementById: node, querySelectorAll() { return []; }, addEventListener() {} },
     localStorage: { getItem(k) { return storage.get(k) ?? null; }, setItem(k, v) { storage.set(k, String(v)); }, removeItem(k) { storage.delete(k); } },
@@ -141,4 +146,29 @@ test('map and Favorites reopen the first unread vocabulary card without changing
   assert.equal(h.run('JSON.stringify(loadProgress())'), saved);
   h.run('saveProgress({"arab:a9":{seen:ARAB_MODULES[8].kartu.map((_,i)=>i),selesai:true}})');
   assert.equal(h.run('getResumeCardIndex("arab","a9")'), 0, 'completed lessons restart for review');
+});
+
+test('Aku bisa advances exactly once, cancels on navigation, and opens games after the last card', () => {
+  const h = harness();
+  h.run('state.category="arab"; state.jilidId="a9"; state.cardIndex=0; state.view="lesson"; render()');
+  const click = h.node('btnBisa').handlers.click;
+  click(); click();
+  assert.equal(h.run('getXP()'), 2);
+  assert.equal(h.run('getProgress("arab","a9").seen.length'), 1);
+  assert.equal(h.run('state.cardIndex'), 0, 'keep the current card during its departure');
+  h.timers.values().next().value();
+  assert.equal(h.run('state.cardIndex'), 1);
+  assert.equal(h.run('getProgress("arab","a9").seen.length'), 1, 'do not mark the arriving card learned');
+  h.node('btnBisa').handlers.click();
+  const staleAdvance = h.timers.values().next().value;
+  h.run('state.view="dashboard"; render()');
+  staleAdvance();
+  assert.equal(h.run('state.view'), 'dashboard');
+  assert.equal(h.run('state.cardIndex'), 1);
+  h.context.window.matchMedia = () => ({ matches: true });
+  h.run('state.view="lesson"; state.cardIndex=11; render()');
+  h.node('btnBisa').handlers.click();
+  h.timers.values().next().value();
+  assert.equal(h.run('state.view'), 'gamehub');
+  assert.equal(h.run('getProgress("arab","a9").selesai'), false, 'never complete skipped cards');
 });

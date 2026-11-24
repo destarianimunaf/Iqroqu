@@ -2420,6 +2420,8 @@ const MUSIC_KEY = "iqro-ceria-music";
 
 let state = { view: "dashboard", category: null, jilidId: null, cardIndex: 0, quiz: null, match: null, order: null, tf: null };
 const gameStepTimers = new Set();
+let lessonAdvancing = false;
+let lessonAdvanceId = 0;
 function scheduleGameStep(callback, delay) {
   const timer = setTimeout(() => {
     gameStepTimers.delete(timer);
@@ -2867,6 +2869,8 @@ function arabSizeClass(text) {
 }
 
 function render() {
+  lessonAdvancing = false;
+  lessonAdvanceId += 1;
   stopSpeech();
   // A pending game response must not redraw a screen the player has left.
   gameStepTimers.forEach((timer) => clearTimeout(timer));
@@ -3295,7 +3299,7 @@ function renderLesson() {
   root.innerHTML = `
     ${topbar(mod.judul, true)}
     ${mascot(`${mod.tujuan}`, "read")}
-    <div class="progress-dots">${dots}</div>
+    <div class="progress-dots" role="status" aria-live="polite" aria-label="Kartu ${state.cardIndex + 1} dari ${mod.kartu.length}">${dots}</div>
     <div class="flashcard">
       <div class="arabic ${arabClass}">${kartu.arab}</div>
       <div class="latin">${kartu.latin}</div>
@@ -3334,16 +3338,36 @@ function renderLesson() {
     else cycleArabicVoice();
   });
   document.getElementById("btnBisa").addEventListener("click", () => {
+    if (lessonAdvancing) return;
+    lessonAdvancing = true;
+    const advanceId = ++lessonAdvanceId;
+    stopSpeech();
     markCardSeen(state.category, mod.id, state.cardIndex);
-    render();
+    const button = document.getElementById("btnBisa");
+    button.textContent = isLast ? "Hebat! Ayo main!" : "Hebat! Lanjut yuk…";
+    ["btnBisa", "btnPrev", "btnNext", "btnGame", "btnSpeak", "btnSlow", "btnVoice"].forEach((id) => {
+      const control = document.getElementById(id);
+      if (control) control.disabled = true;
+    });
+    root.querySelector(".flashcard").classList.add("card-flow-out");
+    const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    scheduleGameStep(() => {
+      if (advanceId !== lessonAdvanceId) return;
+      if (isLast) state.view = "gamehub";
+      else state.cardIndex += 1;
+      render();
+      if (!isLast) root.querySelector(".flashcard").classList.add("card-flow-in");
+      const nextFocus = document.getElementById(isLast ? "tileQuiz" : "btnBisa");
+      if (nextFocus) nextFocus.focus({ preventScroll: true });
+    }, reducedMotion ? 0 : 360);
   });
   document.getElementById("btnPrev").addEventListener("click", () => {
-    if (state.cardIndex > 0) { state.cardIndex -= 1; render(); }
+    if (!lessonAdvancing && state.cardIndex > 0) { state.cardIndex -= 1; render(); }
   });
   const btnNext = document.getElementById("btnNext");
-  if (btnNext) btnNext.addEventListener("click", () => { state.cardIndex += 1; render(); });
+  if (btnNext) btnNext.addEventListener("click", () => { if (!lessonAdvancing) { state.cardIndex += 1; render(); } });
   const btnGame = document.getElementById("btnGame");
-  if (btnGame) btnGame.addEventListener("click", () => { state.view = "gamehub"; render(); });
+  if (btnGame) btnGame.addEventListener("click", () => { if (!lessonAdvancing) { state.view = "gamehub"; render(); } });
 }
 
 // ---------------- GAME HUB ----------------
