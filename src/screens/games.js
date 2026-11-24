@@ -259,9 +259,9 @@ function renderTF() {
       const feedback = document.getElementById("quizFeedback");
       if (chosen === r.isTrue) {
         t.score += 1;
-        feedback.textContent = pick(MASKOT_KATA.benar);
+        feedback.innerHTML = withGameIcons(pick(MASKOT_KATA.benar));
       } else {
-        feedback.textContent = pick(MASKOT_KATA.salah);
+        feedback.innerHTML = withGameIcons(pick(MASKOT_KATA.salah));
         t.hearts -= 1;
       }
       scheduleGameStep(() => { t.index += 1; t.answered = false; render(); }, 1300);
@@ -329,11 +329,11 @@ function renderQuiz() {
       if (chosen === cardIdx) {
         btn.classList.add("correct");
         q.score += 1;
-        feedback.textContent = pick(MASKOT_KATA.benar);
+        feedback.innerHTML = withGameIcons(pick(MASKOT_KATA.benar));
       } else {
         btn.classList.add("wrong");
         document.querySelector(`.quiz-opt[data-idx="${cardIdx}"]`).classList.add("correct");
-        feedback.textContent = pick(MASKOT_KATA.salah);
+        feedback.innerHTML = withGameIcons(pick(MASKOT_KATA.salah));
         q.hearts -= 1;
       }
       scheduleGameStep(() => { q.index += 1; q.answered = false; render(); }, 1400);

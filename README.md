@@ -96,6 +96,10 @@ bisa!** tampil singkat sebelum kartu mengalir ke langkah berikutnya. Hasil
 game juga menampilkan perayaan Raqi dan tombol **Lanjut petualangan** untuk
 membuka materi yang belum selesai, tanpa melewati kunci modul.
 
+Di HP, dock navigasi disembunyikan selama pelajaran dan permainan agar tidak
+menutupi tombol. Tombol **Kembali** tetap tersedia; dock muncul lagi di peta
+dan menu utama. Di desktop, rail navigasi tetap terlihat.
+
 ## Pelafalan dan audio
 
 Bahasa Arab memiliki sembilan unit, termasuk 48 kata tambahan tentang hewan,

@@ -11,6 +11,10 @@ document.querySelectorAll(".bn-item").forEach((btn) => {
   });
 });
 function updateBottomNav() {
+  // Small screens use the visible Kembali control during focused play.
+  // The global dock must not intercept lesson or game buttons underneath it.
+  const focusedViews = ["lesson", "gamehub", "quiz", "match", "order", "tf", "sheet"];
+  document.getElementById("bottomNav").classList.toggle("focus-mode", focusedViews.includes(state.view));
   const navViews = ["dashboard", "progres", "main", "favorit", "pengaturan"];
   const activeTab = navViews.includes(state.view) ? state.view : "dashboard";
   document.querySelectorAll(".bn-item").forEach((btn) => {

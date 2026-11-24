@@ -56,6 +56,7 @@
 .lesson-success strong { font: 900 26px/1.2 "Baloo 2", "Nunito", sans-serif; }
 .lesson-success small { margin-top: 6px; font-weight: 800; }
 .flashcard.card-flow-out { animation-delay: 340ms; }
+.flashcard.card-flow-out::after { animation-delay: 340ms; }
 @keyframes raqiCheer {
   0% { transform: translateY(8px) scale(.9); }
   35% { transform: translateY(-15px) rotate(-6deg) scale(1.05); }
@@ -70,6 +71,9 @@
   .bn-icon .game-icon { width: 28px; height: 28px; }
   .game-tile .icon .game-icon { width: 62px; height: 62px; }
   .btn .game-icon, .audio-tool-btn .game-icon { width: 23px; height: 23px; }
+}
+@media (max-width: 900px) {
+  .bottom-nav.focus-mode { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .lesson-success { animation: none; }
