@@ -1,4 +1,4 @@
-"""Build same-origin vocabulary speech and human-recorded hijaiyah examples.
+"""Build same-origin vocabulary/prayer speech and human hijaiyah examples.
 
 Install edge-tts==7.2.3 and ffmpeg, then run from any directory.
 Existing MP3s are reused. No generation service is called by the application.
@@ -11,6 +11,7 @@ import re
 import subprocess
 import unicodedata
 import urllib.request
+import wave
 
 import edge_tts
 
@@ -36,8 +37,15 @@ def fetch(url):
 
 async def main():
     OUT.mkdir(exist_ok=True)
+    # 50 ms of silence primes the persistent player inside a user's tap.
+    with wave.open(str(OUT / 'unlock.wav'), 'wb') as silent:
+        silent.setnchannels(1)
+        silent.setsampwidth(2)
+        silent.setframerate(16000)
+        silent.writeframes(b'\0' * 1600)
     lessons = (ROOT / "src" / "data" / "lessons.js").read_text()
     vocabulary = re.findall(r'\{ arab: "([^"]+)"', lessons.split("const ARAB_MODULES = [")[1].split("const DOA_MODULES")[0])
+    prayers = re.findall(r'\{ arab: "([^"]+)"', lessons.split("const DOA_MODULES = [")[1].split("const APP_DATA")[0])
     iqro = re.findall(r'\{ arab: "([^"]+)"', lessons.split("const IQRO_MODULES = [")[1].split("const SHOLAT_MODULES")[0])
     entries, sources = {}, {}
     # The dataset is CC0; only the isolated syllables actually used are bundled.
@@ -70,8 +78,9 @@ async def main():
         sources[name] = {"type": "human", "source": source['pidURL'], "original": source['filename'], "license": "CC0-1.0"}
         print('Human', text, flush=True)
 
-    async def neural(text):
-        name = 'word-' + hashlib.sha256((VOICE + RATE + text).encode()).hexdigest()[:16] + '.mp3'
+    async def neural(text, collection='vocabulary'):
+        prefix = 'prayer-' if collection == 'prayers' else 'word-'
+        name = prefix + hashlib.sha256((VOICE + RATE + text).encode()).hexdigest()[:16] + '.mp3'
         target = OUT / name
         async with sem:
             if not target.exists():
@@ -85,10 +94,12 @@ async def main():
                             raise
         entries[text] = ["assets/audio/" + name]
         sources[name] = {"type": "synthetic", "voice": VOICE, "text": text, "rate": RATE}
-        print('Vocabulary', text, flush=True)
+        if collection == 'prayers':
+            sources[name]['collection'] = collection
+        print(collection.title(), text, flush=True)
 
     singles = sorted({word for text in iqro for word in text.split() if len(word) == 2 and word[0] in LETTERS and word[1] in MARKS})
-    await asyncio.gather(*(native(text) for text in singles), *(neural(text) for text in dict.fromkeys(vocabulary)))
+    await asyncio.gather(*(native(text) for text in singles), *(neural(text) for text in dict.fromkeys(vocabulary)), *(neural(text, 'prayers') for text in dict.fromkeys(prayers)))
     for text in iqro:
         words = text.split()
         if words and all(word in entries for word in words):

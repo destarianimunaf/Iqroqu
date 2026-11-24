@@ -89,6 +89,9 @@ gerakan” menonaktifkan animasi tanpa menyembunyikan isinya.
 dan slide. Kartu terakhir membuka menu game. Ketukan cepat tidak melompati
 kartu; keluar dari pelajaran membatalkan perpindahan yang masih menunggu.
 Saat “kurangi gerakan” aktif, kartu langsung berlanjut tanpa animasi.
+Suara kartu berikutnya diputar otomatis setelah kartu baru tampil. Pemutar
+diaktifkan saat ketukan **Aku bisa!**, sehingga animasi tidak menghilangkan
+izin suara; bila perangkat masih memblokirnya, tombol dengarkan tetap tersedia.
 
 Raqi bergerak memakai gambar yang sudah dimuat dan CSS `transform`, tanpa
 video, library animasi, atau loop JavaScript per frame. Popup **Hebat! Kamu
@@ -100,24 +103,52 @@ Di HP, dock navigasi disembunyikan selama pelajaran dan permainan agar tidak
 menutupi tombol. Tombol **Kembali** tetap tersedia; dock muncul lagi di peta
 dan menu utama. Di desktop, rail navigasi tetap terlihat.
 
+Selama pelajaran dan kelima game, pinch/double-tap serta pintasan zoom browser
+dinonaktifkan agar ketukan bermain tidak memperbesar layar. Scroll tetap bisa
+dipakai, dan zoom kembali normal saat keluar ke peta atau menu utama.
+Kelima game memakai notifikasi Raqi, gerak benar/salah, dan ikon ilustrasi yang
+sama. Lembar latihan menampilkan koreksi setelah **Periksa Jawaban** ditekan;
+jawaban tidak dibocorkan saat memilih. Semua motion ini mengikuti “kurangi gerakan”.
+Di **Cocok Kartu**, pasangan yang belum cocok tetap terbuka sampai tombol
+**Coba pasangan lain** ditekan, supaya doa panjang bisa dibaca sambil scroll
+tanpa dikejar waktu. Pasangan benar tetap tersimpan otomatis.
+
 ## Pelafalan dan audio
 
 Bahasa Arab memiliki sembilan unit, termasuk 48 kata tambahan tentang hewan,
 makanan, tubuh, dan alam. ID serta posisi kartu unit lama tetap sama.
 
-Kosakata memakai MP3 bawaan dengan suara Arab Saudi Microsoft
-`ar-SA-HamedNeural`. Huruf hijaiyah berharakat memakai rekaman manusia dari
+Ayat lengkap (27 ayat) memakai rekaman **Mahmoud Khalil Al-Husary** dari API
+**Al Quran Cloud**. Lima doa yang teksnya cocok memakai rekaman **Muhammad Jumah**
+dari API **OpenDua / Hisn al-Muslim**, berlisensi CC BY 4.0. Rekaman disimpan utuh
+di situs sendiri agar pemutaran normal tidak bergantung API pihak ketiga.
+Ayat pembuka surat yang diawali basmalah diberi keterangan di layar.
+
+Sepuluh doa lain belum memiliki rekaman dengan redaksi persis sama di sumber
+tersebut; bersama kosakata, contoh itu masih memakai suara sintetis Arab Saudi
+Microsoft `ar-SA-HamedNeural`, berlabel **Bukan acuan tajwid**. Redaksi pelajaran
+tidak diubah diam-diam agar menyerupai rekaman lain. Huruf berharakat memakai rekaman manusia dari
 **Marked Hijaiyah Letters' Pronunciation Dataset** berlisensi CC0. Latihan
 beberapa huruf memutar suku kata berurutan, bukan mengeja nama huruf.
 **Pelan-pelan** memperlambat suara tanpa mengubah nadanya.
 
-Pemutar memakai ulang elemen audio untuk rangkaian suku kata di Safari,
-mencoba ulang satu kali bila file gagal dimuat, lalu memakai suara perangkat
-sebagai cadangan. Pindah layar atau memutar contoh baru menghentikan audio lama.
+Kartu pertama, **Sebelumnya**, **Selanjutnya**, dan **Aku bisa!** otomatis memutar
+suara. Kuis dengar memutar soal pertama langsung saat tombol game disentuh, bukan
+dari timer. Pemutar memakai ulang satu elemen audio; intro dan jawaban kuis
+mengaktifkannya lewat ketukan. Bila browser memblokir autoplay, tombol tetap
+**Aktifkan suara** muncul—izin browser tidak bisa dilewati tanpa ketukan.
+
+Rekaman manusia mencoba ulang lokal lalu URL penyedia saat koneksi gagal; tidak
+diganti diam-diam dengan TTS. Contoh sintetis tetap bisa memakai suara perangkat
+sebagai cadangan. Pindah layar atau contoh baru menghentikan audio lama.
 File diambil sesuai kebutuhan dari situs yang sama, tanpa API key atau layanan
 TTS saat bermain. Musik latar bersifat opsional.
+Doa panjang memakai batas waktu sesuai durasi, bukan diputus setelah sepuluh
+detik. `assets/audio/unlock.wav` hanya 50 ms audio hening untuk aktivasi pemutar,
+bukan rekaman pelajaran.
 
-Materi lain, termasuk Qur'an dan tajwid, masih memakai suara perangkat.
+Potongan ayat yang belum memiliki rekaman utuh cocok, tajwid dan materi lain
+yang belum tercakup masih memakai suara perangkat, bukan acuan tajwid.
 Audio ini bukan pengganti bimbingan guru untuk makhraj/tajwid. Sumber, lisensi,
 dan keterbatasan pelafalan dijelaskan di [catatan sumber audio](assets/audio/SOURCES.md).
 
@@ -133,6 +164,16 @@ python3 scripts/generate_arabic_audio.py
 Skrip membaca `src/data/lessons.js` dan menulis `assets/audio/manifest.js`.
 MP3 yang sudah ada dipakai ulang; hapus satu MP3 jika ingin membuat ulang
 contoh tersebut. Jangan mengedit manifest hasil generator secara manual.
+
+Untuk mengimpor ulang rekaman manusia dari API (Python 3, tanpa dependensi):
+
+```sh
+python3 scripts/import_recitations.py
+```
+
+Hasilnya adalah `assets/audio/recordings.js` dan MP3 `husary-*` / `opendua-*`.
+Manifest terpisah ini tidak tertimpa generator suara sintetis. Impor tidak
+memotong ayat, menggabung kata, atau mengganti doa dengan redaksi berbeda.
 
 ## Pemeriksaan
 

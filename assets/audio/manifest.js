@@ -71,6 +71,33 @@ window.IQRO_AUDIO = {
     "السَّلَامُ عَلَيْكُمْ": [
       "assets/audio/word-fca5d7d4f7a94f02.mp3"
     ],
+    "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ": [
+      "assets/audio/prayer-ec4e68b78e408082.mp3"
+    ],
+    "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ": [
+      "assets/audio/prayer-885969e8344211b1.mp3"
+    ],
+    "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ": [
+      "assets/audio/prayer-1524dba642f95d48.mp3"
+    ],
+    "اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ": [
+      "assets/audio/prayer-f62e8fe99e4e32de.mp3"
+    ],
+    "اللَّهُمَّ رَبَّ هَٰذِهِ الدَّعْوَةِ التَّامَّةِ": [
+      "assets/audio/prayer-a345d5e78f304e33.mp3"
+    ],
+    "اللَّهُمَّ كَمَا حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي": [
+      "assets/audio/prayer-f224049e0f496e9f.mp3"
+    ],
+    "الْحَمْدُ لِلَّهِ": [
+      "assets/audio/prayer-3721885709614f7f.mp3"
+    ],
+    "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ": [
+      "assets/audio/prayer-7cf2ce73763c63bc.mp3"
+    ],
+    "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ": [
+      "assets/audio/prayer-a80f19aa692b10a8.mp3"
+    ],
     "اِبْن": [
       "assets/audio/word-9045d911d22c2762.mp3"
     ],
@@ -118,6 +145,12 @@ window.IQRO_AUDIO = {
     ],
     "بِ": [
       "assets/audio/letter-02-650.mp3"
+    ],
+    "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا": [
+      "assets/audio/prayer-685bdea016b815ce.mp3"
+    ],
+    "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ": [
+      "assets/audio/prayer-f923a7551327c9ec.mp3"
     ],
     "بِنْت": [
       "assets/audio/word-4d7933a3dd526cea.mp3"
@@ -221,6 +254,12 @@ window.IQRO_AUDIO = {
     "رَأْس": [
       "assets/audio/word-a910c43f7afc83a6.mp3"
     ],
+    "رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا": [
+      "assets/audio/prayer-3545b77d83e7479b.mp3"
+    ],
+    "رَبِّ زِدْنِي عِلْمًا": [
+      "assets/audio/prayer-8b73e22ab73a0e11.mp3"
+    ],
     "رَمْل": [
       "assets/audio/word-40fe404fd5c5e361.mp3"
     ],
@@ -256,6 +295,12 @@ window.IQRO_AUDIO = {
     ],
     "سُ": [
       "assets/audio/letter-12-64f.mp3"
+    ],
+    "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَٰذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ": [
+      "assets/audio/prayer-01a8bd58fefe0a12.mp3"
+    ],
+    "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا أَنْتَ أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ": [
+      "assets/audio/prayer-8518bf38a5453d40.mp3"
     ],
     "سِ": [
       "assets/audio/letter-12-650.mp3"
@@ -753,6 +798,111 @@ window.IQRO_AUDIO = {
       "source": "https://doi.org/10.34820/FK2/XACWLX/0U7LJS",
       "original": "28_ya_1_1.wav",
       "license": "CC0-1.0"
+    },
+    "prayer-01a8bd58fefe0a12.mp3": {
+      "type": "synthetic",
+      "voice": "ar-SA-HamedNeural",
+      "text": "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَٰذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ",
+      "rate": "-12%",
+      "collection": "prayers"
+    },
+    "prayer-1524dba642f95d48.mp3": {
+      "type": "synthetic",
+      "voice": "ar-SA-HamedNeural",
+      "text": "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ",
+      "rate": "-12%",
+      "collection": "prayers"
+    },
+    "prayer-3545b77d83e7479b.mp3": {
+      "type": "synthetic",
+      "voice": "ar-SA-HamedNeural",
+      "text": "رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا",
+      "rate": "-12%",
+      "collection": "prayers"
+    },
+    "prayer-3721885709614f7f.mp3": {
+      "type": "synthetic",
+      "voice": "ar-SA-HamedNeural",
+      "text": "الْحَمْدُ لِلَّهِ",
+      "rate": "-12%",
+      "collection": "prayers"
+    },
+    "prayer-685bdea016b815ce.mp3": {
+      "type": "synthetic",
+      "voice": "ar-SA-HamedNeural",
+      "text": "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا",
+      "rate": "-12%",
+      "collection": "prayers"
+    },
+    "prayer-7cf2ce73763c63bc.mp3": {
+      "type": "synthetic",
+      "voice": "ar-SA-HamedNeural",
+      "text": "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",
+      "rate": "-12%",
+      "collection": "prayers"
+    },
+    "prayer-8518bf38a5453d40.mp3": {
+      "type": "synthetic",
+      "voice": "ar-SA-HamedNeural",
+      "text": "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا أَنْتَ أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ",
+      "rate": "-12%",
+      "collection": "prayers"
+    },
+    "prayer-885969e8344211b1.mp3": {
+      "type": "synthetic",
+      "voice": "ar-SA-HamedNeural",
+      "text": "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ",
+      "rate": "-12%",
+      "collection": "prayers"
+    },
+    "prayer-8b73e22ab73a0e11.mp3": {
+      "type": "synthetic",
+      "voice": "ar-SA-HamedNeural",
+      "text": "رَبِّ زِدْنِي عِلْمًا",
+      "rate": "-12%",
+      "collection": "prayers"
+    },
+    "prayer-a345d5e78f304e33.mp3": {
+      "type": "synthetic",
+      "voice": "ar-SA-HamedNeural",
+      "text": "اللَّهُمَّ رَبَّ هَٰذِهِ الدَّعْوَةِ التَّامَّةِ",
+      "rate": "-12%",
+      "collection": "prayers"
+    },
+    "prayer-a80f19aa692b10a8.mp3": {
+      "type": "synthetic",
+      "voice": "ar-SA-HamedNeural",
+      "text": "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ",
+      "rate": "-12%",
+      "collection": "prayers"
+    },
+    "prayer-ec4e68b78e408082.mp3": {
+      "type": "synthetic",
+      "voice": "ar-SA-HamedNeural",
+      "text": "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ",
+      "rate": "-12%",
+      "collection": "prayers"
+    },
+    "prayer-f224049e0f496e9f.mp3": {
+      "type": "synthetic",
+      "voice": "ar-SA-HamedNeural",
+      "text": "اللَّهُمَّ كَمَا حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي",
+      "rate": "-12%",
+      "collection": "prayers"
+    },
+    "prayer-f62e8fe99e4e32de.mp3": {
+      "type": "synthetic",
+      "voice": "ar-SA-HamedNeural",
+      "text": "اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ",
+      "rate": "-12%",
+      "collection": "prayers"
+    },
+    "prayer-f923a7551327c9ec.mp3": {
+      "type": "synthetic",
+      "voice": "ar-SA-HamedNeural",
+      "text": "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
+      "rate": "-12%",
+      "collection": "prayers"
     },
     "word-02fe7bd1fcffe92a.mp3": {
       "type": "synthetic",

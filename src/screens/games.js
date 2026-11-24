@@ -89,13 +89,18 @@ function renderOrder() {
 
   if (!o.reveal) {
     document.querySelectorAll(".order-chip").forEach((btn) => {
+      if (o.picks.includes(Number(btn.dataset.idx))) return;
       btn.disabled = false;
       btn.addEventListener("click", () => {
         const idx = Number(btn.dataset.idx);
+        if (o.reveal || o.picks.includes(idx)) return;
+        const correct = idx === o.correctOrder[o.picks.length];
         o.picks.push(idx);
+        if (o.picks.length >= o.total) o.reveal = true;
+        render();
         speak(mod.kartu[idx].arab);
-        if (o.picks.length >= o.total) { o.reveal = true; render(); scheduleGameStep(() => { o.done = true; render(); }, 1400); }
-        else render();
+        showAnswerFeedback(correct, [root.querySelector(`.order-chip[data-idx="${idx}"]`)]);
+        if (o.reveal) scheduleGameStep(() => { o.done = true; render({ preserveSpeech: true }); }, 1400);
       });
     });
   }
@@ -190,7 +195,13 @@ function renderSheet() {
       });
     });
     const submitBtn = document.getElementById("btnSheetSubmit");
-    if (submitBtn) submitBtn.addEventListener("click", () => { s.submitted = true; render(); });
+    if (submitBtn) submitBtn.addEventListener("click", () => {
+      if (s.submitted) return;
+      s.submitted = true;
+      render();
+      const allCorrect = s.questions.every((q) => q.chosen === q.cardIdx);
+      showAnswerFeedback(allCorrect, [], allCorrect ? "Hebat! Semua jawaban benar!" : "Sudah diperiksa. Yuk, lihat koreksinya!");
+    });
   } else {
     document.getElementById("btnSheetUlangi").addEventListener("click", () => startSheet(mod.id));
     document.getElementById("btnSheetGameLain").addEventListener("click", () => { state.view = "gamehub"; render(); });
@@ -256,14 +267,12 @@ function renderTF() {
       t.answered = true;
       document.querySelectorAll(".tf-btn").forEach((b) => (b.disabled = true));
       const chosen = btn.dataset.ans === "true";
-      const feedback = document.getElementById("quizFeedback");
       if (chosen === r.isTrue) {
         t.score += 1;
-        feedback.innerHTML = withGameIcons(pick(MASKOT_KATA.benar));
       } else {
-        feedback.innerHTML = withGameIcons(pick(MASKOT_KATA.salah));
         t.hearts -= 1;
       }
+      showAnswerFeedback(chosen === r.isTrue, [btn]);
       scheduleGameStep(() => { t.index += 1; t.answered = false; render(); }, 1300);
     });
   });
@@ -303,7 +312,7 @@ function renderQuiz() {
     <div class="quiz-card">
       <div class="hearts-row" aria-label="Sisa ${q.hearts} dari 3 nyawa">${"❤️".repeat(q.hearts)}${"🤍".repeat(3 - q.hearts)}</div>
       <div class="quiz-question">Soal ${q.index + 1} dari ${q.total}</div>
-      ${isAudio ? `<button class="speaker-btn" id="btnSpeakQuiz" aria-label="Dengarkan pelafalan">${gameIcon("sound")}</button>` : `<div class="clue-box">${kartu.ket}</div>`}
+      ${isAudio ? `<button class="speaker-btn" id="btnSpeakQuiz" aria-label="Dengarkan pelafalan">${gameIcon("sound")}</button><div class="audio-source" id="quizAudioSource" hidden></div>` : `<div class="clue-box">${kartu.ket}</div>`}
       <div class="quiz-options ${isAudio ? "audio-options" : "text-options"}" id="quizOptions">
         ${options.map((i) => `<button class="quiz-opt" data-idx="${i}">${mod.kartu[i].latin}</button>`).join("")}
       </div>
@@ -317,25 +326,33 @@ function renderQuiz() {
     const speakBtn = document.getElementById("btnSpeakQuiz");
     const doSpeak = () => { stopSpeech(); speakBtn.classList.add("speaking"); speak(kartu.arab, () => speakBtn.classList.remove("speaking")); };
     speakBtn.addEventListener("click", doSpeak);
-    scheduleGameStep(doSpeak, 300);
+    // The first question must start inside the game tile's tap, not a timer.
+    doSpeak();
   }
 
   document.querySelectorAll(".quiz-opt").forEach((btn) => {
     btn.addEventListener("click", () => {
       if (q.answered) return;
       q.answered = true;
+      if (isAudio) {
+        stopSpeech();
+        primeSpeech();
+        // Mixed sources can identify a card. Reveal attribution only after the
+        // answer is locked, never as a visual hint for the listening question.
+        const source = document.getElementById("quizAudioSource");
+        source.textContent = audioSourceLabel(kartu.arab);
+        source.hidden = false;
+      }
       const chosen = Number(btn.dataset.idx);
-      const feedback = document.getElementById("quizFeedback");
       if (chosen === cardIdx) {
         btn.classList.add("correct");
         q.score += 1;
-        feedback.innerHTML = withGameIcons(pick(MASKOT_KATA.benar));
       } else {
         btn.classList.add("wrong");
         document.querySelector(`.quiz-opt[data-idx="${cardIdx}"]`).classList.add("correct");
-        feedback.innerHTML = withGameIcons(pick(MASKOT_KATA.salah));
         q.hearts -= 1;
       }
+      showAnswerFeedback(chosen === cardIdx, [btn]);
       scheduleGameStep(() => { q.index += 1; q.answered = false; render(); }, 1400);
     });
   });
@@ -361,6 +378,7 @@ function startMatch(jilidId) {
 function renderMatch() {
   const cat = APP_DATA[state.category];
   const mod = cat.modules.find((j) => j.id === state.jilidId);
+  const longFaces = mod.kartu.some((card) => card.arab.length > 35 || card.latin.length > 60);
   const m = state.match;
 
   if (m.matched.length === m.cards.length) {
@@ -380,7 +398,11 @@ function renderMatch() {
       <span class="pill">🔁 Langkah: ${m.moves}</span>
       <span class="pill">✅ ${m.matched.length / 2}/${m.total} pasang</span>
     </div>
-    <div class="match-grid" id="matchGrid">
+    ${m.reviewMismatch ? `<div class="match-review">
+      <p role="status">Belum cocok. Baca kedua kartu dulu, lalu coba pasangan lain.</p>
+      <button class="btn btn-secondary" id="btnMatchRetry">${gameIcon("repeat")} Coba pasangan lain</button>
+    </div>` : ""}
+    <div class="match-grid${longFaces ? " long-faces" : ""}" id="matchGrid">
       ${m.cards.map((c, pos) => {
         const isMatched = m.matched.includes(c.uid);
         const isFlipped = m.flipped.some((f) => f.uid === c.uid) || isMatched;
@@ -390,7 +412,7 @@ function renderMatch() {
         const faceClass = isFlipped ? (c.type === "arab" ? "face-arab" : "face-latin") : "";
         return `<button class="match-card ${isFlipped ? "flipped" : ""} ${isMatched ? "matched" : ""} ${faceClass}"
                   aria-label="${isFlipped ? label : "Buka kartu " + (pos + 1)}" aria-pressed="${isFlipped}"
-                  data-pos="${pos}" ${isMatched ? "disabled" : ""}>${label}</button>`;
+                  data-pos="${pos}" ${isMatched || m.reviewMismatch ? "disabled" : ""}>${label}</button>`;
       }).join("")}
     </div>
     <div class="audio-note hidden" id="audioNote"></div>
@@ -398,6 +420,15 @@ function renderMatch() {
 
   document.querySelectorAll(".match-card").forEach((btn) => {
     btn.addEventListener("click", () => onMatchCardClick(Number(btn.dataset.pos)));
+  });
+  const retry = document.getElementById("btnMatchRetry");
+  if (m.reviewMismatch && retry) retry.addEventListener("click", () => {
+    m.reviewMismatch = false;
+    m.flipped = [];
+    m.busy = false;
+    render({ preserveSpeech: true });
+    const firstCard = root.querySelector(".match-card:not([disabled])");
+    if (firstCard) firstCard.focus({ preventScroll: true });
   });
 }
 function onMatchCardClick(pos) {
@@ -411,27 +442,30 @@ function onMatchCardClick(pos) {
   if (m.flipped.length >= 2) return;
 
   m.flipped.push(card);
-  render();
+  render({ preserveSpeech: true });
 
   if (m.flipped.length === 2) {
     m.busy = true;
     m.moves += 1;
     const [a, b] = m.flipped;
     const isMatch = a.idx === b.idx && a.type !== b.type;
+    if (!isMatch) {
+      // Never ask children to read and scroll a full prayer against a timer.
+      // Keep mismatches visible until they explicitly choose to try again.
+      m.reviewMismatch = true;
+      render({ preserveSpeech: true });
+    }
+    showAnswerFeedback(isMatch, m.flipped.map((flipped) => root.querySelector(`.match-card[data-pos="${m.cards.indexOf(flipped)}"]`)));
     if (isMatch) {
+      // Start inside the matching tap, not after the response timer: fresh
+      // players on gesture-restricted devices must be activated synchronously.
+      speak(mod.kartu[a.idx].arab);
       scheduleGameStep(() => {
         m.matched.push(a.uid, b.uid);
         m.flipped = [];
         m.busy = false;
-        speak(mod.kartu[a.idx].arab);
-        render();
-      }, 500);
-    } else {
-      scheduleGameStep(() => {
-        m.flipped = [];
-        m.busy = false;
-        render();
-      }, 900);
+        render({ preserveSpeech: true });
+      }, 1100);
     }
   }
 }

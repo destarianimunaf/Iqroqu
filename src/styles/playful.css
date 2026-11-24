@@ -1,3 +1,64 @@
+/* Disable game zoom without trapping the page's normal vertical scrolling. */
+html.game-session, html.game-session body { touch-action: pan-x pan-y; }
+
+/* Grid children must shrink below a long transliteration's min-content width. */
+.match-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.match-card { min-width: 0; max-width: 100%; overflow-wrap: anywhere; white-space: normal; }
+@media (min-width: 420px) {
+  .match-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.match-grid.long-faces { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.long-faces .match-card { aspect-ratio: auto; min-height: 180px; padding: 12px; }
+.long-faces .face-latin { font-size: 14px; line-height: 1.6; }
+.long-faces .face-arab { font-size: 24px; line-height: 1.8; direction: rtl; }
+@media (min-width: 900px) {
+  .match-grid.long-faces { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.answer-feedback[hidden] { display: none; }
+.answer-feedback {
+  position: fixed;
+  z-index: 80;
+  top: max(92px, env(safe-area-inset-top));
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: max-content;
+  max-width: calc(100vw - 28px);
+  padding: 10px 18px 10px 10px;
+  border: 3px solid #8cbd50;
+  border-radius: 24px;
+  background: #f6ffe8;
+  color: #36552c;
+  box-shadow: 0 6px 0 #4a73262e, 0 12px 28px #21462a24;
+  transform: translateX(-50%);
+  pointer-events: none;
+  animation: answerNotice 320ms ease-out both;
+}
+.answer-feedback img { width: 58px; height: 62px; object-fit: contain; }
+.answer-feedback strong { font-size: 16px; line-height: 1.35; }
+.answer-feedback[data-result="wrong"] { background: #fff6e9; border-color: #e9ae69; color: #79451f; }
+.answer-correct, .ws-opt.correct, .order-chip.right { animation: answerBounce 420ms ease-out both; }
+.answer-wrong, .ws-opt.wrong, .order-chip.wrong { animation: answerNudge 360ms ease-out both; }
+@keyframes answerNotice {
+  from { opacity: 0; transform: translate(-50%, -12px) scale(.94); }
+  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+@keyframes answerBounce {
+  0%, 100% { transform: scale(1); }
+  40% { transform: translateY(-6px) scale(1.04); }
+  70% { transform: translateY(1px) scale(.99); }
+}
+@keyframes answerNudge {
+  0%, 100% { transform: translateX(0); }
+  30% { transform: translateX(-5px); }
+  65% { transform: translateX(5px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .answer-feedback, .answer-correct, .answer-wrong,
+  .ws-opt.correct, .ws-opt.wrong, .order-chip.right, .order-chip.wrong { animation: none; }
+}
 /* One illustrated WebP atlas, shared by every screen and device. */
 .game-icon {
   position: relative;
