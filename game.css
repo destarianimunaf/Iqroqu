@@ -245,7 +245,7 @@ button:focus-visible,a:focus-visible { outline:3px solid #a477e3; outline-offset
  .side-card h2 { font-size:9px; }
  .side-title svg { width:14px; }
  .tiny-label { font-size:6px; padding:4px 5px; }
- .daily-visual { width:57px; height:57px; font-size:26px; margin:17px auto 12px; border-width:5px; border-radius:18px; }
+ .daily-visual { width:57px; height:57px; margin:17px auto 12px; border-width:5px; border-radius:18px; }
  .mission-title { font-size:10px; }
  .mission-desc { font-size:8px; margin-bottom:14px; }
  .mission-link { font-size:8px; padding:9px 5px; margin-top:14px; }
