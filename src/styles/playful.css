@@ -1,6 +1,20 @@
 /* Disable game zoom without trapping the page's normal vertical scrolling. */
 html.game-session, html.game-session body { touch-action: pan-x pan-y; }
 
+/* Grid children must shrink below a long transliteration's min-content width. */
+.match-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.match-card { min-width: 0; max-width: 100%; overflow-wrap: anywhere; white-space: normal; }
+@media (min-width: 420px) {
+  .match-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.match-grid.long-faces { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.long-faces .match-card { aspect-ratio: auto; min-height: 180px; padding: 12px; }
+.long-faces .face-latin { font-size: 14px; line-height: 1.6; }
+.long-faces .face-arab { font-size: 24px; line-height: 1.8; direction: rtl; }
+@media (min-width: 900px) {
+  .match-grid.long-faces { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
 .answer-feedback[hidden] { display: none; }
 .answer-feedback {
   position: fixed;

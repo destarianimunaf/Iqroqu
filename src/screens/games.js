@@ -368,6 +368,7 @@ function startMatch(jilidId) {
 function renderMatch() {
   const cat = APP_DATA[state.category];
   const mod = cat.modules.find((j) => j.id === state.jilidId);
+  const longFaces = mod.kartu.some((card) => card.arab.length > 35 || card.latin.length > 60);
   const m = state.match;
 
   if (m.matched.length === m.cards.length) {
@@ -387,7 +388,7 @@ function renderMatch() {
       <span class="pill">🔁 Langkah: ${m.moves}</span>
       <span class="pill">✅ ${m.matched.length / 2}/${m.total} pasang</span>
     </div>
-    <div class="match-grid" id="matchGrid">
+    <div class="match-grid${longFaces ? " long-faces" : ""}" id="matchGrid">
       ${m.cards.map((c, pos) => {
         const isMatched = m.matched.includes(c.uid);
         const isFlipped = m.flipped.some((f) => f.uid === c.uid) || isMatched;
