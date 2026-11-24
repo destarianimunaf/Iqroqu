@@ -1,0 +1,113 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const { test } = require('node:test');
+const root = path.resolve(__dirname, '..');
+
+function harness() {
+  const nodes = new Map();
+  const node = id => {
+    if (!nodes.has(id)) nodes.set(id, {
+      innerHTML: '', dataset: {}, handlers: {},
+      classList: { toggle() {}, add() {}, remove() {} },
+      setAttribute() {}, removeAttribute() {},
+      addEventListener(event, callback) { this.handlers[event] = callback; },
+      querySelectorAll() { return []; }, querySelector() { return node(id + '-child'); }
+    });
+    return nodes.get(id);
+  };
+  const audios = [], utterances = [], timers = new Map(), storage = new Map([['iqro-ceria-music', 'off']]);
+  let timer = 0;
+  const context = vm.createContext({
+    console, setTimeout(fn) { timers.set(++timer, fn); return timer; }, clearTimeout(id) { timers.delete(id); },
+    window: { scrollTo() {}, speechSynthesis: { cancel() {}, getVoices() { return []; }, speak(utterance) { utterances.push(utterance); } } },
+    document: { getElementById: node, querySelectorAll() { return []; }, addEventListener() {} },
+    localStorage: { getItem(k) { return storage.get(k) ?? null; }, setItem(k, v) { storage.set(k, String(v)); }, removeItem(k) { storage.delete(k); } },
+    SpeechSynthesisUtterance: class { constructor(text) { this.text = text; } },
+    Audio: class {
+      constructor(src) { this.src = src; audios.push(this); }
+      play() { return Promise.resolve(); }
+      pause() { this.paused = true; }
+    }
+  });
+  vm.runInContext(fs.readFileSync(path.join(root, 'assets/arabic-audio.js'), 'utf8'), context);
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1], context);
+  return { context, run(code) { return vm.runInContext(code, context); }, audios, utterances, timers, node };
+}
+
+test('every vocabulary card and isolated harakat has an existing bundled example', () => {
+  const h = harness();
+  assert.equal(h.run('ARAB_MODULES.length'), 9);
+  assert.equal(h.run('ARAB_MODULES.slice(5).reduce((n,m)=>n+m.kartu.length,0)'), 48);
+  assert.deepEqual(JSON.parse(h.run('JSON.stringify(ARAB_MODULES.slice(0,5).map(m=>[m.id,m.kartu.length]))')), [['a1',10],['a2',10],['a3',9],['a4',10],['a5',8]]);
+  assert.equal(h.run('ARAB_MODULES.every(m=>m.kartu.every(c=>audioExamples(c.arab)))'), true);
+  assert.equal(h.run('IQRO_MODULES[0].kartu.every(c=>audioExamples(c.arab))'), true);
+  for (const clips of Object.values(h.context.window.IQRO_AUDIO.entries)) {
+    for (const clip of clips) assert.ok(fs.statSync(path.join(root, clip)).size > 1000, clip);
+  }
+});
+
+test('bundled speech works with no browser speech engine; slow mode preserves pitch', () => {
+  const h = harness();
+  delete h.context.window.speechSynthesis;
+  h.run('globalThis.ended=0; speak(ARAB_MODULES[5].kartu[0].arab,()=>ended++,0.42)');
+  assert.equal(h.audios.length, 1);
+  assert.equal(h.audios[0].playbackRate, 0.7);
+  assert.equal(h.audios[0].preservesPitch, true);
+  h.audios[0].onended();
+  assert.equal(h.run('ended'), 1);
+  assert.equal(h.timers.size, 0);
+});
+
+test('letter drills play human syllables sequentially, not letter-name TTS', () => {
+  const h = harness();
+  h.run('globalThis.ended=0; speak("بَ تَ ثَ جَ",()=>ended++)');
+  for (let index = 0; index < 4; index++) {
+    assert.equal(h.audios.length, index + 1);
+    assert.match(h.audios[index].src, /letter-/);
+    h.audios[index].onended();
+  }
+  assert.equal(h.run('ended'), 1);
+  assert.equal(h.utterances.length, 0);
+});
+
+test('navigation and replacement stop previous audio and clear callbacks once', () => {
+  const h = harness();
+  h.run('globalThis.ended=0; speak("بَ",()=>ended++)');
+  const staleEnd = h.audios[0].onended;
+  h.run('speak("تَ",()=>ended++)');
+  assert.equal(h.audios[0].paused, true);
+  staleEnd();
+  assert.equal(h.run('ended'), 1);
+  h.run('render()');
+  assert.equal(h.audios[1].paused, true);
+  assert.equal(h.run('ended'), 2);
+  assert.equal(h.timers.size, 0);
+});
+
+test('failed MP3 falls back once; errors and timeout restore controls', () => {
+  const h = harness();
+  h.run('globalThis.ended=0; speak("بَ",()=>ended++)');
+  const fail = h.audios[0].onerror;
+  fail(); fail();
+  assert.equal(h.utterances.length, 1);
+  h.utterances[0].onerror();
+  h.utterances[0].onend();
+  assert.equal(h.run('ended'), 1);
+  h.run('speak("تَ",()=>ended++)');
+  // One timer hides a diagnostic, the other guards stalled media.
+  for (const fn of [...h.timers.values()]) fn();
+  assert.equal(h.run('ended'), 2);
+});
+
+test('autoplay rejection restores the speaker and never starts hidden speech', async () => {
+  const h = harness();
+  h.context.Audio.prototype.play = () => Promise.reject(Object.assign(new Error('gesture required'), { name: 'NotAllowedError' }));
+  h.run('globalThis.ended=0; speak("بَ",()=>ended++)');
+  await Promise.resolve();
+  assert.equal(h.run('ended'), 1);
+  assert.equal(h.utterances.length, 0);
+  assert.equal(h.audios[0].paused, true);
+});
